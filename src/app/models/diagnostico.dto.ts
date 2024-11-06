@@ -1,3 +1,5 @@
+import { UserDto } from "./user.dto";
+
 export interface Diagnostico {
     id?: string;
     pacienteId: string;
@@ -5,4 +7,5 @@ export interface Diagnostico {
     fecha: string;
     descripcion: string;
     recomendaciones?: string;
+    pacienteInfo?: UserDto;
   }

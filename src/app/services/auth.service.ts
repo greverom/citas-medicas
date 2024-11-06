@@ -4,15 +4,16 @@ import { Store } from '@ngrx/store';
 import { UserDto, UserRole } from '../models/user.dto';
 import { from, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { setUserData } from '../store/user.action';
+import { setAdminStatus, setUserData } from '../store/user.action';
 import { LoginDto, RegisterDto } from '../models/auth.dto';
+import { UserDataService } from './user-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private auth: Auth, private store: Store) { }
+  constructor(private auth: Auth, private userDataService: UserDataService, private store: Store) { }
 
   register(registerData: RegisterDto) {
     const { email, password, name = '', lastName = '', role = UserRole.Paciente } = registerData;
@@ -26,7 +27,7 @@ export class AuthService {
             )
           : of(null);
       }),
-      map((user) => {
+      switchMap((user) => {
         if (user) {
           const newUser: UserDto = {
             id: user.uid,
@@ -51,16 +52,23 @@ export class AuthService {
               : undefined,
           };
 
-          this.store.dispatch(setUserData({ data: newUser }));
+          // Guarda el usuario en la Realtime Database usando el servicio de datos
+          return this.userDataService.addUserToDatabase(newUser).pipe(
+            map(() => {
+              // Despacha los datos al store
+              this.store.dispatch(setUserData({ data: newUser }));
+              this.store.dispatch(setAdminStatus({ isAdmin: role === UserRole.Admin }));
+            })
+          );
         }
+        return of(null);
       }),
       catchError((error) => {
         console.error('Error al registrar usuario:', error);
-        return of(null); 
+        return of(null);
       })
     );
   }
-
 
   login(loginData: LoginDto) {
     const { email, password } = loginData;
