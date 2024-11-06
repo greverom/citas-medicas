@@ -1,9 +1,11 @@
+import { Diagnostico } from "./diagnostico.dto";
+import { TurnoDto } from "./turno.dto";
 
 export interface UserDto {
     id?: string;
     name: string;
     email: string;
-    role: UserRole;
+    role?: UserRole;
     isAdmin: boolean; 
     detalles?: DetallesPaciente | DetallesMedico;
   }
@@ -20,10 +22,12 @@ export interface UserDto {
     fechaNacimiento: string;
     direccion: string;
     telefono: string;
+    turnos?: TurnoDto[];
+    diagnosticos?: Diagnostico[];
   }
   
   export interface DetallesMedico {
-    especialidad: string;
+    especialidad?: string;
     numeroLicencia: string;
     cedula:string
   }
