@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from '@angular/fire/auth';
 import { Store } from '@ngrx/store';
 import { UserDto, UserRole } from '../models/user.dto';
 import { from, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { setAdminStatus, setUserData } from '../store/user.action';
+import { setAdminStatus, setLoggedInStatus, setUserData, unsetUserData } from '../store/user.action';
 import { LoginDto, RegisterDto } from '../models/auth.dto';
 import { UserDataService } from './user-data.service';
 
@@ -51,11 +51,12 @@ export class AuthService {
                 }
               : undefined,
           };
+          if (newUser.detalles === undefined) {
+            delete newUser.detalles;
+          }
 
-          // Guarda el usuario en la Realtime Database usando el servicio de datos
           return this.userDataService.addUserToDatabase(newUser).pipe(
             map(() => {
-              // Despacha los datos al store
               this.store.dispatch(setUserData({ data: newUser }));
               this.store.dispatch(setAdminStatus({ isAdmin: role === UserRole.Admin }));
             })
@@ -74,25 +75,49 @@ export class AuthService {
     const { email, password } = loginData;
 
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      map((userCredential) => userCredential.user),
-      map((user) => {
-        if (user) {
-          const loggedInUser: UserDto = {
-            id: user.uid,
-            name: user.displayName || '', 
-            email: user.email || '',
-            role: UserRole.Paciente, 
-            isAdmin: false, 
-            detalles: undefined 
-          };
-
-          this.store.dispatch(setUserData({ data: loggedInUser }));
-        }
-      }),
-      catchError((error) => {
-        console.error('Error al iniciar sesión:', error);
-        return of(null); 
-      })
+        switchMap((userCredential) => {
+            const user = userCredential.user;
+            if (user) {
+                return from(user.getIdToken()).pipe(
+                    switchMap((token) => {
+                        return this.userDataService.getUserFromDatabase(user.uid).pipe(
+                            map((userData) => {
+                                if (userData) {
+                                    localStorage.setItem('accessToken', token);
+                                    this.store.dispatch(setUserData({ data: userData }));
+                                    this.store.dispatch(setAdminStatus({ isAdmin: userData.role === UserRole.Admin }));
+                                    this.store.dispatch(setLoggedInStatus({ isLoggedIn: true }));
+                                }
+                                return userData;
+                            })
+                        );
+                    })
+                );
+            }
+            return of(null);
+        }),
+        catchError((error) => {
+            console.error('Error al iniciar sesión:', error);
+            return of(null);
+        })
     );
-  }
+}
+
+logout() {
+  return from(signOut(this.auth)).pipe(
+    map(() => {
+      if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+        localStorage.removeItem('accessToken');
+      }
+
+      this.store.dispatch(setLoggedInStatus({ isLoggedIn: false }));
+      this.store.dispatch(setAdminStatus({ isAdmin: false }));
+      this.store.dispatch(unsetUserData());
+    }),
+    catchError((error) => {
+      console.error('Error al cerrar sesión:', error);
+      return of(null);
+    })
+  );
+}
 }

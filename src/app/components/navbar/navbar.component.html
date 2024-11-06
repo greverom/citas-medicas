@@ -1,30 +1,44 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
-    <a class="navbar-brand" href="#">Citas Médicas</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto me-5">
-        <li class="nav-item active ms-4">
-          <a class="nav-link" href="#">Inicio</a>
+  <a class="navbar-brand" href="#">Citas Médicas</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto me-5">
+      <!-- Enlaces según el rol del usuario -->
+      <ng-container *ngIf="isLoggedIn$ | async; else loginRegisterLinks">
+        <li class="nav-item ms-4" *ngIf="isAdmin$ | async">
+          <a class="nav-link" routerLink="/">Inicio</a>
         </li>
-        <li class="nav-item ms-4">
-          <a class="nav-link" href="#">Diagnósticos</a>
+        <li class="nav-item ms-4" *ngIf="isAdmin$ | async">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">Registrar</a>
         </li>
-        <li class="nav-item ms-4">
-          <a class="nav-link" href="#">Agenda</a>
+        <li class="nav-item ms-4" *ngIf="isMedico$ | async">
+          <a class="nav-link" routerLink="/agenda">Agenda</a>
         </li>
-        <li class="nav-item ms-4">
-          <a class="nav-link" href="#">Agregar Paciente</a>
+        <li class="nav-item ms-4" *ngIf="isMedico$ | async">
+          <a class="nav-link" routerLink="/agregar-paciente">Agregar Paciente</a>
         </li>
-      </ul>
-      <ul class="navbar-nav">
+        <li class="nav-item ms-4" *ngIf="isPaciente$ | async">
+          <a class="nav-link" routerLink="/">Inicio</a>
+        </li>
+        <li class="nav-item ms-4" *ngIf="isPaciente$ | async">
+          <a class="nav-link" routerLink="/diagnosticos">Diagnósticos</a>
+        </li>
+      </ng-container>
+    </ul>
+
+    <ul class="navbar-nav">
+      <!-- Enlaces de Iniciar Sesión y Registrar -->
+      <ng-template #loginRegisterLinks>
         <li class="nav-item ms-4">
           <a class="nav-link" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
         </li>
-        <li class="nav-item ms-4">
-          <a class="nav-link" routerLink="/register" routerLinkActive="active">Registrar</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+      </ng-template>
+
+      <li class="nav-item ms-4" *ngIf="isLoggedIn$ | async">
+        <a class="nav-link" (click)="logout()">Cerrar Sesión</a>
+      </li>
+    </ul>
+  </div>
+</nav>

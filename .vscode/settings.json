@@ -4,6 +4,7 @@
         "descripcion",
         "diagnosticos",
         "direccion",
+        "ngrx",
         "telefono"
     ]
 }
