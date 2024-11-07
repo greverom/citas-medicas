@@ -1,24 +1,18 @@
 <div class="paciente-turno-container">
-    <!-- Sub-bloque para el calendario y la selección de horas -->
     <div class="row">
-      <!-- Primer sub-bloque: Selección de fecha (Calendario) -->
       <div class="sub-bloque calendario">
         <h3>Seleccionar Fecha</h3>
-        <!-- Aquí puedes integrar un componente de calendario o un input tipo date -->
         <input type="date" [(ngModel)]="fechaSeleccionada" />
       </div>
   
-      <!-- Segundo sub-bloque: Selección de hora -->
       <div class="sub-bloque hora">
         <h3>Seleccionar Hora</h3>
-        <!-- Aquí usamos un selector para las horas de 9:00 a 18:00 -->
         <select [(ngModel)]="horaSeleccionada">
           <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
         </select>
       </div>
     </div>
   
-    <!-- Botón para agendar turno -->
     <div class="boton-agendar">
       <button (click)="agendarTurno()">Agendar Turno</button>
     </div>

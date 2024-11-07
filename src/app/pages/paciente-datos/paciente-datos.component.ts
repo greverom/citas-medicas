@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PacienteDto } from '../../models/user.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-paciente-datos',
@@ -14,13 +15,21 @@ import { CommonModule } from '@angular/common';
 })
 export class PacienteDatosComponent implements OnInit {
   paciente: PacienteDto | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(private pacienteService: PacienteService) {}
 
   ngOnInit() {
-    this.pacienteService.pacienteSeleccionado$.subscribe((paciente) => {
-      this.paciente = paciente;
-      console.log('Paciente recibido en paciente-datos:', this.paciente);
-    });
+    this.pacienteService.pacienteSeleccionado$
+      .pipe(takeUntil(this.destroy$)) 
+      .subscribe((paciente) => {
+        this.paciente = paciente;
+        console.log('paciente recibido en paciente-datos:', this.paciente);
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(); 
+    this.destroy$.complete(); 
   }
 }

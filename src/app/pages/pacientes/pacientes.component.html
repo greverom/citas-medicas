@@ -102,8 +102,7 @@
     <button class="cerrar-modal-turno" (click)="cerrarModalTurno()">X</button>
     <app-paciente-turno 
     [paciente]="pacienteSeleccionadoParaTurno" 
-    [medicoId]="medicoData?.id || ''" 
-    [medicoNombre]="medicoData?.name || ''" 
+    [medicoId]="medicoData?.id || ''"  
     (turnoAgendado)="cerrarModalTurno()">
   </app-paciente-turno>
   </div>
@@ -116,13 +115,21 @@
         <tr>
           <th>Nombres</th>
           <th>Apellidos</th>
-          <th>Acciones</th>
+          <th>Fecha del Turno</th>
+          <th>Hora del Turno</th>
+          <th>Opciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let paciente of pacientes" (click)="seleccionarPaciente(paciente)">
-          <td>{{ paciente.nombres }}</td>
-          <td>{{ paciente.apellidos }}</td>
+          <td>{{ paciente.nombres | titlecase }}</td>
+          <td>{{ paciente.apellidos | titlecase }}</td>
+          <td>
+            {{ paciente.turnos?.[0]?.fecha || 'Sin fecha' }}
+          </td>
+          <td>
+            {{ paciente.turnos?.[0]?.hora || 'Sin hora' }}
+          </td>
           <td>
             <button class="accion-btn" (click)="abrirTurnoPaciente(paciente); $event.stopPropagation()">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">

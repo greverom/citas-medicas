@@ -18,7 +18,6 @@ import { EstadoTurno, TurnoDto } from '../../models/turno.dto';
 export class PacienteTurnoComponent {
   @Input() paciente: PacienteDto | null = null;
   @Input() medicoId: string | null = null;  // Solo el ID del médico
-  @Input() medicoNombre: string | null = null;  // Solo el nombre del médico
   @Output() turnoAgendado = new EventEmitter<void>();
   
   fechaSeleccionada: string = '';
@@ -38,23 +37,14 @@ export class PacienteTurnoComponent {
   }
 
   agendarTurno() {
-    if (this.fechaSeleccionada && this.horaSeleccionada && this.paciente && this.medicoId && this.medicoNombre) {
+    if (this.fechaSeleccionada && this.horaSeleccionada && this.paciente && this.medicoId) {
       const turno: TurnoDto = {
-        id: '',
+        id: '', 
         pacienteId: this.paciente.id!,
         medicoId: this.medicoId,
         fecha: this.fechaSeleccionada,
         hora: this.horaSeleccionada,
-        estado: EstadoTurno.Programado,
-        notas: '',
-        pacienteInfo: {
-          nombres: this.paciente.nombres,
-          apellidos: this.paciente.apellidos,
-          cedula: this.paciente.cedula,
-          correo: this.paciente.correo,
-          direccion: this.paciente.direccion
-        },
-        medicoInfo: { id: this.medicoId, name: this.medicoNombre }
+        estado: EstadoTurno.Programado 
       };
   
       this.pacienteService.agendarTurno(this.paciente.id!, turno).subscribe({
