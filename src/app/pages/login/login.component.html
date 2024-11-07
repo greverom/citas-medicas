@@ -2,7 +2,7 @@
     <div class="card p-4 w-100" style="max-width: 400px;">
       <h2 class="text-center mb-4">Iniciar Sesión</h2>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <!-- Campo Email con etiqueta flotante -->
+
         <div class="mb-3 form-floating">
           <input
             type="email"
@@ -17,7 +17,6 @@
           </div>
         </div>
   
-        <!-- Campo Password con etiqueta flotante -->
         <div class="mb-3 form-floating position-relative">
           <input
             [type]="passwordVisible ? 'text' : 'password'"
@@ -35,9 +34,8 @@
           </span>
         </div>
   
-        <!-- Botón para iniciar sesión -->
         <div class="d-grid">
-          <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
+          <button class="btn btn-primary">Iniciar Sesión</button>
         </div>
       </form>
   

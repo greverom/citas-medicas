@@ -66,38 +66,46 @@
     color: #dc3545;
     margin-bottom: .7rem;
   }
+
   
-  .button {
-    display: none;
-    border: 1px solid;
-    padding: 0.45rem 1.5rem;
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
     margin-top: 1rem;
-    font-size: .9rem;
+  }
+  
+  button.confirm-btn, 
+  button.cancel-btn {
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: bold;
     border-radius: 5px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  .error-button {
-    background-color: transparent;
-    color: rgb(208, 58, 58);
-    border-color: rgb(208, 58, 58);
-  }
-  
-  .error-button:hover {
-    background-color: rgb(208, 58, 58);
+  button.confirm-btn {
+    background-color: #007bff; 
     color: white;
   }
   
-  .success-button {
-    background-color: transparent;
-    color: #28a745;
-    border-color: #28a745;
+  button.confirm-btn:hover {
+    background-color: #0056b3;
   }
   
-  .success-button:hover {
-    background-color: #28a745;
+  button.cancel-btn {
+    background-color: #28a745; 
     color: white;
+  }
+  
+  button.cancel-btn:hover {
+    background-color: #218838;
   }
   
   @media (max-width: 492px) {
@@ -122,27 +130,6 @@
       font-size: .87rem; 
     }
   
-  .button {
-    border: 1px solid;
-    padding: 0.45rem 1.5rem;
-    margin-top: 1rem;
-    font-size: .9rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .error-button {
-    background-color: transparent;
-    color: rgb(208, 58, 58);
-    border-color: rgb(208, 58, 58);
-  }
-  
-  .success-button {
-    background-color: transparent;
-    color: #28a745;
-    border-color: #28a745;
-  }
   
   }
   

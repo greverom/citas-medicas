@@ -1,10 +1,15 @@
 <div *ngIf="showModal" class="modal-overlay">
-    <div class="modal-content" [ngClass]="{
-               'error-modal': isError, 
-               'shake-animation': shake && isError, 
-               'success-modal': isSuccess }">
-      <i *ngIf="isError" class="fas fa-exclamation-circle error-icon"></i>
-      <i *ngIf="isSuccess" class="fas fa-check-circle success-icon"></i>
-      <p>{{ message }}</p>
+  <div class="modal-content" [ngClass]="{
+             'error-modal': isError, 
+             'shake-animation': shake && isError, 
+             'success-modal': isSuccess }">
+    <i *ngIf="isError" class="fas fa-exclamation-circle error-icon"></i>
+    <i *ngIf="isSuccess" class="fas fa-check-circle success-icon"></i>
+    <p>{{ message }}</p>
+
+    <div *ngIf="isConfirm" class="modal-buttons">
+      <button class="confirm-btn" (click)="confirmAction()">Confirmar</button>
+      <button class="cancel-btn" (click)="cancelAction()">Cancelar</button>
     </div>
   </div>
+</div>

@@ -1,7 +1,6 @@
-
 import { Injectable } from '@angular/core';
 import { Database, ref, set, update, remove, get, child, push } from '@angular/fire/database';
-import { UserDto, UserRole } from '../models/user.dto';
+import { PacienteDto } from '../models/user.dto';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -14,8 +13,7 @@ export class PacienteService {
   constructor(private db: Database) {}
 
   // Crear un nuevo paciente
-  crearPaciente(paciente: UserDto): Observable<void> {
-    paciente.role = UserRole.Paciente;
+  crearPaciente(paciente: PacienteDto): Observable<void> {
     const newPacienteRef = push(this.dbRef);
     paciente.id = newPacienteRef.key ?? '';
 
@@ -28,7 +26,7 @@ export class PacienteService {
   }
 
   // Obtener todos los pacientes
-  obtenerPacientes(): Observable<UserDto[]> {
+  obtenerPacientes(): Observable<PacienteDto[]> {
     return from(get(this.dbRef)).pipe(
       map(snapshot => {
         if (snapshot.exists()) {
@@ -36,7 +34,7 @@ export class PacienteService {
           return Object.keys(pacientesObj).map(key => ({
             id: key,
             ...pacientesObj[key],
-          }));
+          })) as PacienteDto[];
         } else {
           return [];
         }
@@ -49,10 +47,10 @@ export class PacienteService {
   }
 
   // Obtener un paciente por ID
-  obtenerPaciente(id: string): Observable<UserDto | null> {
+  obtenerPaciente(id: string): Observable<PacienteDto | null> {
     const pacienteRef = child(this.dbRef, id);
     return from(get(pacienteRef)).pipe(
-      map(snapshot => (snapshot.exists() ? snapshot.val() : null)),
+      map(snapshot => (snapshot.exists() ? snapshot.val() as PacienteDto : null)),
       catchError(error => {
         console.error('Error al obtener paciente:', error);
         return of(null); 
@@ -61,7 +59,7 @@ export class PacienteService {
   }
 
   // Obtener pacientes asociados a un médico específico
-  obtenerPacientesPorMedico(medicoId: string): Observable<UserDto[]> {
+  obtenerPacientesPorMedico(medicoId: string): Observable<PacienteDto[]> {
     return from(get(this.dbRef)).pipe(
       map(snapshot => {
         if (snapshot.exists()) {
@@ -69,10 +67,7 @@ export class PacienteService {
           return Object.keys(pacientesObj)
             .map(key => ({ id: key, ...pacientesObj[key] }))
             .filter(
-              paciente =>
-                paciente.detalles &&
-                'medicoId' in paciente.detalles &&
-                paciente.detalles.medicoId === medicoId
+              (paciente: PacienteDto) => paciente.medicoId === medicoId
             );
         } else {
           return [];
@@ -80,13 +75,13 @@ export class PacienteService {
       }),
       catchError(error => {
         console.error('Error al obtener pacientes del médico:', error);
-        return of([]); // Retorna un array vacío en caso de error
+        return of([]);
       })
     );
   }
 
   // Actualizar un paciente
-  actualizarPaciente(id: string, paciente: UserDto): Observable<void> {
+  actualizarPaciente(id: string, paciente: PacienteDto): Observable<void> {
     if (!paciente.id) {
       throw new Error('El paciente debe tener un ID para ser actualizado.');
     }

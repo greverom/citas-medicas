@@ -31,3 +31,15 @@ export interface UserDto {
     numeroLicencia: string;
     cedula:string
   }
+
+  export interface PacienteDto {
+    id?: string;
+    nombres: string;
+    apellidos: string;
+    cedula: string;
+    correo: string;
+    direccion: string;
+    telefono: string;
+    medicoNombre: string;  
+    medicoId: string;     
+  }
