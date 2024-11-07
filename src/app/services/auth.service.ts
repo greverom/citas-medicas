@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from '@angular/fire/auth';
 import { Store } from '@ngrx/store';
-import { UserDto, UserRole } from '../models/user.dto';
+import { DetallesMedico, DetallesPaciente, UserDto, UserRole } from '../models/user.dto';
 import { from, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { setAdminStatus, setLoggedInStatus, setUserData, unsetUserData } from '../store/user.action';
@@ -37,23 +37,20 @@ export class AuthService {
             isAdmin: role === UserRole.Admin,
             detalles: role === UserRole.Paciente
               ? {
-                  medicoId: '',
+                  medicoIds: [], 
                   cedula: '',
                   fechaNacimiento: '',
                   direccion: '',
                   telefono: '',
-                }
+                } as DetallesPaciente
               : role === UserRole.Medico
               ? {
                   especialidad: '',
                   numeroLicencia: '',
                   cedula: '',
-                }
+                } as DetallesMedico
               : undefined,
           };
-          if (newUser.detalles === undefined) {
-            delete newUser.detalles;
-          }
 
           return this.userDataService.addUserToDatabase(newUser).pipe(
             map(() => {
@@ -109,7 +106,6 @@ logout() {
       if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
         localStorage.removeItem('accessToken');
       }
-
       this.store.dispatch(setLoggedInStatus({ isLoggedIn: false }));
       this.store.dispatch(setAdminStatus({ isAdmin: false }));
       this.store.dispatch(unsetUserData());

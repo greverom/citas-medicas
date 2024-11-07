@@ -8,7 +8,8 @@ export interface TurnoDto {
     hora: string;                
     estado: EstadoTurno;         
     notas?: string;              
-    pacienteInfo?: UserDto;      
+    pacienteInfo?: UserDto; 
+    medicoInfo?: Partial<UserDto>;     
   }
 
   export enum EstadoTurno {

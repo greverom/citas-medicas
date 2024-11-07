@@ -3,10 +3,10 @@
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+  
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ms-auto me-5">
-      <!-- Enlaces según el rol del usuario -->
-      <ng-container *ngIf="isLoggedIn$ | async; else loginRegisterLinks">
+    <ul class="navbar-nav me-auto">
+      <ng-container *ngIf="isLoggedIn$ | async">
         <li class="nav-item ms-4" *ngIf="isAdmin$ | async">
           <a class="nav-link" routerLink="/">Inicio</a>
         </li>
@@ -28,14 +28,10 @@
       </ng-container>
     </ul>
 
-    <ul class="navbar-nav">
-      <!-- Enlaces de Iniciar Sesión y Registrar -->
-      <ng-template #loginRegisterLinks>
-        <li class="nav-item ms-4">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
-        </li>
-      </ng-template>
-
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item ms-4" *ngIf="!(isLoggedIn$ | async)">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
+      </li>
       <li class="nav-item ms-4" *ngIf="isLoggedIn$ | async">
         <a class="nav-link" (click)="logout()">Cerrar Sesión</a>
       </li>

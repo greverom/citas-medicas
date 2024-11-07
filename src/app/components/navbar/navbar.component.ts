@@ -6,6 +6,7 @@ import { selectIsLoggedIn, selectUserData } from '../../store/user.selector';
 import { setLoggedInStatus, unsetUserData } from '../../store/user.action';
 import { CommonModule } from '@angular/common';
 import { UserRole } from '../../models/user.dto';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +24,10 @@ export class NavbarComponent {
   isMedico$: Observable<boolean>;
   isPaciente$: Observable<boolean>;
 
-  constructor(private store: Store, private router: Router) {
+  constructor(private store: Store, 
+              private router: Router, 
+              private authService: AuthService) {
+                
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
     this.isAdmin$ = this.store.select(selectUserData).pipe(
       map(user => user?.role === UserRole.Admin)
@@ -37,9 +41,13 @@ export class NavbarComponent {
   }
 
   logout() {
-    this.store.dispatch(setLoggedInStatus({ isLoggedIn: false }));
-    this.store.dispatch(unsetUserData());
-    localStorage.removeItem('accessToken');
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        console.error('Error al cerrar sesión:', error);
+      }
+    });
   }
 }

@@ -8,4 +8,5 @@ export interface Diagnostico {
     descripcion: string;
     recomendaciones?: string;
     pacienteInfo?: UserDto;
+    medicoInfo?: Partial<UserDto>;
   }
