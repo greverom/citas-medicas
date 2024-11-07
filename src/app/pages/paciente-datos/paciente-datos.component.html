@@ -1,0 +1,9 @@
+<div *ngIf="paciente">
+    <h2 class="titulo">Datos paciente - {{ paciente.nombres | titlecase }} -</h2>
+    <p><strong>Nombres:</strong> {{ paciente.nombres | titlecase }}</p>
+    <p><strong>Apellidos:</strong> {{ paciente.apellidos | titlecase }}</p>
+    <p><strong>Cédula:</strong> {{ paciente.cedula }}</p>
+    <p><strong>Correo:</strong> {{ paciente.correo }}</p>
+    <p><strong>Dirección:</strong> {{ paciente.direccion | titlecase }}</p>
+    <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+  </div>

@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Database, ref, set, update, remove, get, child, push } from '@angular/fire/database';
 import { PacienteDto } from '../models/user.dto';
-import { from, Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { TurnoDto } from '../models/turno.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PacienteService {
   private dbRef = ref(this.db, 'pacientes');
+  private pacienteSeleccionado = new BehaviorSubject<PacienteDto | null>(null);
+  pacienteSeleccionado$ = this.pacienteSeleccionado.asObservable();
 
   constructor(private db: Database) {}
 
@@ -94,12 +97,37 @@ export class PacienteService {
     );
   }
 
+  seleccionarPaciente(paciente: PacienteDto | null) {
+    this.pacienteSeleccionado.next(paciente);
+  }
+
   // Eliminar un paciente
   eliminarPaciente(id: string): Observable<void> {
     const pacienteRef = child(this.dbRef, id);
     return from(remove(pacienteRef)).pipe(
       catchError(error => {
         console.error('Error al eliminar paciente:', error);
+        throw error;
+      })
+    );
+  }
+
+  agendarTurno(pacienteId: string, turno: TurnoDto): Observable<void> {
+    const pacienteRef = child(this.dbRef, pacienteId);
+
+    return from(get(pacienteRef)).pipe(
+      switchMap(snapshot => {
+        if (snapshot.exists()) {
+          const paciente = snapshot.val() as PacienteDto;
+          paciente.turnos = paciente.turnos || []; 
+          paciente.turnos.push(turno); 
+          return from(update(pacienteRef, { turnos: paciente.turnos })); 
+        } else {
+          throw new Error('Paciente no encontrado');
+        }
+      }),
+      catchError(error => {
+        console.error('Error al agendar turno:', error);
         throw error;
       })
     );

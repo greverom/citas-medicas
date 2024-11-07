@@ -41,5 +41,7 @@ export interface UserDto {
     direccion: string;
     telefono: string;
     medicoNombre: string;  
-    medicoId: string;     
+    medicoId: string; 
+    turnos?: TurnoDto[];  
+    diagnosticos?: Diagnostico[];    
   }

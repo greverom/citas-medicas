@@ -1,12 +1,14 @@
 {
     "cSpell.words": [
         "accion",
+        "boton",
         "cedula",
         "Confirmacion",
         "descripcion",
         "diagnosticos",
         "direccion",
         "ngrx",
-        "telefono"
+        "telefono",
+        "titlecase"
     ]
 }

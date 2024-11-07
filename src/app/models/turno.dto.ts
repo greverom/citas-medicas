@@ -1,4 +1,4 @@
-import { UserDto } from "./user.dto";
+import { PacienteDto, UserDto } from "./user.dto";
 
 export interface TurnoDto {
     id: string;                  
@@ -8,8 +8,16 @@ export interface TurnoDto {
     hora: string;                
     estado: EstadoTurno;         
     notas?: string;              
-    pacienteInfo?: UserDto; 
+    pacienteInfo?: PacienteInfoBasico;
     medicoInfo?: Partial<UserDto>;     
+  }
+
+  export interface PacienteInfoBasico {
+    nombres: string;
+    apellidos: string;
+    cedula: string;
+    correo: string;
+    direccion: string;
   }
 
   export enum EstadoTurno {

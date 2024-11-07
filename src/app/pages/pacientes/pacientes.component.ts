@@ -7,13 +7,17 @@ import { CommonModule } from '@angular/common';
 import { PacienteService } from '../../services/pacientes.service';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { ModalComponent } from '../../components/modal/modal.component';
+import { PacienteDatosComponent } from '../paciente-datos/paciente-datos.component';
+import { PacienteTurnoComponent } from '../paciente-turno/paciente-turno.component';
 
 @Component({
   selector: 'app-pacientes',
   standalone: true,
   imports: [CommonModule,
             ReactiveFormsModule,
-            ModalComponent
+            ModalComponent,
+            PacienteDatosComponent,
+            PacienteTurnoComponent
   ],
   templateUrl: './pacientes.component.html',
   styleUrl: './pacientes.component.css'
@@ -28,11 +32,13 @@ export class PacientesComponent implements OnInit {
   pacientes: PacienteDto[] = [];
   modal: ModalDto = modalInitializer(); 
   pacienteAEditar: PacienteDto | null = null;
+  modalTurnoAbierto = false; 
+  pacienteSeleccionadoParaTurno: PacienteDto | null = null;
 
   constructor(
     private fb: FormBuilder,
     private store: Store,
-    private pacienteService: PacienteService
+    public pacienteService: PacienteService
   ) {
 
     this.pacienteForm = this.fb.group({
@@ -92,6 +98,8 @@ export class PacientesComponent implements OnInit {
         ...this.pacienteForm.value,
         medicoId: this.medicoData.id,
         medicoNombre: this.medicoData.name,
+        turnos: [], 
+        diagnosticos: [] 
       };
       this.pacienteService.crearPaciente(nuevoPaciente).subscribe({
         next: () => {
@@ -184,4 +192,24 @@ export class PacientesComponent implements OnInit {
   closeModal() {
     this.modal = modalInitializer(); 
   }
+
+  seleccionarPaciente(paciente: PacienteDto) {
+    this.pacienteService.seleccionarPaciente(paciente);
+  }
+
+  cerrarPacienteSeleccionado() {
+    this.pacienteService.seleccionarPaciente(null); 
+  }
+
+  abrirTurnoPaciente(paciente: PacienteDto) {
+    this.pacienteSeleccionadoParaTurno = paciente;
+    this.modalTurnoAbierto = true;
+  }
+
+  cerrarModalTurno() {
+    this.modalTurnoAbierto = false;
+    this.pacienteSeleccionadoParaTurno = null;
+  }
+
+  
 }

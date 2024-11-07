@@ -1,6 +1,6 @@
 :host {
     display: block;
-    background-color: #ffffff; /* Gris claro */
+    background-color: #ffffff; 
     min-height: 100vh;
   }
 
@@ -145,49 +145,58 @@
   }
 
   /* Contenedor principal de la tabla */
-.tabla-pacientes {
+  .tabla-pacientes {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
   }
   
-  /* Estilos de la tabla */
-  .tabla-pacientes table {
-    width: 80%;
-    border-collapse: collapse;
-    background-color: #f9f9f9;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  /* Encabezado de la tabla */
-  .tabla-pacientes th {
-    padding: 15px;
-    background-color: #4CAF50;
-    color: #fff;
-    text-align: left;
-    font-weight: normal;
-    font-size: 16px;
-  }
-  
-  /* Celdas de la tabla */
-  .tabla-pacientes td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
-    color: #333;
-  }
+/* Estilos de la tabla */
+.tabla-pacientes table {
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Encabezado de la tabla */
+.tabla-pacientes th {
+  padding: 15px;
+  background-color: #4CAF50;
+  color: #fff;
+  text-align: left;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+/* Celdas de la tabla con scroll */
+.tabla-pacientes tbody {
+  display: block;
+  max-height: 250px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.tabla-pacientes tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tabla-pacientes td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+}
   
   /* Filas de la tabla */
   .tabla-pacientes tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  /* Hover en las filas */
-  .tabla-pacientes tr:hover {
-    background-color: #e9e9e9;
+    background-color: #f6f6f6;
   }
   
   /* Estilos para los botones de acción en la tabla */
@@ -205,10 +214,67 @@
   }
   
   .accion-btn svg {
-    fill: #4CAF50; /* Color del ícono */
+    fill: #4CAF50; 
     width: 24px;
     height: 24px;
   }
+
+  .paciente-datos-container {
+    position: relative;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .cerrar-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .cerrar-btn:hover {
+    color: #ff0000;
+  }
+
+  .modal-turno-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-turno-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+  }
+  
+  .cerrar-modal-turno {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+  }
+
   
   /* Ajustes para dispositivos pequeños */
   @media (max-width: 768px) {
