@@ -12,16 +12,17 @@
 
 .pacientes-container {
     display: flex;
-    height: 200px;
+    margin-top: 30px;
+    height: 150px;
     justify-content: center;
     align-items: center;
-    background-color: rgb(222, 222, 222);
+    background-color: rgb(255, 255, 255);
   }
   
   .primer-bloque {
     display: flex;
     background-color: transparent;
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
     text-align: center;
   }
@@ -148,7 +149,7 @@
   .tabla-pacientes {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 40px;
     margin-bottom: 50px;
   }
   

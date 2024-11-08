@@ -1,0 +1,19 @@
+<div class="paciente-diagnostico-container">
+  
+    <div class="info-paciente">
+      <h3>Información del Paciente</h3>
+      <p><strong>Nombres:</strong> {{ paciente?.nombres | titlecase }}</p>
+      <p><strong>Apellidos:</strong> {{ paciente?.apellidos | titlecase }}</p>
+    </div>
+  
+    <div class="descripcion-diagnostico">
+      <h3>Descripción del Diagnóstico</h3>
+      <textarea [(ngModel)]="descripcion" rows="4" placeholder="Escribe la descripción aquí..."></textarea>
+    </div>
+  
+    <div class="botones">
+      <button class="boton-accion agregar" (click)="agregarDiagnostico()">Agregar Diagnóstico</button>
+      <button class="boton-accion cancelar" (click)="cancelar()">Cancelar</button>
+    </div>
+  
+  </div>

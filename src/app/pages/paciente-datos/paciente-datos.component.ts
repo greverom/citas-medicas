@@ -3,6 +3,7 @@ import { PacienteDto } from '../../models/user.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil} from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-paciente-datos',
@@ -17,7 +18,9 @@ export class PacienteDatosComponent implements OnInit {
   paciente: PacienteDto | null = null;
   private destroy$ = new Subject<void>();
 
-  constructor(private pacienteService: PacienteService) {}
+  constructor(private pacienteService: PacienteService,
+              private router: Router
+  ) {}
 
   ngOnInit() {
     this.pacienteService.pacienteSeleccionado$
@@ -31,5 +34,11 @@ export class PacienteDatosComponent implements OnInit {
   ngOnDestroy() {
     this.destroy$.next(); 
     this.destroy$.complete(); 
+  }
+
+  agregarDiagnostico() {
+    if (this.paciente) {
+      this.router.navigate(['/diagnosticos']);
+    }
   }
 }

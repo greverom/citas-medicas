@@ -4,6 +4,7 @@ import { PacienteDto } from '../models/user.dto';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { TurnoDto } from '../models/turno.dto';
+import { Diagnostico } from '../models/diagnostico.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -128,6 +129,28 @@ export class PacienteService {
       }),
       catchError(error => {
         console.error('Error al agendar turno:', error);
+        throw error;
+      })
+    );
+  }
+
+  agregarDiagnostico(diagnostico: Diagnostico): Observable<void> {
+    const pacienteRef = child(this.dbRef, diagnostico.pacienteId);
+
+    // Obtener el paciente actual para modificar su lista de diagnósticos
+    return from(get(pacienteRef)).pipe(
+      switchMap(snapshot => {
+        const pacienteData = snapshot.val() as PacienteDto;
+
+        // Si el paciente no tiene diagnósticos, creamos el array
+        const diagnosticosActualizados = pacienteData.diagnosticos || [];
+        diagnosticosActualizados.push(diagnostico);
+
+        // Actualizar el array de diagnósticos en Firebase
+        return from(update(pacienteRef, { diagnosticos: diagnosticosActualizados }));
+      }),
+      catchError(error => {
+        console.error('Error al agregar diagnóstico:', error);
         throw error;
       })
     );

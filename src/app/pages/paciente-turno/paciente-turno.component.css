@@ -1,6 +1,5 @@
 .paciente-turno-container {
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
   }
@@ -17,7 +16,18 @@
   
   h3 {
     margin-bottom: 10px;
+    font-size: 14px;
   }
+
+  .paciente-turno-container input[type="date"],
+.paciente-turno-container select {
+  width: 100%; 
+  padding: 8px; 
+  font-size: 16px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  box-sizing: border-box; 
+}
   
   .boton-agendar {
     text-align: center;
