@@ -13,6 +13,7 @@ export class PacienteService {
   private dbRef = ref(this.db, 'pacientes');
   private pacienteSeleccionado = new BehaviorSubject<PacienteDto | null>(null);
   pacienteSeleccionado$ = this.pacienteSeleccionado.asObservable();
+  
 
   constructor(private db: Database) {}
 
@@ -115,6 +116,8 @@ export class PacienteService {
 
   agendarTurno(pacienteId: string, turno: TurnoDto): Observable<void> {
     const pacienteRef = child(this.dbRef, pacienteId);
+    const newTurnoRef = push(ref(this.db, 'turnos')); 
+    turno.id = newTurnoRef.key ?? '';
 
     return from(get(pacienteRef)).pipe(
       switchMap(snapshot => {
@@ -137,20 +140,42 @@ export class PacienteService {
   agregarDiagnostico(diagnostico: Diagnostico): Observable<void> {
     const pacienteRef = child(this.dbRef, diagnostico.pacienteId);
 
-    // Obtener el paciente actual para modificar su lista de diagnósticos
+    const diagnosticoIdRef = push(ref(this.db, 'diagnosticos'));
+    diagnostico.id = diagnosticoIdRef.key ?? '';
+
     return from(get(pacienteRef)).pipe(
       switchMap(snapshot => {
         const pacienteData = snapshot.val() as PacienteDto;
-
-        // Si el paciente no tiene diagnósticos, creamos el array
         const diagnosticosActualizados = pacienteData.diagnosticos || [];
         diagnosticosActualizados.push(diagnostico);
-
-        // Actualizar el array de diagnósticos en Firebase
         return from(update(pacienteRef, { diagnosticos: diagnosticosActualizados }));
       }),
       catchError(error => {
         console.error('Error al agregar diagnóstico:', error);
+        throw error;
+      })
+    );
+  }
+
+  actualizarDiagnosticos(diagnostico: Diagnostico) {
+    const paciente = this.pacienteSeleccionado.value;
+    if (paciente) {
+      paciente.diagnosticos = [...(paciente.diagnosticos || []), diagnostico];
+      this.pacienteSeleccionado.next(paciente); 
+    }
+  }
+
+  eliminarDiagnostico(pacienteId: string, diagnosticoId: string): Observable<void> {
+    const pacienteRef = child(this.dbRef, pacienteId);
+  
+    return from(get(pacienteRef)).pipe(
+      switchMap(snapshot => {
+        const pacienteData = snapshot.val() as PacienteDto;
+        const diagnosticosActualizados = (pacienteData.diagnosticos || []).filter(diagnostico => diagnostico.id !== diagnosticoId);
+        return from(update(pacienteRef, { diagnosticos: diagnosticosActualizados }));
+      }),
+      catchError(error => {
+        console.error('Error al eliminar diagnóstico:', error);
         throw error;
       })
     );

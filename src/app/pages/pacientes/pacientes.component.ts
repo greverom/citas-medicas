@@ -9,6 +9,8 @@ import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { PacienteDatosComponent } from '../paciente-datos/paciente-datos.component';
 import { PacienteTurnoComponent } from '../paciente-turno/paciente-turno.component';
+import { TurnoDto } from '../../models/turno.dto';
+import { Diagnostico } from '../../models/diagnostico.dto';
 
 @Component({
   selector: 'app-pacientes',
@@ -204,6 +206,33 @@ export class PacientesComponent implements OnInit {
   abrirTurnoPaciente(paciente: PacienteDto) {
     this.pacienteSeleccionadoParaTurno = paciente;
     this.modalTurnoAbierto = true;
+  }
+
+  actualizarTurnos(nuevoTurno: TurnoDto) {
+    if (this.pacienteSeleccionadoParaTurno) {
+      // Actualiza los turnos del paciente seleccionado
+      this.pacienteSeleccionadoParaTurno.turnos = [
+        ...(this.pacienteSeleccionadoParaTurno.turnos || []),
+        nuevoTurno
+      ];
+  
+      // Refleja este cambio en la lista completa de pacientes
+      this.pacientes = this.pacientes.map(paciente =>
+        paciente.id === this.pacienteSeleccionadoParaTurno?.id
+          ? { ...paciente, turnos: this.pacienteSeleccionadoParaTurno!.turnos }
+          : paciente
+      );
+    }
+  }
+
+  actualizarDiagnosticos(diagnostico: Diagnostico) {
+    const pacienteIndex = this.pacientes.findIndex(p => p.id === diagnostico.pacienteId);
+    if (pacienteIndex !== -1) {
+      this.pacientes[pacienteIndex].diagnosticos = [
+        ...(this.pacientes[pacienteIndex].diagnosticos || []),
+        diagnostico
+      ];
+    }
   }
 
   cerrarModalTurno() {

@@ -17,8 +17,8 @@ import { EstadoTurno, TurnoDto } from '../../models/turno.dto';
 })
 export class PacienteTurnoComponent {
   @Input() paciente: PacienteDto | null = null;
-  @Input() medicoId: string | null = null;  // Solo el ID del médico
-  @Output() turnoAgendado = new EventEmitter<void>();
+  @Input() medicoId: string | null = null;  
+  @Output() turnoAgendado = new EventEmitter<TurnoDto>();
   
   fechaSeleccionada: string = '';
   horaSeleccionada: string = '';
@@ -50,7 +50,7 @@ export class PacienteTurnoComponent {
       this.pacienteService.agendarTurno(this.paciente.id!, turno).subscribe({
         next: () => {
           console.log('Turno agendado con éxito:', turno);
-          this.turnoAgendado.emit();
+          this.turnoAgendado.emit(turno);
         },
         error: (error) => {
           console.error('Error al agendar el turno:', error);

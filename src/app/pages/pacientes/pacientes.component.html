@@ -111,8 +111,8 @@
     <app-paciente-turno 
     [paciente]="pacienteSeleccionadoParaTurno" 
     [medicoId]="medicoData?.id || ''"  
-    (turnoAgendado)="cerrarModalTurno()">
-  </app-paciente-turno>
+    (turnoAgendado)="actualizarTurnos($event); cerrarModalTurno()">
+    </app-paciente-turno>
   </div>
 </div>
 </div>

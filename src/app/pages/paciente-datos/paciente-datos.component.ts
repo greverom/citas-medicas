@@ -27,7 +27,7 @@ export class PacienteDatosComponent implements OnInit {
       .pipe(takeUntil(this.destroy$)) 
       .subscribe((paciente) => {
         this.paciente = paciente;
-        console.log('paciente recibido en paciente-datos:', this.paciente);
+        //console.log('paciente recibido en paciente-datos:', this.paciente);
       });
   }
 
@@ -41,4 +41,22 @@ export class PacienteDatosComponent implements OnInit {
       this.router.navigate(['/diagnosticos']);
     }
   }
+
+  eliminarDiagnostico(diagnosticoId: string) {
+    if (this.paciente && this.paciente.id) {
+      this.pacienteService.eliminarDiagnostico(this.paciente.id, diagnosticoId).subscribe({
+        next: () => {
+          //console.log('Diagnóstico eliminado con éxito');
+          if (this.paciente?.diagnosticos) {
+            this.paciente.diagnosticos = this.paciente.diagnosticos.filter(d => d.id !== diagnosticoId);
+          }
+        },
+        error: (error) => {
+          console.error('Error al eliminar el diagnóstico:', error);
+        }
+      });
+    }
+  }
+
+
 }

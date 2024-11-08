@@ -1,61 +1,79 @@
 .paciente-diagnostico-container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .info-paciente,
-  .descripcion-diagnostico,
-  .botones {
-    margin-bottom: 20px;
-  }
-  
-  .info-paciente h3,
-  .descripcion-diagnostico h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .descripcion-diagnostico textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    resize: vertical;
-  }
-  
-  .botones {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .boton-accion {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .agregar {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .agregar:hover {
-    background-color: #0056b3;
-  }
-  
-  .cancelar {
-    background-color: #ccc;
-    color: black;
-  }
-  
-  .cancelar:hover {
-    background-color: #999;
-  }
+  max-width: 700px; 
+  margin: 0 auto;
+  margin-top: 2rem;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fefefe;
+}
+
+.info-paciente,
+.titulo-diagnostico,
+.descripcion-diagnostico,
+.recomendaciones-diagnostico,
+.botones {
+  margin-bottom: 15px; 
+}
+
+.info-paciente h3,
+.titulo-diagnostico h3,
+.descripcion-diagnostico h3,
+.recomendaciones-diagnostico h3 {
+  font-size: 16px; 
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.info-paciente p {
+  margin: 4px 0; 
+  font-size: 14px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%; 
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+textarea {
+  resize: none; 
+}
+
+.botones {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.boton-accion {
+  width: 30%; 
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.agregar {
+  background-color: #007bff;
+  color: white;
+}
+
+.agregar:hover {
+  background-color: #0056b3;
+}
+
+.cancelar {
+  background-color: #ccc;
+  color: black;
+}
+
+.cancelar:hover {
+  background-color: #999;
+}

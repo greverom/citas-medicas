@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PacienteDto } from '../../models/user.dto';
 import { Diagnostico } from '../../models/diagnostico.dto';
@@ -18,7 +18,8 @@ import { Router } from '@angular/router';
   styleUrl: './paciente-diagnostico.component.css'
 })
 export class PacienteDiagnosticoComponent implements OnInit {
-  paciente: PacienteDto | null = null;  
+  paciente: PacienteDto | null = null;
+  titulo: string = '';  
   descripcion: string = '';                       
   recomendaciones: string = ''; 
 
@@ -37,12 +38,14 @@ export class PacienteDiagnosticoComponent implements OnInit {
         pacienteId: this.paciente.id!,
         medicoId: this.paciente.medicoId,  
         fecha: new Date().toISOString().split('T')[0], 
+        titulo: this.titulo,
         descripcion: this.descripcion,
         recomendaciones: this.recomendaciones
       };
 
       this.pacienteService.agregarDiagnostico(nuevoDiagnostico).subscribe({
         next: () => {
+          this.pacienteService.actualizarDiagnosticos(nuevoDiagnostico);
           this.router.navigate(['/pacientes']); 
         },
         error: (error) => {
