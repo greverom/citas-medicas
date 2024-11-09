@@ -13,6 +13,8 @@ export class PacienteService {
   private dbRef = ref(this.db, 'pacientes');
   private pacienteSeleccionado = new BehaviorSubject<PacienteDto | null>(null);
   pacienteSeleccionado$ = this.pacienteSeleccionado.asObservable();
+  private diagnosticoSeleccionado = new BehaviorSubject<Diagnostico | null>(null);
+  diagnosticoSeleccionado$ = this.diagnosticoSeleccionado.asObservable();
   
 
   constructor(private db: Database) {}
@@ -155,6 +157,10 @@ export class PacienteService {
         throw error;
       })
     );
+  }
+
+  seleccionarDiagnostico(diagnostico: Diagnostico | null) {
+    this.diagnosticoSeleccionado.next(diagnostico);
   }
 
   actualizarDiagnosticos(diagnostico: Diagnostico) {

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PacienteDto } from '../../models/user.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil} from 'rxjs';
 import { Router } from '@angular/router';
+import { Diagnostico } from '../../models/diagnostico.dto';
 
 @Component({
   selector: 'app-paciente-datos',
@@ -40,6 +41,11 @@ export class PacienteDatosComponent implements OnInit {
     if (this.paciente) {
       this.router.navigate(['/diagnosticos']);
     }
+  }
+
+  verDiagnostico(diagnostico: Diagnostico) {
+    this.pacienteService.seleccionarDiagnostico(diagnostico);
+    this.router.navigate(['/ver-diagnostico']);
   }
 
   eliminarDiagnostico(diagnosticoId: string) {

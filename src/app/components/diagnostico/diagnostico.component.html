@@ -1,0 +1,12 @@
+<div *ngIf="diagnostico; else noDiagnostico" class="detalles-diagnostico-container">
+    <h2>Detalles del Diagnóstico</h2>
+    <p><strong>Fecha:</strong> {{ diagnostico.fecha }}</p>
+    <p><strong>Examen:</strong> {{ diagnostico.titulo }}</p>
+    <label for="descripcion"><strong>Descripción:</strong></label>
+    <textarea id="descripcion" readonly>{{ diagnostico.descripcion }}</textarea>
+    <p *ngIf="diagnostico.recomendaciones"><strong>Recomendaciones:</strong> {{ diagnostico.recomendaciones }}</p>
+</div>
+
+<ng-template #noDiagnostico>
+    <p class="no-diagnostico">Diagnóstico no disponible.</p>
+</ng-template>

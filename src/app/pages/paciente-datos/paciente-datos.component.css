@@ -35,54 +35,58 @@
   }
 
   .titulo-diagnosticos {
+    text-align: center;
     font-size: 18px;
     font-weight: bold;
     margin-top: 25px;
     margin-bottom: 25px;
   }
 
-  .diagnosticos-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+  .diagnosticos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .diagnosticos-tabla th, .diagnosticos-tabla td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .diagnosticos-tabla th {
+    background-color: #eaeaea;
+    font-weight: bold;
+    text-align: center;
   }
 
-  .diagnostico-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.eliminar-btn {
+  .ver-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-}
+    padding: 5px;
+  }
 
-.eliminar-btn svg {
-    fill: #c5c5c5;
-    transition: fill 0.3s;
-}
+  .ver-btn svg {
+    fill: #a2a2a2; 
+  }
+  
+  .ver-btn:hover svg {
+    fill: #007bff; 
+  }
+  
+  .eliminar-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
 
-.eliminar-btn svg:hover {
-    fill: #ff6b6b;
-}
-  
-  .diagnostico-bloque {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+  .eliminar-btn svg {
+      fill: #c5c5c5;
+      transition: fill 0.3s;
+  }
+
+  .eliminar-btn svg:hover {
+      fill: #ff6b6b;
   }
   
-  .diagnostico-bloque h4 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .diagnostico-bloque p {
-    margin: 5px 0;
-  }
