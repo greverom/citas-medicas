@@ -5,8 +5,8 @@ import { Router, RouterModule } from '@angular/router';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { AuthService } from '../../services/auth.service';
-import { UserRole } from '../../models/user.dto';
 import { RegisterDto } from '../../models/auth.dto';
+import { SpinnerService } from '../../services/spinner.service';
 
 @Component({
   selector: 'app-register',
@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private spinnerService: SpinnerService,
     private router: Router
   ) {
     this.registerForm = this.fb.group({
@@ -67,12 +68,15 @@ export class RegisterComponent implements OnInit {
       password: this.registerForm.value.password,
       role: this.registerForm.value.role
     };
+    this.spinnerService.show();
 
     this.authService.register(registerData).subscribe({
       next: () => {
+        this.spinnerService.hide();
         this.showModal(this.createModalParams(false, 'El usuario se registró correctamente.', 'login'));
       },
       error: (error) => {
+        this.spinnerService.hide();
         this.showModal(this.createModalParams(true, error.message || 'El usuario no se pudo registrar'));
       }
     });

@@ -8,11 +8,14 @@ import { selectUserData } from './store/user.selector';
 import { Auth } from '@angular/fire/auth';
 import { UserDataService } from './services/user-data.service';
 import { setAdminStatus, setLoggedInStatus, setUserData } from './store/user.action';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, 
+            NavbarComponent, 
+            SpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

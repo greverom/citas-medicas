@@ -40,7 +40,7 @@ export class PacientesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store,
-    public pacienteService: PacienteService
+    public pacienteService: PacienteService,
   ) {
 
     this.pacienteForm = this.fb.group({

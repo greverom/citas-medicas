@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { LoginDto } from '../../models/auth.dto';
 import { AuthService } from '../../services/auth.service';
+import { SpinnerService } from '../../services/spinner.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private spinnerService: SpinnerService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -48,9 +50,11 @@ export class LoginComponent implements OnInit {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password
     };
+    this.spinnerService.show();
 
     this.authService.login(loginData).subscribe({
       next: (success) => {
+        this.spinnerService.hide();
         if (success) {
           this.showModal(this.createModalParams(false, 'Inicio de sesión exitoso.', 'home'));
         } else {
@@ -58,6 +62,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.spinnerService.hide();
         this.showModal(this.createModalParams(true, error.message || 'Error en el inicio de sesión.'));
       }
     });
@@ -80,7 +85,7 @@ export class LoginComponent implements OnInit {
 
     setTimeout(() => {
       this.modal.close();
-    }, 2500);
+    }, 2000);
   }
 
   closeModal = (redirect?: string) => {
