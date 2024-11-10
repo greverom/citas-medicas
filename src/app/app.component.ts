@@ -45,7 +45,6 @@ export class AppComponent implements OnInit {
       } else {
         this.store.dispatch(setLoggedInStatus({ isLoggedIn: false }));
         this.store.dispatch(setUserData({ data: null }));
-        this.router.navigate(['/login']);
       }
     });
 

@@ -1,0 +1,21 @@
+.custom-navbar {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    height: auto;
+}
+
+.navbar-brand.ms-3 {
+    margin-left: 2rem !important;
+}
+
+.navbar-toggler {
+    margin-right: 1rem; 
+}
+
+.navbar-nav.ms-auto.me-3 {
+    margin-right: 2rem !important;
+}
+
+.navbar .nav-link {
+    cursor: pointer;
+}
