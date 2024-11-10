@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PacienteDto } from '../../models/user.dto';
+import { PacienteDto, UserDto } from '../../models/user.dto';
 import { Diagnostico } from '../../models/diagnostico.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectUserData } from '../../store/user.selector';
 
 @Component({
   selector: 'app-paciente-diagnostico',
@@ -22,13 +25,25 @@ export class PacienteDiagnosticoComponent implements OnInit {
   titulo: string = '';  
   descripcion: string = '';                       
   recomendaciones: string = ''; 
+  userData$: Observable<UserDto | null>;
+  nombreMedico: string = '';
 
   constructor(private pacienteService: PacienteService, 
-              private router: Router) {}
+              private router: Router,
+              private store: Store) {
+      
+    this.userData$ = this.store.select(selectUserData);
+  }
 
   ngOnInit() {
     this.pacienteService.pacienteSeleccionado$.subscribe((paciente) => {
       this.paciente = paciente;
+    });
+
+    this.userData$.subscribe(userData => {
+      if (userData) {
+        this.nombreMedico = userData.name;  
+      }
     });
   }
 
@@ -40,7 +55,8 @@ export class PacienteDiagnosticoComponent implements OnInit {
         fecha: new Date().toISOString().split('T')[0], 
         titulo: this.titulo,
         descripcion: this.descripcion,
-        recomendaciones: this.recomendaciones
+        recomendaciones: this.recomendaciones,
+        nombreMedico: this.nombreMedico
       };
 
       this.pacienteService.agregarDiagnostico(nuevoDiagnostico).subscribe({

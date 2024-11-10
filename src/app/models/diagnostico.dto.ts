@@ -8,4 +8,5 @@ export interface Diagnostico {
   fecha: string;
   descripcion: string;
   recomendaciones?: string;
+  nombreMedico: string;
 }

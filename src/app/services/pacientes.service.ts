@@ -139,6 +139,27 @@ export class PacienteService {
     );
   }
 
+  eliminarTurno(pacienteId: string, turnoId: string): Observable<void> {
+    const pacienteRef = child(this.dbRef, pacienteId);
+  
+    return from(get(pacienteRef)).pipe(
+      switchMap(snapshot => {
+        if (snapshot.exists()) {
+          const pacienteData = snapshot.val() as PacienteDto;
+          const turnosActualizados = (pacienteData.turnos || []).filter(turno => turno.id !== turnoId);
+          
+          return from(update(pacienteRef, { turnos: turnosActualizados }));
+        } else {
+          throw new Error('Paciente no encontrado');
+        }
+      }),
+      catchError(error => {
+        console.error('Error al eliminar turno:', error);
+        throw error;
+      })
+    );
+  }
+
   agregarDiagnostico(diagnostico: Diagnostico): Observable<void> {
     const pacienteRef = child(this.dbRef, diagnostico.pacienteId);
 

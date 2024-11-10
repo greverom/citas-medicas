@@ -20,11 +20,12 @@
   }
 
   .paciente-turno-container input[type="date"],
-.paciente-turno-container select {
+  .paciente-turno-container select {
   width: 100%; 
   padding: 8px; 
   font-size: 16px; 
   border: 1px solid #ccc; 
+  color: rgb(129, 129, 129);
   border-radius: 4px; 
   box-sizing: border-box; 
 }

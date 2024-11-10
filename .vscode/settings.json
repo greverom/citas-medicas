@@ -6,6 +6,7 @@
         "Confirmacion",
         "descripcion",
         "diagnosticos",
+        "dias",
         "direccion",
         "ngrx",
         "telefono",

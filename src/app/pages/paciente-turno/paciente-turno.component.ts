@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PacienteDto, UserDto } from '../../models/user.dto';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PacienteService } from '../../services/pacientes.service';
 import { EstadoTurno, TurnoDto } from '../../models/turno.dto';
+import { Store } from '@ngrx/store';
+import { selectUserData } from '../../store/user.selector';
 
 @Component({
   selector: 'app-paciente-turno',
@@ -15,17 +17,43 @@ import { EstadoTurno, TurnoDto } from '../../models/turno.dto';
   templateUrl: './paciente-turno.component.html',
   styleUrl: './paciente-turno.component.css'
 })
-export class PacienteTurnoComponent {
+export class PacienteTurnoComponent implements OnInit {
   @Input() paciente: PacienteDto | null = null;
   @Input() medicoId: string | null = null;  
   @Output() turnoAgendado = new EventEmitter<TurnoDto>();
   
+  fechaMinima: string;
   fechaSeleccionada: string = '';
   horaSeleccionada: string = '';
   horasDisponibles: string[] = [];
+  nombreMedico: string = '';
 
-  constructor(private pacienteService: PacienteService) {
+  constructor(private pacienteService: PacienteService,
+              private store: Store
+  ) {
     this.horasDisponibles = this.generarHorasDisponibles();
+    this.store.select(selectUserData).subscribe(userData => {
+      if (userData) {
+        this.nombreMedico = userData.name; 
+      }
+    });
+
+    const hoy = new Date();
+    hoy.setDate(hoy.getDate() + 1);
+    this.fechaMinima = hoy.toISOString().split('T')[0];
+    this.fechaSeleccionada = this.fechaMinima;
+  }
+
+  ngOnInit() {
+    this.setFechaActual();
+  }
+
+  setFechaActual() {
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    this.fechaSeleccionada = `${año}-${mes}-${dia}`;
   }
 
   generarHorasDisponibles(): string[] {
@@ -44,12 +72,13 @@ export class PacienteTurnoComponent {
         medicoId: this.medicoId,
         fecha: this.fechaSeleccionada,
         hora: this.horaSeleccionada,
-        estado: EstadoTurno.Programado 
+        estado: EstadoTurno.Programado, 
+        nombreMedico: this.nombreMedico 
       };
   
       this.pacienteService.agendarTurno(this.paciente.id!, turno).subscribe({
         next: () => {
-          console.log('Turno agendado con éxito:', turno);
+          //console.log('Turno agendado con éxito:', turno);
           this.turnoAgendado.emit(turno);
         },
         error: (error) => {
