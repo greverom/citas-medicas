@@ -43,7 +43,7 @@ export class NavbarComponent {
   logout() {
     this.authService.logout().subscribe({
       next: () => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Error al cerrar sesión:', error);

@@ -26,13 +26,27 @@
   }
   
   .welcome-title {
-    width: 100%;
-    color: black;
-    font-size: 40px;
-    font-weight: bold;
-    text-align: left;
-  }
-  
+      width: 100%;
+      color: black;
+      font-size: 40px;
+      font-weight: bold;
+      text-align: left;
+    }
+    
+    .welcome-title .user-name {
+      font-size: 2rem; 
+      font-weight: normal; 
+      color: #383838; 
+    }
+
+   .welcome-title .user-icon {
+    margin-left: 0.5rem; 
+    height: 28px; 
+    width: 28px;
+    fill: #8B4513; 
+    vertical-align: middle;
+}
+
   .welcome-text {
     color: black;
     font-size: 16px;
@@ -49,17 +63,20 @@
   
   .hero-button {
     border-radius: 5px;
-  }
+    width: 60%;
+    padding: 10px 13px;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none; 
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
+}
 
 .hero-button:nth-child(1) {
     background-color: rgba(11, 41, 216, 0.6);
     color: white;
     border: none;
-    width: 60%;
-    padding: 10px 13px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 .hero-button:nth-child(1):hover {
@@ -67,14 +84,9 @@
 }
 
 .hero-button:nth-child(2) {
-    background-color: rgba(89, 86, 86, 1);
+    background-color: rgba(89, 86, 86, 1); 
     color: white;
     border: none;
-    width: 60%;
-    padding: 10px 13px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .hero-button:nth-child(2):hover {

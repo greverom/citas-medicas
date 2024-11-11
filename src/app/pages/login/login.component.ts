@@ -23,6 +23,7 @@ import { SpinnerService } from '../../services/spinner.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   passwordVisible: boolean = false;
+  hasPasswordText: boolean = false;
   modal: ModalDto = modalInitializer();
 
   constructor(
@@ -34,6 +35,10 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
+    });
+
+    this.loginForm.get('password')?.valueChanges.subscribe(value => {
+      this.hasPasswordText = value.length > 0; 
     });
   }
 
