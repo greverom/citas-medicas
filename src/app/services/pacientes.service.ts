@@ -87,6 +87,33 @@ export class PacienteService {
     );
   }
 
+  // Método para obtener los turnos de los pacientes asociados a un médico específico
+  obtenerTurnosDePacientesPorMedico(medicoId: string): Observable<TurnoDto[]> {
+    return from(get(this.dbRef)).pipe(
+      map(snapshot => {
+        if (snapshot.exists()) {
+          const pacientesObj = snapshot.val();
+          const turnos: TurnoDto[] = [];
+
+          Object.keys(pacientesObj).forEach(key => {
+            const paciente: PacienteDto = { id: key, ...pacientesObj[key] };
+            if (paciente.medicoId === medicoId && paciente.turnos) {
+              turnos.push(...paciente.turnos);
+            }
+          });
+
+          return turnos;
+        } else {
+          return [];
+        }
+      }),
+      catchError(error => {
+        console.error('Error al obtener turnos de pacientes del médico:', error);
+        return of([]);
+      })
+    );
+  }
+
   // Actualizar un paciente
   actualizarPaciente(id: string, paciente: PacienteDto): Observable<void> {
     if (!paciente.id) {

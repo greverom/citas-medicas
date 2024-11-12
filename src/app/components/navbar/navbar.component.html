@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
-  <a class="navbar-brand ms-3" href="/home">Citas Médicas</a>
+  <a class="navbar-brand ms-3">Citas Médicas</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -7,23 +7,20 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav me-auto">
       <ng-container *ngIf="isLoggedIn$ | async">
-        <li class="nav-item ms-4" *ngIf="isAdmin$ | async">
-          <a class="nav-link" routerLink="/home">Inicio</a>
+        <li class="nav-item ms-4" *ngIf="(isAdmin$ | async) || (isMedico$ | async) || (isPaciente$ | async)">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">Inicio</a>
         </li>
         <li class="nav-item ms-4" *ngIf="isAdmin$ | async">
           <a class="nav-link" routerLink="/register" routerLinkActive="active">Registrar</a>
         </li>
         <li class="nav-item ms-4" *ngIf="isMedico$ | async">
-          <a class="nav-link">Agenda</a>
+          <a class="nav-link" routerLink="/agenda-medico" routerLinkActive="active">Agenda</a>
         </li>
         <li class="nav-item ms-4" *ngIf="isMedico$ | async">
-          <a class="nav-link" routerLink="/pacientes">Pacientes</a>
+          <a class="nav-link" routerLink="/pacientes" routerLinkActive="active">Pacientes</a>
         </li>
         <li class="nav-item ms-4" *ngIf="isPaciente$ | async">
-          <a class="nav-link" routerLink="/">Inicio</a>
-        </li>
-        <li class="nav-item ms-4" *ngIf="isPaciente$ | async">
-          <a class="nav-link">Diagnósticos</a>
+          <a class="nav-link" routerLink="/diagnosticos" routerLinkActive="active">Diagnósticos</a>
         </li>
       </ng-container>
     </ul>

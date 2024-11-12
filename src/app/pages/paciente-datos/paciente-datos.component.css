@@ -1,8 +1,12 @@
-.titulo {
+  .container{
+    padding: 1rem 0;
+  }
+
+  .titulo {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 3rem;
   }
 
   .turnos-container {

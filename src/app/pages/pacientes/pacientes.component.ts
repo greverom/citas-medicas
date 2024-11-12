@@ -30,7 +30,6 @@ export class PacientesComponent implements OnInit {
   modalAbierto = false;
   modalEditarAbierto = false;
   medicoData: Partial<UserDto> | null = null;
-  mostrarListaPacientes = false;
   pacientes: PacienteDto[] = [];
   modal: ModalDto = modalInitializer(); 
   pacienteAEditar: PacienteDto | null = null;
@@ -117,9 +116,7 @@ export class PacientesComponent implements OnInit {
     }
   }
 
-  toggleListaPacientes() {
-    this.mostrarListaPacientes = !this.mostrarListaPacientes;
-  }
+
 
   obtenerPacientes() {
     this.pacienteService.obtenerPacientesPorMedico(this.medicoData?.id ?? '').subscribe({

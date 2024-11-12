@@ -8,14 +8,6 @@
         </span>
         Agregar Paciente
       </button>
-      <button class="boton-accion" (click)="toggleListaPacientes()">
-        <span class="icono">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="M280-600v-80h560v80H280Zm0 160v-80h560v80H280Zm0 160v-80h560v80H280ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z"/>
-          </svg>
-        </span>
-        Ver Lista de Pacientes
-      </button>
       <button class="boton-accion">
         <span class="icono">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
@@ -105,19 +97,19 @@
       </div>
 
       <!-- Modal para agendar turno -->
-<div class="modal-turno-overlay" *ngIf="modalTurnoAbierto">
-  <div class="modal-turno-content">
-    <button class="cerrar-modal-turno" (click)="cerrarModalTurno()">X</button>
-    <app-paciente-turno 
-    [paciente]="pacienteSeleccionadoParaTurno" 
-    [medicoId]="medicoData?.id || ''"  
-    (turnoAgendado)="actualizarTurnos($event); cerrarModalTurno()">
-    </app-paciente-turno>
-  </div>
-</div>
+      <div class="modal-turno-overlay" *ngIf="modalTurnoAbierto">
+        <div class="modal-turno-content">
+          <button class="cerrar-modal-turno" (click)="cerrarModalTurno()">X</button>
+          <app-paciente-turno 
+          [paciente]="pacienteSeleccionadoParaTurno" 
+          [medicoId]="medicoData?.id || ''"  
+          (turnoAgendado)="actualizarTurnos($event); cerrarModalTurno()">
+          </app-paciente-turno>
+        </div>
+      </div>
 </div>
 
-<div class="tabla-pacientes" *ngIf="mostrarListaPacientes">
+<div class="tabla-pacientes" >
     <table>
       <thead>
         <tr>
@@ -161,7 +153,11 @@
   </div>
 
   <div *ngIf="pacienteService.pacienteSeleccionado$ | async as pacienteSeleccionado" class="paciente-datos-container">
-    <button class="cerrar-btn" (click)="cerrarPacienteSeleccionado()">X</button>
+    <button class="cerrar-btn" (click)="cerrarPacienteSeleccionado()">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+      </svg>
+    </button>
     <app-paciente-datos></app-paciente-datos>
   </div>
 

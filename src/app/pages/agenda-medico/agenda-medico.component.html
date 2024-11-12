@@ -1,0 +1,80 @@
+<div class="calendar-container">
+  <div class="calendar-title">
+    <h2>Turnos Agendados</h2>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-color no-turno"></div>
+      <span>Sin turnos</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color with-turno"></div>
+      <span>Turnos agendados</span>
+    </div>
+  </div>
+
+  <div class="month-navigation">
+    <button (click)="prevMonth()" class="nav-button prev-button">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333">
+        <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/>
+      </svg>
+      <span class="nav-text">Anterior</span>
+    </button>
+    
+    <span class="month-display">{{ selectedMonth }} {{ selectedYear }}</span>
+
+    <button (click)="nextMonth()" class="nav-button next-button">
+      <span class="nav-text">Siguiente</span>
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333">
+        <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="days-header">
+    <div *ngFor="let day of daysInitials" class="day-initial">
+      {{ day }}
+    </div>
+  </div>
+
+  <div class="days-grid">
+    <div 
+        *ngFor="let day of currentMonthDays" 
+        class="day-square" 
+        [ngClass]="{ 
+            'empty-day': day === '', 
+            'turno-day': esDiaConTurno(day),
+            'selected-day': day === selectedDay
+        }" 
+        (click)="seleccionarDia(day)">
+        {{ day }}
+    </div>
+  </div>
+</div>
+
+<div class="turnos-outer-container">
+  <div *ngIf="turnosDelDiaSeleccionado.length > 0" class="turnos-container">
+    <h3 *ngIf="fechaTurnoSeleccionado.dia && fechaTurnoSeleccionado.mes">
+      Turnos para el {{ fechaTurnoSeleccionado.dia }} de {{ fechaTurnoSeleccionado.mes }}
+    </h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of turnosDelDiaSeleccionado">
+          <td>{{ turno.nombresPaciente | titlecase }}</td>
+          <td>{{ turno.fecha }}</td>
+          <td>{{ turno.hora }}</td>
+          <td>{{ turno.estado }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

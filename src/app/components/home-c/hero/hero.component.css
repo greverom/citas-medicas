@@ -39,13 +39,13 @@
       color: #383838; 
     }
 
-   .welcome-title .user-icon {
-    margin-left: 0.5rem; 
-    height: 28px; 
-    width: 28px;
-    fill: #8B4513; 
-    vertical-align: middle;
-}
+    .welcome-title .user-icon {
+      margin-left: 1rem; 
+      height: 28px;
+      width: 28px;
+      fill: #92611f; 
+      vertical-align: middle;
+    }
 
   .welcome-text {
     color: black;
