@@ -109,6 +109,44 @@
     border-color: #007bff;
     outline: none;
   }
+
+  input.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Chrome, Safari, Opera */
+    margin: 0;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+  
+  .form-group {
+    position: relative;
+  }
+  
+  .error-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: red;
+    font-size: 1.2rem;
+    display: inline-block;
+  }
+  
+  input.error {
+    border-color: red;
+  }
   
   .modal-buttons {
     display: flex;

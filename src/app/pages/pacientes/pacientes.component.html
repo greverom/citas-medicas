@@ -19,53 +19,90 @@
     </div>
 
     <div class="modal" *ngIf="modalAbierto">
-        <div class="modal-content">
-          <h2>Agregar Paciente</h2>
-          
-          <form [formGroup]="pacienteForm" (ngSubmit)="agregarPaciente()">
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="nombres">Nombres</label>
-                <input id="nombres" formControlName="nombres" type="text" required>
-              </div>
-              <div class="form-group">
-                <label for="apellidos">Apellidos</label>
-                <input id="apellidos" formControlName="apellidos" type="text" required>
-              </div>
-            </div>
-      
-            <div class="form-row">
-              <div class="form-group">
-                <label for="cedula">Cédula</label>
-                <input id="cedula" formControlName="cedula" type="text" required>
-              </div>
-              <div class="form-group">
-                <label for="correo">Correo</label>
-                <input id="correo" formControlName="correo" type="email" required>
+      <div class="modal-content">
+        <h2>Agregar Paciente</h2>
+        
+        <form [formGroup]="pacienteForm" (ngSubmit)="agregarPaciente()">
+    
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombres">Nombres</label>
+              <input id="nombres" formControlName="nombres" type="text" required [ngClass]="{'error': nombres?.invalid && nombres?.touched}">
+              <span *ngIf="nombres?.invalid && nombres?.touched" class="error-icon">!</span>
+              <div *ngIf="nombres?.invalid && nombres?.touched" class="error-message">
+                {{ nombres?.hasError('required') ? 'Campo obligatorio' : '' }}
               </div>
             </div>
-      
-            <div class="form-row">
-              <div class="form-group">
-                <label for="direccion">Dirección</label>
-                <input id="direccion" formControlName="direccion" type="text">
-              </div>
-              <div class="form-group">
-                <label for="telefono">Teléfono</label>
-                <input id="telefono" formControlName="telefono" type="text">
+            <div class="form-group">
+              <label for="apellidos">Apellidos</label>
+              <input id="apellidos" formControlName="apellidos" type="text" required [ngClass]="{'error': apellidos?.invalid && apellidos?.touched}">
+              <span *ngIf="apellidos?.invalid && apellidos?.touched" class="error-icon">!</span>
+              <div *ngIf="apellidos?.invalid && apellidos?.touched" class="error-message">
+                {{ apellidos?.hasError('required') ? 'Campo obligatorio' : '' }}
               </div>
             </div>
-      
-            <div class="modal-buttons">
-              <button type="button" (click)="cerrarModal()">Cancelar</button>
-              <button type="submit" [disabled]="pacienteForm.invalid">Guardar</button>
+          </div>
+    
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cedula">Cédula</label>
+              <input id="cedula" 
+                     formControlName="cedula" 
+                     type="number" 
+                     required 
+                     cedulaEcuatoriana 
+                     [ngClass]="{'error': cedula?.invalid && cedula?.touched}">
+                     
+              <span *ngIf="cedula?.invalid && cedula?.touched" class="error-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                  <path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                </svg>
+              </span>
+            
+              <div *ngIf="cedula?.invalid && cedula?.touched" class="error-message">
+                {{ cedula?.hasError('required') ? 'Campo obligatorio' : '' }}
+                {{ cedula?.hasError('cedulaEcuatoriana') ? 'Cédula no válida' : '' }}
+              </div>
             </div>
-          </form>
-        </div>
+            
+            <div class="form-group">
+              <label for="correo">Correo</label>
+              <input id="correo" formControlName="correo" type="email" required [ngClass]="{'error': correo?.invalid && correo?.touched}">
+              <span *ngIf="correo?.invalid && correo?.touched" class="error-icon">!</span>
+              <div *ngIf="correo?.invalid && correo?.touched" class="error-message">
+                {{ correo?.hasError('required') ? 'Campo obligatorio' : correo?.hasError('email') ? 'Formato de correo incorrecto' : '' }}
+              </div>
+            </div>
+          </div>
+    
+          <div class="form-row">
+            <div class="form-group">
+              <label for="direccion">Dirección</label>
+              <input id="direccion" formControlName="direccion" type="text" required [ngClass]="{'error': direccion?.invalid && direccion?.touched}">
+              <span *ngIf="direccion?.invalid && direccion?.touched" class="error-icon">!</span>
+              <div *ngIf="direccion?.invalid && direccion?.touched" class="error-message">
+                {{ direccion?.hasError('required') ? 'Campo obligatorio' : '' }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input id="telefono" formControlName="telefono" type="number" [ngClass]="{'error': telefono?.invalid && telefono?.touched}">
+              <span *ngIf="telefono?.invalid && telefono?.touched" class="error-icon">!</span>
+              <div *ngIf="telefono?.invalid && telefono?.touched" class="error-message">
+                {{ telefono?.hasError('required') ? 'Campo obligatorio' : '' }}
+              </div>
+            </div>
+          </div>
+    
+          <div class="modal-buttons">
+            <button type="button" (click)="cerrarModal()">Cancelar</button>
+            <button type="submit">Guardar</button>
+          </div>
+        </form>
       </div>
+    </div>
 
-      <div class="modal" *ngIf="modalEditarAbierto">
+    <div class="modal" *ngIf="modalEditarAbierto">
         <div class="modal-content">
           <h2>Editar Paciente</h2>
           
@@ -94,10 +131,10 @@
             </div>
           </form>
         </div>
-      </div>
+    </div>
 
       <!-- Modal para agendar turno -->
-      <div class="modal-turno-overlay" *ngIf="modalTurnoAbierto">
+    <div class="modal-turno-overlay" *ngIf="modalTurnoAbierto">
         <div class="modal-turno-content">
           <button class="cerrar-modal-turno" (click)="cerrarModalTurno()">X</button>
           <app-paciente-turno 
@@ -106,7 +143,7 @@
           (turnoAgendado)="actualizarTurnos($event); cerrarModalTurno()">
           </app-paciente-turno>
         </div>
-      </div>
+    </div>
 </div>
 
 <div class="tabla-pacientes" >
@@ -150,16 +187,16 @@
         </tr>
       </tbody>
     </table>
-  </div>
+</div>
 
-  <div *ngIf="pacienteService.pacienteSeleccionado$ | async as pacienteSeleccionado" class="paciente-datos-container">
+<div *ngIf="pacienteService.pacienteSeleccionado$ | async as pacienteSeleccionado" class="paciente-datos-container">
     <button class="cerrar-btn" (click)="cerrarPacienteSeleccionado()">
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
         <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
       </svg>
     </button>
     <app-paciente-datos></app-paciente-datos>
-  </div>
+</div>
 
   <app-modal
   [showModal]="modal.show"

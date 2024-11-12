@@ -7,9 +7,12 @@
         "descripcion",
         "diagnosticos",
         "dias",
+        "digito",
         "direccion",
         "ngrx",
         "telefono",
-        "titlecase"
+        "titlecase",
+        "Unica",
+        "Unicos"
     ]
 }

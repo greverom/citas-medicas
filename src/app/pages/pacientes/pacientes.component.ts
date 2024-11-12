@@ -11,6 +11,7 @@ import { PacienteDatosComponent } from '../paciente-datos/paciente-datos.compone
 import { PacienteTurnoComponent } from '../paciente-turno/paciente-turno.component';
 import { TurnoDto } from '../../models/turno.dto';
 import { Diagnostico } from '../../models/diagnostico.dto';
+import { cedulaEcuatorianaValidator, CedulaEcuatorianaValidatorDirective } from '../../directives/cedula-ecuatoriana.directive';
 
 @Component({
   selector: 'app-pacientes',
@@ -19,7 +20,8 @@ import { Diagnostico } from '../../models/diagnostico.dto';
             ReactiveFormsModule,
             ModalComponent,
             PacienteDatosComponent,
-            PacienteTurnoComponent
+            PacienteTurnoComponent,
+            CedulaEcuatorianaValidatorDirective,
   ],
   templateUrl: './pacientes.component.html',
   styleUrl: './pacientes.component.css'
@@ -31,6 +33,7 @@ export class PacientesComponent implements OnInit {
   modalEditarAbierto = false;
   medicoData: Partial<UserDto> | null = null;
   pacientes: PacienteDto[] = [];
+  pacientesDelMedico: PacienteDto[] = [];
   modal: ModalDto = modalInitializer(); 
   pacienteAEditar: PacienteDto | null = null;
   modalTurnoAbierto = false; 
@@ -45,10 +48,10 @@ export class PacientesComponent implements OnInit {
     this.pacienteForm = this.fb.group({
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
-      cedula: ['', Validators.required],
+      cedula: ['', [Validators.required, Validators.pattern(/^\d+$/), cedulaEcuatorianaValidator()]], 
       correo: ['', [Validators.required, Validators.email]],
       direccion: [''],
-      telefono: ['']
+      telefono: ['', [Validators.required, Validators.pattern(/^\d+$/)]] 
     });
 
     this.editarPacienteForm = this.fb.group({
@@ -67,6 +70,20 @@ export class PacientesComponent implements OnInit {
       }
     });
   }
+
+  get nombres() { return this.pacienteForm.get('nombres'); }
+  get apellidos() { return this.pacienteForm.get('apellidos'); }
+  get cedula() { return this.pacienteForm.get('cedula'); }
+  get correo() { return this.pacienteForm.get('correo'); }
+  get direccion() { return this.pacienteForm.get('direccion'); }
+  get telefono() { return this.pacienteForm.get('telefono'); }
+
+  private marcarCamposComoTocados(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(key => {
+        const control = formGroup.get(key);
+        control?.markAsTouched();
+    });
+}
 
   abrirModal() {
     console.log('Datos del médico en el componente:', this.medicoData);
@@ -93,8 +110,21 @@ export class PacientesComponent implements OnInit {
     this.pacienteAEditar = null;
   }
 
+  cargarPacientesDelMedico() {
+    const medicoId = 'ID_DEL_MEDICO'; 
+    this.pacienteService.obtenerPacientesPorMedico(medicoId).subscribe((pacientes) => {
+      this.pacientesDelMedico = pacientes;
+    });
+  }
+
   agregarPaciente() {
-    if (this.pacienteForm.valid && this.medicoData) {
+    if (this.pacienteForm.invalid) {
+      this.marcarCamposComoTocados(this.pacienteForm);
+      this.mostrarModal('Por favor completa todos los campos obligatorios.', true);
+      return;
+    }
+  
+    if (this.medicoData) {
       const nuevoPaciente: PacienteDto = {
         ...this.pacienteForm.value,
         medicoId: this.medicoData.id,
@@ -102,21 +132,23 @@ export class PacientesComponent implements OnInit {
         turnos: [], 
         diagnosticos: [] 
       };
+  
       this.pacienteService.crearPaciente(nuevoPaciente).subscribe({
         next: () => {
-          console.log('Paciente agregado exitosamente:', nuevoPaciente);
           this.pacientes.push(nuevoPaciente);
           this.cerrarModal();
           this.mostrarModal('Paciente agregado exitosamente.', false);
         },
         error: (error) => {
-          this.mostrarModal('Error al agregar paciente.', true);
+          if (error.message.includes('Paciente ya registrado')) {
+            this.mostrarModal('Este paciente ya ha sido registrado por usted.', true);
+          } else {
+            this.mostrarModal('Error al agregar paciente.', true);
+          }
         }
       });
     }
   }
-
-
 
   obtenerPacientes() {
     this.pacienteService.obtenerPacientesPorMedico(this.medicoData?.id ?? '').subscribe({
@@ -207,13 +239,11 @@ export class PacientesComponent implements OnInit {
 
   actualizarTurnos(nuevoTurno: TurnoDto) {
     if (this.pacienteSeleccionadoParaTurno) {
-      // Actualiza los turnos del paciente seleccionado
       this.pacienteSeleccionadoParaTurno.turnos = [
         ...(this.pacienteSeleccionadoParaTurno.turnos || []),
         nuevoTurno
       ];
   
-      // Refleja este cambio en la lista completa de pacientes
       this.pacientes = this.pacientes.map(paciente =>
         paciente.id === this.pacienteSeleccionadoParaTurno?.id
           ? { ...paciente, turnos: this.pacienteSeleccionadoParaTurno!.turnos }
