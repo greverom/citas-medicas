@@ -28,7 +28,7 @@
             <div class="form-group">
               <label for="nombres">Nombres</label>
               <input id="nombres" formControlName="nombres" type="text" required [ngClass]="{'error': nombres?.invalid && nombres?.touched}">
-              <span *ngIf="nombres?.invalid && nombres?.touched" class="error-icon">!</span>
+              <span *ngIf="nombres?.invalid && nombres?.touched" class="error-icon"></span>
               <div *ngIf="nombres?.invalid && nombres?.touched" class="error-message">
                 {{ nombres?.hasError('required') ? 'Campo obligatorio' : '' }}
               </div>
@@ -36,7 +36,7 @@
             <div class="form-group">
               <label for="apellidos">Apellidos</label>
               <input id="apellidos" formControlName="apellidos" type="text" required [ngClass]="{'error': apellidos?.invalid && apellidos?.touched}">
-              <span *ngIf="apellidos?.invalid && apellidos?.touched" class="error-icon">!</span>
+              <span *ngIf="apellidos?.invalid && apellidos?.touched" class="error-icon"></span>
               <div *ngIf="apellidos?.invalid && apellidos?.touched" class="error-message">
                 {{ apellidos?.hasError('required') ? 'Campo obligatorio' : '' }}
               </div>
@@ -52,23 +52,17 @@
                      required 
                      cedulaEcuatoriana 
                      [ngClass]="{'error': cedula?.invalid && cedula?.touched}">
-                     
-              <span *ngIf="cedula?.invalid && cedula?.touched" class="error-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-                  <path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
-                </svg>
-              </span>
-            
+              <span *ngIf="cedula?.invalid && cedula?.touched" class="error-icon"></span>
               <div *ngIf="cedula?.invalid && cedula?.touched" class="error-message">
                 {{ cedula?.hasError('required') ? 'Campo obligatorio' : '' }}
                 {{ cedula?.hasError('cedulaEcuatoriana') ? 'Cédula no válida' : '' }}
               </div>
             </div>
-            
+
             <div class="form-group">
               <label for="correo">Correo</label>
               <input id="correo" formControlName="correo" type="email" required [ngClass]="{'error': correo?.invalid && correo?.touched}">
-              <span *ngIf="correo?.invalid && correo?.touched" class="error-icon">!</span>
+              <span *ngIf="correo?.invalid && correo?.touched" class="error-icon"></span>
               <div *ngIf="correo?.invalid && correo?.touched" class="error-message">
                 {{ correo?.hasError('required') ? 'Campo obligatorio' : correo?.hasError('email') ? 'Formato de correo incorrecto' : '' }}
               </div>
@@ -79,7 +73,7 @@
             <div class="form-group">
               <label for="direccion">Dirección</label>
               <input id="direccion" formControlName="direccion" type="text" required [ngClass]="{'error': direccion?.invalid && direccion?.touched}">
-              <span *ngIf="direccion?.invalid && direccion?.touched" class="error-icon">!</span>
+              <span *ngIf="direccion?.invalid && direccion?.touched" class="error-icon"></span>
               <div *ngIf="direccion?.invalid && direccion?.touched" class="error-message">
                 {{ direccion?.hasError('required') ? 'Campo obligatorio' : '' }}
               </div>
@@ -87,7 +81,7 @@
             <div class="form-group">
               <label for="telefono">Teléfono</label>
               <input id="telefono" formControlName="telefono" type="number" [ngClass]="{'error': telefono?.invalid && telefono?.touched}">
-              <span *ngIf="telefono?.invalid && telefono?.touched" class="error-icon">!</span>
+              <span *ngIf="telefono?.invalid && telefono?.touched" class="error-icon"></span>
               <div *ngIf="telefono?.invalid && telefono?.touched" class="error-message">
                 {{ telefono?.hasError('required') ? 'Campo obligatorio' : '' }}
               </div>
@@ -95,8 +89,8 @@
           </div>
     
           <div class="modal-buttons">
-            <button type="button" (click)="cerrarModal()">Cancelar</button>
-            <button type="submit">Guardar</button>
+            <button type="button" class="modal-btn" (click)="cerrarModal()">Cancelar</button>
+            <button type="submit" class="modal-btn">Guardar</button>
           </div>
         </form>
       </div>
@@ -126,8 +120,8 @@
             </div>
       
             <div class="modal-buttons">
-              <button type="button" (click)="cerrarModalEditar()">Cancelar</button>
-              <button type="submit" [disabled]="editarPacienteForm.invalid">Guardar Cambios</button>
+              <button type="button" class="modal-btn"(click)="cerrarModalEditar()">Cancelar</button>
+              <button type="submit" class="modal-btn">Guardar Cambios</button>
             </div>
           </form>
         </div>

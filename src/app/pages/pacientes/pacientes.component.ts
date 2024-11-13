@@ -86,7 +86,7 @@ export class PacientesComponent implements OnInit {
 }
 
   abrirModal() {
-    console.log('Datos del médico en el componente:', this.medicoData);
+    this.obtenerPacientes();
     this.modalAbierto = true;
   }
 
@@ -110,11 +110,23 @@ export class PacientesComponent implements OnInit {
     this.pacienteAEditar = null;
   }
 
-  cargarPacientesDelMedico() {
-    const medicoId = 'ID_DEL_MEDICO'; 
-    this.pacienteService.obtenerPacientesPorMedico(medicoId).subscribe((pacientes) => {
-      this.pacientesDelMedico = pacientes;
-    });
+  esPacienteDuplicado(cedula: string, correo: string, telefono: string): string | null {
+    if (this.pacientes.some(paciente => paciente.cedula === cedula)) {
+      return 'cedula';
+    }
+    if (this.pacientes.some(paciente => paciente.correo === correo)) {
+      return 'correo';
+    }
+    if (this.pacientes.some(paciente => paciente.telefono === telefono)) {
+      return 'telefono';
+    }
+    return null;
+  }
+
+  marcarCampoDuplicado(campo: string, mensaje: string) {
+    this.pacienteForm.get(campo)?.setErrors({ duplicado: true });
+    this.pacienteForm.get(campo)?.markAsTouched();
+    this.mostrarModal(mensaje, true);
   }
 
   agregarPaciente() {
@@ -123,8 +135,16 @@ export class PacientesComponent implements OnInit {
       this.mostrarModal('Por favor completa todos los campos obligatorios.', true);
       return;
     }
-  
     if (this.medicoData) {
+      const { cedula, correo, telefono } = this.pacienteForm.value;
+      const campoDuplicado = this.esPacienteDuplicado(cedula, correo, telefono);
+      if (campoDuplicado) {
+        const mensaje = campoDuplicado === 'cedula' ? 'La cédula ingresada ya está registrada.'
+                      : campoDuplicado === 'correo' ? 'El correo ingresado ya está registrado.'
+                      : 'El teléfono ingresado ya está registrado.';
+        this.marcarCampoDuplicado(campoDuplicado, mensaje);
+        return;
+      }
       const nuevoPaciente: PacienteDto = {
         ...this.pacienteForm.value,
         medicoId: this.medicoData.id,
@@ -140,11 +160,8 @@ export class PacientesComponent implements OnInit {
           this.mostrarModal('Paciente agregado exitosamente.', false);
         },
         error: (error) => {
-          if (error.message.includes('Paciente ya registrado')) {
-            this.mostrarModal('Este paciente ya ha sido registrado por usted.', true);
-          } else {
-            this.mostrarModal('Error al agregar paciente.', true);
-          }
+          console.error('Error al agregar paciente:', error);
+          this.mostrarModal('Error al agregar paciente.', true);
         }
       });
     }
