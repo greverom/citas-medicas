@@ -9,6 +9,21 @@
     margin-bottom: 3rem;
   }
 
+  .datos-paciente-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+    margin-top: 20px;
+  }
+  
+  .datos-bloque {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+    max-width: 30%; 
+    padding: 10px;
+  }
+
   .turnos-container {
     margin-top: 20px;
     margin-bottom: 2rem;
@@ -129,11 +144,82 @@
   }
 
   .eliminar-btn svg {
-      fill: #c5c5c5;
-      transition: fill 0.3s;
+    fill: #c5c5c5;
+    transition: fill 0.3s;
   }
 
   .eliminar-btn svg:hover {
-      fill: #ff6b6b;
+    fill: #ff6b6b;
+  }
+
+  @media (max-width: 768px) {
+    .titulo {
+      font-size: 20px;
+      margin-bottom: 3rem;
+    }
+
+    .datos-paciente-row {
+      flex-direction: column;
+    }
+  
+    .datos-bloque {
+      max-width: 100%; 
+      margin-bottom: 0px;
+      padding: 0px;
+    }
+
+    .boton-accion {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+
+    .diagnosticos-tabla {
+      width: 100%; 
+      font-size: 13px; 
+      margin-top: 15px;
+    }
+  
+    .diagnosticos-tabla th, .diagnosticos-tabla td {
+      padding: 8px; 
+      font-size: 12px; 
+    }
+  
+    .diagnosticos-tabla th {
+      font-size: 13px;
+    }
+  
+    .ver-btn, .eliminar-btn {
+      padding: 3px;
+    }
+  
+    .ver-btn svg, .eliminar-btn svg {
+      width: 18px;
+      height: 18px; 
+    }
+  }
+
+  @media (max-width: 492px) {
+    .diagnosticos-tabla {
+      font-size: 10px; 
+      margin-top: 10px; 
+    }
+  
+    .diagnosticos-tabla th, .diagnosticos-tabla td {
+      padding: 6px; 
+      font-size: 10px;
+    }
+  
+    .diagnosticos-tabla th {
+      font-size: 12px; 
+    }
+  
+    .ver-btn, .eliminar-btn {
+      padding: 2px; 
+    }
+  
+    .ver-btn svg, .eliminar-btn svg {
+      width: 16px; 
+      height: 16px;
+    }
   }
   

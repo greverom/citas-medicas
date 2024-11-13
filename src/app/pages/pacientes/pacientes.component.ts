@@ -33,7 +33,6 @@ export class PacientesComponent implements OnInit {
   modalEditarAbierto = false;
   medicoData: Partial<UserDto> | null = null;
   pacientes: PacienteDto[] = [];
-  pacientesDelMedico: PacienteDto[] = [];
   modal: ModalDto = modalInitializer(); 
   pacienteAEditar: PacienteDto | null = null;
   modalTurnoAbierto = false; 

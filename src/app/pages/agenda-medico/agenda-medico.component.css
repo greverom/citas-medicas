@@ -142,7 +142,6 @@
 }
 
 .turnos-container {
-  max-width: 900px; 
   width: 100%;
   padding: 20px;
   background-color: #ffffff;
@@ -157,7 +156,8 @@
 }
 
 .turnos-container table {
-  width: 100%;
+  width: 75%;
+  margin: auto;
   border-collapse: collapse;
 }
 
@@ -172,7 +172,6 @@
 .turnos-container th, .turnos-container td {
   padding: 12px;
   text-align: center;
-  border: 1px solid #ffffff;
 }
 
 .turnos-container th {
@@ -286,6 +285,29 @@
 
 .modal-buttons button:hover {
   background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .turnos-container table {
+    width: 90%;
+  }
+
+  .turnos-container th, .turnos-container td {
+    padding: 8px; 
+    font-size: 12px; 
+  }
+
+  .turnos-container th {
+    font-size: 13px; 
+  }
+
+  .contact-icons {
+    gap: 8px; 
+  }
+
+  .contact-icons a {
+    transform: scale(0.9); 
+  }
 }
 
 @media (max-width: 492px) {

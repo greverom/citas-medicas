@@ -185,13 +185,13 @@
   .tabla-pacientes {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 50px;
   }
   
 /* Estilos de la tabla */
 .tabla-pacientes table {
-  width: 80%;
+  width: 75%;
   border-collapse: collapse;
   background-color: #f9f9f9;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -201,15 +201,14 @@
 
 /* Encabezado de la tabla */
 .tabla-pacientes th {
-  padding: 15px;
+  padding: 12px;
   background-color: #4CAF50;
   color: #fff;
   text-align: left;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 15px;
 }
 
-/* Celdas de la tabla con scroll */
 .tabla-pacientes tbody {
   display: block;
   max-height: 250px;
@@ -224,19 +223,17 @@
 }
 
 .tabla-pacientes td {
-  padding: 12px 15px;
+  padding: 10px 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
   font-size: 14px;
   color: #333;
 }
   
-  /* Filas de la tabla */
   .tabla-pacientes tr:nth-child(even) {
-    background-color: #f6f6f6;
+    background-color: #ffffff;
   }
   
-  /* Estilos para los botones de acción en la tabla */
   .accion-btn {
     background: none;
     border: none;
@@ -257,7 +254,8 @@
   }
 
   .paciente-datos-container {
-    position: relative;
+    width: 90%;
+    margin: auto;
     padding: 20px;
     border-top: 1px solid #ccc;
     margin-top: 20px;
@@ -266,7 +264,7 @@
   
   .cerrar-btn {
     position: absolute;
-    top: 25px;
+    top: 55%;
     right: 60px;
     background: none;
     border: none;
@@ -281,9 +279,9 @@
     transition: fill 0.3s ease;
 }
 
-.cerrar-btn:hover svg {
-  fill: #ff6666; 
-}
+  .cerrar-btn:hover svg {
+    fill: #ff6666; 
+  }
 
   .modal-turno-overlay {
     position: fixed;
@@ -318,20 +316,97 @@
     color: #333;
   }
 
-  
-  /* Ajustes para dispositivos pequeños */
-  @media (max-width: 768px) {
-    .tabla-pacientes table {
-      width: 90%;
+  @media (max-width: 992px) {
+    .tabla-pacientes {
+      margin-top: 20px;
+      margin-bottom: 30px;
     }
   
-    .tabla-pacientes th,
-    .tabla-pacientes td {
+    .tabla-pacientes table {
+      width: 90%; 
+      font-size: 13px; 
+    }
+  
+    .tabla-pacientes th {
       padding: 10px;
+      font-size: 14px;
+    }
+  
+    .tabla-pacientes td {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+  
+    .tabla-pacientes tbody {
+      max-height: 200px; 
+    }
+  
+    .accion-btn {
+      padding: 3px;
+      margin: 0 2px;
     }
   
     .accion-btn svg {
       width: 20px;
       height: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .boton-accion {
+      padding: 10px 20px;
+      font-size: 13px;
+    }
+
+  .tabla-pacientes {
+    margin-top: 15px;
+    margin-bottom: 20px;
+  }
+
+  .tabla-pacientes table {
+    width: 90%; 
+    font-size: 12px;
+  }
+
+  .tabla-pacientes th {
+    padding: 7px 6px;
+    font-size: 11px;
+  }
+
+  .tabla-pacientes td {
+    padding: 6px 5px;
+    font-size: 11px;
+  }
+
+  .tabla-pacientes tbody {
+    max-height: 150px; 
+  }
+
+  .accion-btn {
+    padding: 2px;
+    margin: 0 1px;
+  }
+
+  .accion-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  }
+
+  @media (max-width: 492px) {
+    .pacientes-container{
+      margin-top: 0px;
+    }
+
+    .primer-bloque {
+      flex-direction: column; 
+      gap: 10px; 
+      text-align: center;
+    }
+  
+    .boton-accion {
+      padding: 8px 16px; 
+      font-size: 14px; 
+      border-radius: 3px; 
     }
   }

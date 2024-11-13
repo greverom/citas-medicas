@@ -1,12 +1,25 @@
 <div class="container">
   <div *ngIf="paciente">
     <h2 class="titulo">Datos paciente: {{ paciente.nombres | titlecase }} </h2>
-    <p><strong>Nombres:</strong> {{ paciente.nombres | titlecase }}</p>
-    <p><strong>Apellidos:</strong> {{ paciente.apellidos | titlecase }}</p>
-    <p><strong>Cédula:</strong> {{ paciente.cedula }}</p>
-    <p><strong>Correo:</strong> {{ paciente.correo }}</p>
-    <p><strong>Dirección:</strong> {{ paciente.direccion | titlecase }}</p>
-    <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+      <div class="datos-paciente-row">
+        <!-- Primer bloque con dos datos -->
+        <div class="datos-bloque">
+          <p><strong>Nombres:</strong> {{ paciente.nombres | titlecase }}</p>
+          <p><strong>Apellidos:</strong> {{ paciente.apellidos | titlecase }}</p>
+        </div>
+
+        <!-- Segundo bloque con dos datos -->
+        <div class="datos-bloque">
+          <p><strong>Cédula:</strong> {{ paciente.cedula }}</p>
+          <p><strong>Correo:</strong> {{ paciente.correo }}</p>
+        </div>
+
+        <!-- Tercer bloque con dos datos -->
+        <div class="datos-bloque">
+          <p><strong>Dirección:</strong> {{ paciente.direccion | titlecase }}</p>
+          <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+        </div>
+      </div>
 
     <div class="turnos-container" *ngIf="paciente.turnos && paciente.turnos.length > 0">
       <h3>Turnos Programados</h3>
