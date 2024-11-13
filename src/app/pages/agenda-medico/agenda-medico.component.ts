@@ -31,6 +31,10 @@ export class AgendaMedicoComponent implements OnInit {
   ];
   maxFutureDate!: Date;
   minDate!: Date;
+  isModalOpen = false;
+  selectedTurno: TurnoDto | null = null;
+  selectedPaciente: PacienteDto | null = null;
+  notificacionTipo: 'whatsapp' | 'email' | null = null;
 
   constructor(private pacienteService: PacienteService,
               private store: Store,
@@ -132,7 +136,7 @@ seleccionarDia(day: number | string): void {
         this.generateDaysForCurrentMonth();
         this.obtenerTurnosDelMedico();
     }
-}
+  }
 
   nextMonth() {
     const current = new Date(this.selectedYear, this.monthNames.indexOf(this.selectedMonth), 1);
@@ -144,5 +148,24 @@ seleccionarDia(day: number | string): void {
         this.generateDaysForCurrentMonth();
         this.obtenerTurnosDelMedico();
     }
- }
+  }
+
+  openNotificationModal(turno: TurnoDto, tipo: 'whatsapp' | 'email'): void {
+    this.selectedTurno = turno;
+    this.isModalOpen = true;
+    this.notificacionTipo = tipo; 
+  
+    this.pacienteService.obtenerPaciente(turno.pacienteId).subscribe({
+      next: (paciente: PacienteDto | null) => {
+        this.selectedPaciente = paciente;
+      },
+      error: (error) => console.error('Error al obtener los datos del paciente:', error)
+    });
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.selectedTurno = null;
+    this.selectedPaciente = null;
+  }
 }

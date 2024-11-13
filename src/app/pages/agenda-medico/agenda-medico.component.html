@@ -65,6 +65,7 @@
           <th>Fecha</th>
           <th>Hora</th>
           <th>Estado</th>
+          <th>Contacto</th>
         </tr>
       </thead>
       <tbody>
@@ -73,8 +74,45 @@
           <td>{{ turno.fecha }}</td>
           <td>{{ turno.hora }}</td>
           <td>{{ turno.estado }}</td>
+          <td class="contact-icons">
+            <a (click)="openNotificationModal(turno, 'whatsapp')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#25D366" viewBox="0 0 24 24">
+                <path d="M12 2C6.486 2 2 6.486 2 12c0 1.697.439 3.294 1.27 4.72L2 22l5.28-1.27A9.934 9.934 0 0 0 12 22c5.514 0 10-4.486 10-10S17.514 2 12 2zm0 18c-1.507 0-3.011-.373-4.341-1.08l-.31-.17L4 20l1.08-3.349-.17-.31A7.932 7.932 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8zm3.102-5.707-1.416-.273a.998.998 0 0 0-.912.271l-.327.327a7.172 7.172 0 0 1-3.109-3.109l.327-.327c.244-.244.388-.579.271-.912l-.273-1.416a.996.996 0 0 0-.985-.843H8a1 1 0 0 0-1 1 7.02 7.02 0 0 0 .733 3.132l.049.083a7.008 7.008 0 0 0 2.977 2.977l.083.049A7.02 7.02 0 0 0 15 17a1 1 0 0 0 1-1v-1.773a.996.996 0 0 0-.898-.934z"/>
+              </svg>
+            </a>
+            <a (click)="openNotificationModal(turno, 'email')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#4285F4" viewBox="0 0 24 24">
+                <path d="M12 13.065 3 7.8V18a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7.8l-9 5.265zm9-8.065H3a1 1 0 0 0-1 1v.217l10 5.847 10-5.847V6a1 1 0 0 0-1-1z"/>
+              </svg>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- Modal para enviar notificación -->
+<div class="modal-overlay" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <h2>Enviar Notificación</h2>
+
+    <div class="modal-column">
+      <div><strong>Nombre:</strong> {{ selectedPaciente?.nombres }} {{ selectedPaciente?.apellidos }}</div>
+      <div *ngIf="notificacionTipo === 'whatsapp'"><strong>Teléfono:</strong> {{ selectedPaciente?.telefono }}</div>
+      <div *ngIf="notificacionTipo === 'email'"><strong>Correo:</strong> {{ selectedPaciente?.correo }}</div>
+    </div>
+
+    <div class="modal-message-box">
+      <p>
+        Esto es un aviso de su cita, programada para el día 
+        <strong>{{ selectedTurno?.fecha }}</strong> a las 
+        <strong>{{ selectedTurno?.hora }}</strong>.
+      </p>
+    </div>
+
+    <div class="modal-buttons">
+      <button (click)="closeModal()">Cerrar</button>
+    </div>
   </div>
 </div>

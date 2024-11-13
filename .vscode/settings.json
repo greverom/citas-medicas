@@ -10,9 +10,11 @@
         "digito",
         "direccion",
         "ngrx",
+        "notificacion",
         "telefono",
         "titlecase",
         "Unica",
-        "Unicos"
+        "Unicos",
+        "whatsapp"
     ]
 }
