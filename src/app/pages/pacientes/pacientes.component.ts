@@ -37,6 +37,7 @@ export class PacientesComponent implements OnInit {
   pacienteAEditar: PacienteDto | null = null;
   modalTurnoAbierto = false; 
   pacienteSeleccionadoParaTurno: PacienteDto | null = null;
+  pacienteActivoId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -242,6 +243,7 @@ export class PacientesComponent implements OnInit {
 
   seleccionarPaciente(paciente: PacienteDto) {
     this.pacienteService.seleccionarPaciente(paciente);
+    this.pacienteActivoId = paciente.id || null;
   }
 
   cerrarPacienteSeleccionado() {

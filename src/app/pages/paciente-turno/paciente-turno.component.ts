@@ -27,6 +27,7 @@ export class PacienteTurnoComponent implements OnInit {
   horaSeleccionada: string = '';
   horasDisponibles: string[] = [];
   nombreMedico: string = '';
+  instrucciones: string = '';
 
   constructor(private pacienteService: PacienteService,
               private store: Store
@@ -50,6 +51,7 @@ export class PacienteTurnoComponent implements OnInit {
 
   setFechaActual() {
     const hoy = new Date();
+    hoy.setDate(hoy.getDate() + 1);
     const año = hoy.getFullYear();
     const mes = String(hoy.getMonth() + 1).padStart(2, '0');
     const dia = String(hoy.getDate()).padStart(2, '0');
@@ -73,9 +75,9 @@ export class PacienteTurnoComponent implements OnInit {
         fecha: this.fechaSeleccionada,
         hora: this.horaSeleccionada,
         estado: EstadoTurno.Programado, 
-        nombreMedico: this.nombreMedico 
+        nombreMedico: this.nombreMedico,
+        instrucciones: this.instrucciones || ''
       };
-  
       this.pacienteService.agendarTurno(this.paciente.id!, turno).subscribe({
         next: () => {
           //console.log('Turno agendado con éxito:', turno);

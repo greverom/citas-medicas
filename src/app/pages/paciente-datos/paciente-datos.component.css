@@ -3,10 +3,10 @@
   }
 
   .titulo {
-    text-align: center;
-    font-size: 24px;
+    text-align: left;
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
   }
 
   .datos-paciente-row {
@@ -37,34 +37,50 @@
     color: #333;
   }
   
-  .turnos-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: flex-start;
-  }
-  
-  .turno-bloque {
+  .turnos-tabla {
+    width: 100%;
+    border-collapse: collapse;
     background-color: #fbfbfb;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    width: 160px;
-    text-align: center;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .turno-dia {
-    font-size: 1rem; 
-    font-weight: bold;
-    color: #555; 
-    margin-bottom: 5px;
+    border-radius: 8px;
+    overflow: hidden;
   }
   
-  .turno-bloque p {
-    margin: 5px 0;
-    font-size: .9rem;
+  .turnos-tabla th,
+  .turnos-tabla td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .turnos-tabla th {
+    background-color: #e2e2e2;
+    color: #333;
+    font-weight: bold;
+    font-size: 1em;
+  }
+  
+  .turnos-tabla td {
+    font-size: 0.9em;
     color: #555;
+  }
+  
+  .eliminar-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    padding: 5px;
+  }
+  
+  .eliminar-btn svg {
+    fill: #ff6b6b; 
+    width: 20px;
+    height: 20px;
+  }
+  
+  .eliminar-btn:hover {
+    transform: scale(1.1);
   }
 
   .boton-agregar-diagnostico-container {
@@ -117,40 +133,39 @@
   }
   
   .diagnosticos-tabla th {
-    background-color: #eaeaea;
+    background-color: #e2e2e2;
     font-weight: bold;
     text-align: center;
   }
 
-  .ver-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-  }
+.ver-btn, .documento-btn, .eliminar-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.2s ease;
+}
 
-  .ver-btn svg {
-    fill: #a2a2a2; 
-  }
-  
-  .ver-btn:hover svg {
-    fill: #007bff; 
-  }
-  
-  .eliminar-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
+.ver-btn:hover, .documento-btn:hover, .eliminar-btn:hover {
+  transform: scale(1.1);
+}
 
-  .eliminar-btn svg {
-    fill: #c5c5c5;
-    transition: fill 0.3s;
-  }
+.ver-btn svg, .documento-btn svg, .eliminar-btn svg {
+  width: 24px;
+  height: 24px;
+}
 
-  .eliminar-btn svg:hover {
-    fill: #ff6b6b;
-  }
+.ver-btn svg {
+  fill: #4CAF50; 
+}
+
+.documento-btn svg {
+  fill: #FFA726; 
+}
+
+.eliminar-btn svg {
+  fill: #FF6B6B; 
+}
 
   @media (max-width: 768px) {
     .titulo {

@@ -13,6 +13,11 @@
         </select>
       </div>
     </div>
+
+    <div class="instrucciones">
+      <h3>Instrucciones para el Paciente (opcional)</h3>
+      <textarea [(ngModel)]="instrucciones" placeholder="Indicaciones..."></textarea>
+    </div>
   
     <div class="boton-agendar">
       <button (click)="agendarTurno()">Agendar Turno</button>

@@ -9,6 +9,7 @@ export interface TurnoDto {
   estado: EstadoTurno;
   nombreMedico?: string;
   nombresPaciente?: string;
+  instrucciones?: string;
 }
 
   export enum EstadoTurno {

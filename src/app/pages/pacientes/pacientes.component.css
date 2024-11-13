@@ -202,8 +202,8 @@
 /* Encabezado de la tabla */
 .tabla-pacientes th {
   padding: 12px;
-  background-color: #4CAF50;
-  color: #fff;
+  background-color: #e0e0e0;
+  color: #333;
   text-align: left;
   font-weight: normal;
   font-size: 15px;
@@ -214,6 +214,11 @@
   max-height: 250px;
   overflow-y: auto;
   width: 100%;
+}
+
+.activo {
+  background-color: #e0f7fa; 
+  border-left: 4px solid #007bff; 
 }
 
 .tabla-pacientes tr {
@@ -251,6 +256,18 @@
     fill: #848484; 
     width: 24px;
     height: 24px;
+  }
+
+  .calendario-btn svg {
+    fill: #4CAF50; 
+  }
+  
+  .editar-btn svg {
+    fill: #007bff; 
+  }
+  
+  .eliminar-btn svg {
+    fill: #b1b1b1; 
   }
 
   .paciente-datos-container {

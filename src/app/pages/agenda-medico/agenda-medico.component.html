@@ -98,7 +98,7 @@
     <h2>Enviar Notificación</h2>
 
     <div class="modal-column">
-      <div><strong>Nombre:</strong> {{ selectedPaciente?.nombres }} {{ selectedPaciente?.apellidos }}</div>
+      <div><strong>Nombre:</strong> {{ selectedPaciente?.nombres | titlecase }} {{ selectedPaciente?.apellidos | titlecase }}</div>
       <div *ngIf="notificacionTipo === 'whatsapp'"><strong>Teléfono:</strong> {{ selectedPaciente?.telefono }}</div>
       <div *ngIf="notificacionTipo === 'email'"><strong>Correo:</strong> {{ selectedPaciente?.correo }}</div>
     </div>

@@ -118,7 +118,7 @@
   width: 100%;
   padding: 10px;
   background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  border: 1px solid #ececec;
   border-radius: 3px;
   font-size: 0.9rem;
   color: #333;
@@ -155,6 +155,8 @@
   text-align: center;
 }
 
+/* Tabla turnos datos */
+
 .turnos-container table {
   width: 75%;
   margin: auto;
@@ -175,8 +177,8 @@
 }
 
 .turnos-container th {
-  background-color: #007bff;
-  color: white;
+  background-color: #eaeaea;
+  color: #333;
   font-weight: bold;
 }
 
