@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { PacienteDto } from '../../models/user.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { CommonModule } from '@angular/common';
@@ -21,7 +21,7 @@ import { TratamientoDto } from '../../models/tratamiento.dto';
   templateUrl: './paciente-datos.component.html',
   styleUrl: './paciente-datos.component.css'
 })
-export class PacienteDatosComponent implements OnInit {
+export class PacienteDatosComponent implements OnInit, OnDestroy {
   paciente: PacienteDto | null = null;
   tratamientos: TratamientoDto[] = [];
   private destroy$ = new Subject<void>();

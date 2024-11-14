@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { UserDto, UserRole  } from './models/user.dto';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { Auth } from '@angular/fire/auth';
 import { UserDataService } from './services/user-data.service';
 import { setAdminStatus, setLoggedInStatus, setUserData } from './store/user.action';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnerService } from './services/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ export class AppComponent implements OnInit {
     private store: Store,
     private auth: Auth,
     private userDataService: UserDataService,
-    private router: Router
+    private router: Router,
+    private spinnerService: SpinnerService
   ) {
     this.userData$ = this.store.select(selectUserData);
   }
@@ -50,6 +52,14 @@ export class AppComponent implements OnInit {
 
     this.userData$.subscribe((data) => {
       console.log('Datos del usuario:', data);
+    });
+    //spinner para cambios de pagina
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.spinnerService.show();
+      } else if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
+        this.spinnerService.hide();
+      }
     });
   }
 }

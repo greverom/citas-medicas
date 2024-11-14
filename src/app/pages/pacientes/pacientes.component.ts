@@ -26,7 +26,7 @@ import { cedulaEcuatorianaValidator, CedulaEcuatorianaValidatorDirective } from 
   templateUrl: './pacientes.component.html',
   styleUrl: './pacientes.component.css'
 })
-export class PacientesComponent implements OnInit {
+export class PacientesComponent implements OnInit{
   pacienteForm: FormGroup;
   editarPacienteForm: FormGroup;
   modalAbierto = false;
