@@ -23,9 +23,9 @@
     </div>
   
     <!-- Formulario para crear un tratamiento -->
-    <div class="formulario-tratamiento">
-        <h2>Crear Tratamiento para: {{ pacienteSeleccionado?.nombres | titlecase }} {{ pacienteSeleccionado?.apellidos | titlecase }}</h2>
-      <form>
+    <div *ngIf="pacienteSeleccionado" class="formulario-tratamiento">
+        <h2>Crear Tratamiento para: {{ pacienteSeleccionado.nombres | titlecase }} {{ pacienteSeleccionado.apellidos | titlecase }}</h2>
+      <form [formGroup]="tratamientoForm">
         <!-- Campo de selección de paciente -->
         <div class="form-group">
           <label for="pacienteId">Paciente</label>
@@ -37,23 +37,37 @@
   
         <!-- Medicamentos -->
         <div class="form-group">
-          <label>Medicamentos</label>
-          <div class="medicamento-group">
-            <input type="text" placeholder="Nombre del medicamento">
-            <input type="text" placeholder="Dosis">
-            <input type="text" placeholder="Frecuencia">
-          </div>
-          <button type="button" class="btn btn-agregar-medicamento">+ Agregar Medicamento</button>
+            <label>Medicamentos</label>
+            <div formArrayName="medicamentos">
+                <div *ngFor="let medicamento of medicamentos.controls; let i = index" [formGroupName]="i" class="medicamento-group">
+                <input type="text" formControlName="nombre" placeholder="Nombre del medicamento">
+                <input type="text" formControlName="dosis" placeholder="Dosis">
+                <input type="text" formControlName="frecuencia" placeholder="Frecuencia">
+                <button type="button" class="btn btn-eliminar-medicamento" (click)="eliminarMedicamento(i)">X</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-agregar-medicamento" (click)="agregarMedicamento()">+ Agregar Medicamento</button>
         </div>
   
         <!-- Notas -->
         <div class="form-group">
-          <label for="notas">Notas</label>
-          <textarea id="notas" placeholder="Escribe notas adicionales"></textarea>
+            <label for="notas">Notas</label>
+            <textarea id="notas" placeholder="Escribe notas adicionales" formControlName="notas"></textarea>
         </div>
   
         <!-- Botón de guardar -->
-        <button type="submit" class="btn guardar-btn">Guardar Tratamiento</button>
+        <button type="submit" class="btn guardar-btn" (click)="guardarTratamiento()">Guardar Tratamiento</button>
       </form>
     </div>
   </div>
+
+  <app-modal
+  [showModal]="modal.show"
+  [message]="modal.message"
+  [isError]="modal.isError"
+  [isSuccess]="modal.isSuccess"
+  [isConfirm]="modal.isConfirm"  
+  (close)="closeModal()"
+  (confirm)="modal.confirm && modal.confirm()" 
+  (cancel)="closeModal()">
+</app-modal>

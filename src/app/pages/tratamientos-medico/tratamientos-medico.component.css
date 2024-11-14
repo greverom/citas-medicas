@@ -1,8 +1,8 @@
 .tratamientos-container {
     padding: 20px;
-    background-color: #f9f9f9;
+    margin-top: 2rem;
+    background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .header {
@@ -63,9 +63,9 @@
 
   .formulario-tratamiento {
     background-color: #fff;
+    margin-top: 2rem;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   }
   
   .formulario-tratamiento h2 {
@@ -96,37 +96,11 @@
     font-size: 1em;
     color: #333;
   }
-
-  .fechas-row {
-    display: flex;
-    flex-direction: row;
-    gap: 20px; 
-  }
-  
-  .fecha-item {
-    flex-direction: column;
-    display: flex;
-  }
-
-.fecha-item label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #555;
-}
-
-.fecha-item input[type="date"] {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1em;
-  color: #333;
-  width: 100%;
-  box-sizing: border-box;
-}
   
   .form-group textarea {
     resize: vertical;
     min-height: 80px;
+    resize: none;
   }
   
   .medicamento-group {
@@ -136,6 +110,32 @@
   
   .medicamento-group input {
     flex: 1;
+  }
+
+  .btn-eliminar-medicamento {
+    background-color: #ccc !important;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; 
+  }
+  
+  .btn-eliminar-medicamento:hover {
+    background-color: #a8a8a8; 
+  }
+  
+  .medicamento-group {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    margin-bottom: 10px;
   }
   
   .btn {

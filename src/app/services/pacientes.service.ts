@@ -5,11 +5,13 @@ import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { TurnoDto } from '../models/turno.dto';
 import { Diagnostico } from '../models/diagnostico.dto';
+import { TratamientoDto } from '../models/tratamiento.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PacienteService {
+  private tratamientosPath = 'tratamientos';
   private dbRef = ref(this.db, 'pacientes');
   private pacienteSeleccionado = new BehaviorSubject<PacienteDto | null>(null);
   pacienteSeleccionado$ = this.pacienteSeleccionado.asObservable();
@@ -221,7 +223,6 @@ export class PacienteService {
 
   eliminarDiagnostico(pacienteId: string, diagnosticoId: string): Observable<void> {
     const pacienteRef = child(this.dbRef, pacienteId);
-  
     return from(get(pacienteRef)).pipe(
       switchMap(snapshot => {
         const pacienteData = snapshot.val() as PacienteDto;
@@ -234,4 +235,16 @@ export class PacienteService {
       })
     );
   }
+
+  agregarTratamiento(tratamiento: TratamientoDto): Observable<void> {
+    const tratamientoRef = push(ref(this.db, this.tratamientosPath)); 
+    tratamiento.id = tratamientoRef.key ?? ''; 
+    return from(set(tratamientoRef, tratamiento)).pipe(
+      catchError(error => {
+        console.error('Error al agregar tratamiento:', error);
+        throw error;
+      })
+    );
+  }
+
 }
