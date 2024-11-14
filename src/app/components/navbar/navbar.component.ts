@@ -7,18 +7,22 @@ import { setLoggedInStatus, unsetUserData } from '../../store/user.action';
 import { CommonModule } from '@angular/common';
 import { UserRole } from '../../models/user.dto';
 import { AuthService } from '../../services/auth.service';
+import { ModalComponent } from '../modal/modal.component';
+import { ModalDto, modalInitializer } from '../modal/modal.dto';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
     RouterModule,
-    CommonModule
+    CommonModule,
+    ModalComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  modal: ModalDto = modalInitializer(); 
   isLoggedIn$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
   isMedico$: Observable<boolean>;
@@ -41,13 +45,43 @@ export class NavbarComponent {
   }
 
   logout() {
+    this.mostrarModal(
+      '¿Estás seguro de que deseas cerrar sesión?',
+      false, 
+      true,  
+      () => this.confirmarLogout() 
+    );
+  }
+  
+  confirmarLogout() {
     this.authService.logout().subscribe({
       next: () => {
         this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Error al cerrar sesión:', error);
+        this.mostrarModal('Error al cerrar sesión', true); 
       }
     });
+  }
+
+  mostrarModal(mensaje: string, esError: boolean, esConfirmacion: boolean = false, accionConfirmacion?: () => void) {
+    this.modal = {
+      show: true,
+      message: mensaje,
+      isError: esError && !esConfirmacion,
+      isSuccess: !esError && !esConfirmacion,
+      isConfirm: esConfirmacion || false,  
+      close: () => this.closeModal(),
+      confirm: accionConfirmacion,
+    };
+  
+    if (!esConfirmacion) {
+      setTimeout(() => this.closeModal(), 2000);
+    }
+  }
+
+  closeModal() {
+    this.modal = modalInitializer(); 
   }
 }

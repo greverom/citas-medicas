@@ -35,3 +35,14 @@
     </ul>
   </div>
 </nav>
+
+<app-modal
+[showModal]="modal.show"
+[message]="modal.message"
+[isError]="modal.isError"
+[isSuccess]="modal.isSuccess"
+[isConfirm]="modal.isConfirm"  
+(close)="closeModal()"
+(confirm)="modal.confirm && modal.confirm()" 
+(cancel)="closeModal()">
+</app-modal>

@@ -154,4 +154,8 @@ export class TratamientosMedicoComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modal = modalInitializer(); 
   }
+
+  cancelar(): void {
+    this.router.navigate(['/pacientes']);
+  }
 }
