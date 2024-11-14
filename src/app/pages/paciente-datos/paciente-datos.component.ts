@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PacienteDto } from '../../models/user.dto';
 import { PacienteService } from '../../services/pacientes.service';
@@ -121,6 +122,13 @@ export class PacienteDatosComponent implements OnInit {
       close: () => this.cerrarModal(),
       confirm: () => this.eliminarDiagnostico(diagnosticoId)
     };
+  }
+
+  agregarTratamiento() {
+    if (this.paciente) {
+      this.pacienteService.seleccionarPaciente(this.paciente);
+      this.router.navigate(['/tratamientos']);
+    }
   }
 
 

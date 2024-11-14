@@ -19,6 +19,9 @@
         <li class="nav-item ms-4" *ngIf="isMedico$ | async">
           <a class="nav-link" routerLink="/pacientes" routerLinkActive="active">Pacientes</a>
         </li>
+        <li class="nav-item ms-4" *ngIf="isMedico$ | async">
+          <a class="nav-link" routerLink="/tratamientos" routerLinkActive="active">Tratamientos</a>
+        </li>
         <li class="nav-item ms-4" *ngIf="isPaciente$ | async">
           <a class="nav-link" routerLink="/diagnosticos" routerLinkActive="active">Diagnósticos</a>
         </li>

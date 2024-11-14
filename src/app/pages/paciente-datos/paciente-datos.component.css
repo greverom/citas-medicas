@@ -105,6 +105,14 @@
   .boton-accion:hover {
     background-color: #0056b3; 
   }
+
+  .boton-agregar-tratamiento {
+    margin-top: 25px;
+  }
+  
+  .boton-accion .icono svg {
+    fill: #ffffff;
+  }
   
   .icono {
     margin-right: 10px;

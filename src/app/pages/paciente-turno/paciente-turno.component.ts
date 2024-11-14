@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PacienteDto, UserDto } from '../../models/user.dto';
+import { PacienteDto} from '../../models/user.dto';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PacienteService } from '../../services/pacientes.service';

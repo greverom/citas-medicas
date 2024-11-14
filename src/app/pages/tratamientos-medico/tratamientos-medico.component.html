@@ -1,0 +1,59 @@
+<div class="container tratamientos-container">
+    <!-- Encabezado -->
+    <div class="header">
+      <h1>Gestión de Tratamientos</h1>
+  
+      <!-- Filtros de búsqueda y estado en una fila -->
+      <div class="filtros-row">
+        <!-- Campo de búsqueda -->
+        <div class="filtro-busqueda">
+          <input type="text" placeholder="Buscar tratamiento...">
+        </div>
+  
+        <!-- Selector de estado -->
+        <div class="filtro-estado">
+          <select>
+            <option value="">Todos los estados</option>
+            <option value="activo">Activos</option>
+            <option value="completado">Completados</option>
+            <option value="en espera">En Espera</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Formulario para crear un tratamiento -->
+    <div class="formulario-tratamiento">
+        <h2>Crear Tratamiento para: {{ pacienteSeleccionado?.nombres | titlecase }} {{ pacienteSeleccionado?.apellidos | titlecase }}</h2>
+      <form>
+        <!-- Campo de selección de paciente -->
+        <div class="form-group">
+          <label for="pacienteId">Paciente</label>
+          <input type="text"
+                id="pacienteId"
+                [value]="pacienteSeleccionado ? formatName(pacienteSeleccionado.nombres, pacienteSeleccionado.apellidos) : ''"
+                readonly>
+        </div>
+  
+        <!-- Medicamentos -->
+        <div class="form-group">
+          <label>Medicamentos</label>
+          <div class="medicamento-group">
+            <input type="text" placeholder="Nombre del medicamento">
+            <input type="text" placeholder="Dosis">
+            <input type="text" placeholder="Frecuencia">
+          </div>
+          <button type="button" class="btn btn-agregar-medicamento">+ Agregar Medicamento</button>
+        </div>
+  
+        <!-- Notas -->
+        <div class="form-group">
+          <label for="notas">Notas</label>
+          <textarea id="notas" placeholder="Escribe notas adicionales"></textarea>
+        </div>
+  
+        <!-- Botón de guardar -->
+        <button type="submit" class="btn guardar-btn">Guardar Tratamiento</button>
+      </form>
+    </div>
+  </div>
