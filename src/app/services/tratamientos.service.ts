@@ -53,4 +53,5 @@ obtenerTratamientosPorMedico(medicoId: string): Observable<TratamientoDto[]> {
         .catch((error) => observer.error(error));
     });
   }
+  
 }

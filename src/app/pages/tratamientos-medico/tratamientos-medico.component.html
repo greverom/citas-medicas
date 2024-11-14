@@ -9,16 +9,6 @@
         <div class="filtro-busqueda">
           <input type="text" placeholder="Buscar tratamiento...">
         </div>
-  
-        <!-- Selector de estado -->
-        <div class="filtro-estado">
-          <select>
-            <option value="">Todos los estados</option>
-            <option value="activo">Activos</option>
-            <option value="completado">Completados</option>
-            <option value="en espera">En Espera</option>
-          </select>
-        </div>
       </div>
     </div>
   
@@ -33,6 +23,11 @@
                 id="pacienteId"
                 [value]="pacienteSeleccionado ? formatName(pacienteSeleccionado.nombres, pacienteSeleccionado.apellidos) : ''"
                 readonly>
+        </div>
+        <!-- Campo de nombre del tratamiento -->
+        <div class="form-group">
+          <label for="nombreTratamiento">Nombre del Tratamiento</label>
+          <input type="text" id="nombreTratamiento" formControlName="nombreTratamiento" placeholder="Ingrese el nombre del tratamiento">
         </div>
   
         <!-- Medicamentos -->

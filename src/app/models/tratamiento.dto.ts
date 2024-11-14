@@ -1,5 +1,6 @@
 export interface TratamientoDto {
     id: string;
+    nombreTratamiento: string;
     medicoId: string;
     pacienteId: string; 
     fechaCreacion: string;

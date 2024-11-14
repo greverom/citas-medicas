@@ -1,0 +1,50 @@
+.tratamiento-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 2rem;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .seccion {
+    margin-bottom: 20px;
+  }
+  
+  .seccion h3 {
+    font-size: 1.5em;
+    color: #007bff;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .seccion p {
+    font-size: 1em;
+    color: #555;
+    margin: 5px 0;
+  }
+  
+  .medicamentos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .medicamentos-tabla th, .medicamentos-tabla td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .medicamentos-tabla th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+  }

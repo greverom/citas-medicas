@@ -110,6 +110,45 @@
         Agregar Tratamiento
       </button>
     </div>
+    <div *ngIf="tratamientos && tratamientos.length > 0" class="tratamientos-container">
+      <h3>Tratamientos del Paciente</h3>
+      <table class="tratamientos-tabla">
+        <thead>
+          <tr>
+            <th>Nombre del Tratamiento</th>
+            <th>Medicamentos</th>
+            <th>Fecha de Creación</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tratamiento of tratamientos; let i = index">
+            <td>{{ tratamiento.nombreTratamiento }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let medicamento of tratamiento.medicamentos">
+                  {{ medicamento.nombre }} 
+                </li>
+              </ul>
+            </td>
+            <td>{{ tratamiento.fechaCreacion | date: 'dd/MM/yyyy' }}</td>
+            <td>
+              <button class="ver-btn" (click)="verTratamiento(tratamiento)">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                  <path d="M0 0h24v24H0V0z" fill="none"/>
+                  <path d="M12 4.5C7.7 4.5 4 7.5 2 12c2 4.5 5.7 7.5 10 7.5s8-3 10-7.5c-2-4.5-5.7-7.5-10-7.5zm0 13c-3 0-5.4-2.2-6.4-5C6.6 9.2 9 7 12 7s5.4 2.2 6.4 5c-1 2.8-3.4 5-6.4 5zm0-9c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm0 6.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 9.5 12 9.5s2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z"/>
+                </svg>
+              </button>
+              <button class="eliminar-btn" (click)="abrirModalEliminarTratamiento(tratamiento.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff6b6b">
+                  <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

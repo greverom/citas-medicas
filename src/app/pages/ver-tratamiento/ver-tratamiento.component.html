@@ -1,0 +1,38 @@
+<div *ngIf="tratamiento && paciente" class="tratamiento-container">
+    <h2>Detalles del Tratamiento</h2>
+  
+    <div class="seccion">
+      <h3>Información del Paciente</h3>
+      <p><strong>Nombre:</strong> {{ paciente.nombres | titlecase }} {{ paciente.apellidos | titlecase }}</p>
+      <p><strong>Cédula:</strong> {{ paciente.cedula }}</p>
+      <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+      <p><strong>Correo:</strong> {{ paciente.correo }}</p>
+    </div>
+  
+    <div class="seccion">
+      <h3>Información del Tratamiento</h3>
+      <p><strong>Nombre del Tratamiento:</strong> {{ tratamiento.nombreTratamiento }}</p>
+      <p><strong>Fecha de Creación:</strong> {{ tratamiento.fechaCreacion | date:'longDate' }}</p>
+      <p><strong>Notas:</strong> {{ tratamiento.notas || 'Sin notas adicionales' }}</p>
+    </div>
+  
+    <div *ngIf="tratamiento.medicamentos && tratamiento.medicamentos.length > 0" class="seccion">
+      <h3>Medicamentos</h3>
+      <table class="medicamentos-tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Dosis</th>
+            <th>Frecuencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let medicamento of tratamiento.medicamentos">
+            <td>{{ medicamento.nombre }}</td>
+            <td>{{ medicamento.dosis }}</td>
+            <td>{{ medicamento.frecuencia }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

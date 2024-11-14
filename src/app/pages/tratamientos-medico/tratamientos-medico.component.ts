@@ -59,6 +59,7 @@ export class TratamientosMedicoComponent implements OnInit, OnDestroy {
   inicializarFormulario() {
     this.tratamientoForm = this.fb.group({
       pacienteId: [{ value: '', disabled: true }],
+      nombreTratamiento: ['', Validators.required],
       medicamentos: this.fb.array([]), 
       notas: ['']
     });
@@ -110,6 +111,7 @@ export class TratamientosMedicoComponent implements OnInit, OnDestroy {
     if (this.tratamientoForm.valid && this.pacienteSeleccionado && this.medicoData) {
       const tratamientoData: TratamientoDto = {
         id: '', 
+        nombreTratamiento: this.tratamientoForm.get('nombreTratamiento')?.value || '',
         pacienteId: this.pacienteSeleccionado.id!,
         medicoId: this.medicoData.id!,
         fechaCreacion: new Date().toISOString(),

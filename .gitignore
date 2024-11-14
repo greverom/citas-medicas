@@ -43,7 +43,6 @@ Thumbs.db
 
 # Archivos de configuración de entornos
 src/environments/environment.ts
-src/environments/*.ts
 !src/environments/environment.prod.ts
 
 # Configuración de Firebase

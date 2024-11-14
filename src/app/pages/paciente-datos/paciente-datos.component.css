@@ -175,6 +175,42 @@
   fill: #FF6B6B; 
 }
 
+/* bloque Tabla de tratamientos */
+.tratamientos-container {
+  margin-top: 20px;
+}
+
+.tratamientos-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tratamientos-tabla th {
+  background-color: #f0f0f0; 
+  color: #333333;
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+}
+
+.tratamientos-tabla td {
+  vertical-align: middle;
+  padding: 12px;
+  color: #555555;
+  border-top: 1px solid #e0e0e0;
+}
+
+.tratamientos-tabla tr:nth-child(even) {
+  background-color: #fafafa; 
+}
+
+.tratamientos-tabla tr:hover {
+  background-color: #f5f5f5; 
+}
+
   @media (max-width: 768px) {
     .titulo {
       font-size: 20px;

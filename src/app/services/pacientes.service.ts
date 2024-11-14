@@ -17,6 +17,8 @@ export class PacienteService {
   pacienteSeleccionado$ = this.pacienteSeleccionado.asObservable();
   private diagnosticoSeleccionado = new BehaviorSubject<Diagnostico | null>(null);
   diagnosticoSeleccionado$ = this.diagnosticoSeleccionado.asObservable();
+  private tratamientoSeleccionado = new BehaviorSubject<TratamientoDto | null>(null);
+  tratamientoSeleccionado$: Observable<TratamientoDto | null> = this.tratamientoSeleccionado.asObservable();
   
 
   constructor(private db: Database) {}
@@ -176,7 +178,6 @@ export class PacienteService {
         if (snapshot.exists()) {
           const pacienteData = snapshot.val() as PacienteDto;
           const turnosActualizados = (pacienteData.turnos || []).filter(turno => turno.id !== turnoId);
-          
           return from(update(pacienteRef, { turnos: turnosActualizados }));
         } else {
           throw new Error('Paciente no encontrado');
@@ -191,10 +192,8 @@ export class PacienteService {
 
   agregarDiagnostico(diagnostico: Diagnostico): Observable<void> {
     const pacienteRef = child(this.dbRef, diagnostico.pacienteId);
-
     const diagnosticoIdRef = push(ref(this.db, 'diagnosticos'));
     diagnostico.id = diagnosticoIdRef.key ?? '';
-
     return from(get(pacienteRef)).pipe(
       switchMap(snapshot => {
         const pacienteData = snapshot.val() as PacienteDto;
@@ -235,7 +234,7 @@ export class PacienteService {
       })
     );
   }
-
+//Método para agregar un tratamiento
   agregarTratamiento(tratamiento: TratamientoDto): Observable<void> {
     const tratamientoRef = push(ref(this.db, this.tratamientosPath)); 
     tratamiento.id = tratamientoRef.key ?? ''; 
@@ -246,5 +245,68 @@ export class PacienteService {
       })
     );
   }
+  // Método para listar tratamientos de un paciente
+obtenerTratamientosPorPaciente(pacienteId: string): Observable<TratamientoDto[]> {
+  const tratamientosRef = ref(this.db, 'tratamientos');
+  
+  return from(get(tratamientosRef)).pipe(
+    map(snapshot => {
+      if (snapshot.exists()) {
+        const tratamientosObj = snapshot.val();
+        return Object.keys(tratamientosObj)
+          .map(key => ({ id: key, ...tratamientosObj[key] }))
+          .filter((tratamiento: TratamientoDto) => tratamiento.pacienteId === pacienteId);
+      } else {
+        return [];
+      }
+    }),
+    catchError(error => {
+      console.error('Error al obtener tratamientos del paciente:', error);
+      return of([]); 
+    })
+  );
+}
+// Método para eliminar un tratamiento
+eliminarTratamiento(tratamientoId: string): Observable<void> {
+  const tratamientoRef = ref(this.db, `tratamientos/${tratamientoId}`);
+  
+  return from(remove(tratamientoRef)).pipe(
+    catchError(error => {
+      console.error('Error al eliminar el tratamiento:', error);
+      throw error;
+    })
+  );
+}
+// Método para listar tratamientos de un médico
+obtenerTratamientosPorMedico(medicoId: string): Observable<TratamientoDto[]> {
+  const tratamientosRef = ref(this.db, 'tratamientos');
+  return from(get(tratamientosRef)).pipe(
+    map(snapshot => {
+      if (snapshot.exists()) {
+        const tratamientosObj = snapshot.val();
+        return Object.keys(tratamientosObj)
+          .map(key => ({
+            id: key,
+            ...tratamientosObj[key],
+          }))
+          .filter((tratamiento: TratamientoDto) => tratamiento.medicoId === medicoId);
+      } else {
+        return [];
+      }
+    }),
+    catchError(error => {
+      console.error('Error al obtener tratamientos del médico:', error);
+      return of([]); 
+    })
+  );
+}
+
+seleccionarTratamiento(tratamiento: TratamientoDto) {
+  this.tratamientoSeleccionado.next(tratamiento);
+}
+
+limpiarSeleccion() {
+  this.tratamientoSeleccionado.next(null);
+}
 
 }

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Diagnostico } from '../../models/diagnostico.dto';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { ModalComponent } from '../../components/modal/modal.component';
+import { TratamientoDto } from '../../models/tratamiento.dto';
 
 @Component({
   selector: 'app-paciente-datos',
@@ -22,6 +23,7 @@ import { ModalComponent } from '../../components/modal/modal.component';
 })
 export class PacienteDatosComponent implements OnInit {
   paciente: PacienteDto | null = null;
+  tratamientos: TratamientoDto[] = [];
   private destroy$ = new Subject<void>();
   modal: ModalDto = modalInitializer(); 
 
@@ -35,6 +37,9 @@ export class PacienteDatosComponent implements OnInit {
       .subscribe((paciente) => {
         this.paciente = paciente;
         //console.log('paciente recibido en paciente-datos:', this.paciente);
+        if (this.paciente?.id) {
+          this.obtenerTratamientos(this.paciente.id);
+        }
       });
   }
 
@@ -85,6 +90,42 @@ export class PacienteDatosComponent implements OnInit {
     }
   }
 
+  obtenerTratamientos(pacienteId: string) {
+    this.pacienteService.obtenerTratamientosPorPaciente(pacienteId).subscribe({
+      next: (tratamientos) => {
+        this.tratamientos = tratamientos;
+        //console.log('Tratamientos del paciente:', this.tratamientos);
+      },
+      error: (error) => {
+        console.error('Error al obtener tratamientos del paciente:', error);
+      }
+    });
+  }
+
+  abrirModalEliminarTratamiento(tratamientoId: string) {
+    this.modal = {
+      ...modalInitializer(),
+      show: true,
+      message: '¿Estás seguro de que deseas eliminar este tratamiento?',
+      isConfirm: true,
+      close: () => this.cerrarModal(),
+      confirm: () => this.eliminarTratamiento(tratamientoId)
+    };
+  }
+
+  eliminarTratamiento(tratamientoId: string) {
+    this.pacienteService.eliminarTratamiento(tratamientoId).subscribe({
+      next: () => {
+        this.tratamientos = this.tratamientos.filter(t => t.id !== tratamientoId);
+        this.cerrarModal();
+      },
+      error: (error) => {
+        console.error('Error al eliminar el tratamiento:', error);
+        this.cerrarModal();
+      }
+    });
+  }
+
   obtenerDiaDeLaSemana(fecha: string): string {
     const diasDeLaSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
     const [year, month, day] = fecha.split('-').map(Number);
@@ -129,6 +170,11 @@ export class PacienteDatosComponent implements OnInit {
       this.pacienteService.seleccionarPaciente(this.paciente);
       this.router.navigate(['/tratamientos']);
     }
+  }
+
+  verTratamiento(tratamiento: TratamientoDto) {
+    this.pacienteService.seleccionarTratamiento(tratamiento);
+    this.router.navigate(['/ver-tratamiento']);
   }
 
 

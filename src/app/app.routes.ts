@@ -7,6 +7,7 @@ import { PacienteDiagnosticoComponent } from './pages/paciente-diagnostico/pacie
 import { DiagnosticoComponent } from './components/diagnostico/diagnostico.component';
 import { AgendaMedicoComponent } from './pages/agenda-medico/agenda-medico.component';
 import { TratamientosMedicoComponent } from './pages/tratamientos-medico/tratamientos-medico.component';
+import { VerTratamientoComponent } from './pages/ver-tratamiento/ver-tratamiento.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, pathMatch: 'full' }, 
@@ -17,4 +18,5 @@ export const routes: Routes = [
     { path: 'ver-diagnostico', component: DiagnosticoComponent },
     { path: 'agenda-medico', component: AgendaMedicoComponent },
     { path: 'tratamientos', component: TratamientosMedicoComponent },
+    { path: 'ver-tratamiento', component: VerTratamientoComponent },
 ];
