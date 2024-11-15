@@ -70,6 +70,11 @@
               <label for="especialidad">Especialidad:</label>
               <input id="especialidad" formControlName="especialidad" type="text" placeholder="Especialidad">
             </div>
+
+            <div *ngIf="isAdmin$ | async">
+              <label for="nombre">Nombre:</label>
+              <input id="nombre" formControlName="name" type="text" placeholder="Nombre completo">
+            </div>
       
             <div class="botones-modal">
               <button type="submit" class="guardar-btn">Guardar</button>

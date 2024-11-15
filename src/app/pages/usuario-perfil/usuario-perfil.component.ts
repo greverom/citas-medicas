@@ -84,6 +84,10 @@ export class UsuarioPerfilComponent implements OnInit {
         numeroLicencia: [data.detalles.numeroLicencia || ''],
         especialidad: [data.detalles.especialidad || '']
       });
+    } else if (data.role === UserRole.Admin) {
+      this.usuarioForm = this.fb.group({
+        name: [data.name || '', Validators.required]
+      });
     }
   }
 
@@ -106,32 +110,30 @@ export class UsuarioPerfilComponent implements OnInit {
         name: this.usuarioForm.value.name,
         detalles: this.userData?.role === 'paciente'
           ? {
-              ...this.userData?.detalles as DetallesPaciente,
-              cedula: this.usuarioForm.value.cedula,
-              direccion: this.usuarioForm.value.direccion,
-              fechaNacimiento: this.usuarioForm.value.fechaNacimiento,
-              telefono: this.usuarioForm.value.telefono,
+              cedula: this.usuarioForm.value.cedula || null,
+              direccion: this.usuarioForm.value.direccion || null,
+              fechaNacimiento: this.usuarioForm.value.fechaNacimiento || null,
+              telefono: this.usuarioForm.value.telefono || null,
             }
           : this.userData?.role === 'medico'
           ? {
-              ...this.userData?.detalles as DetallesMedico,
-              cedula: this.usuarioForm.value.cedula,
-              numeroLicencia: this.usuarioForm.value.numeroLicencia,
-              especialidad: this.usuarioForm.value.especialidad,
+              cedula: this.usuarioForm.value.cedula || null,
+              numeroLicencia: this.usuarioForm.value.numeroLicencia || null,
+              especialidad: this.usuarioForm.value.especialidad || null,
             }
-          : undefined 
+          : undefined, 
       };
+      const cleanData = JSON.parse(JSON.stringify(updatedData));
   
       if (userId) {
-        this.userDataService.updateUserInDatabase(userId, updatedData).subscribe({
+        this.userDataService.updateUserInDatabase(userId, cleanData).subscribe({
           next: () => {
-            //console.log('Datos del usuario actualizados correctamente.');
             this.store.dispatch(setUserData({ data: { ...this.userData, ...updatedData } as UserDto }));
             this.cerrarModal();
             this.showModal(this.createModalParams(false, 'Datos actualizados exitosamente.'));
           },
           error: (error) => {
-            //console.error('Error al actualizar los datos del usuario:', error);
+            console.error('Error al actualizar los datos del usuario:', error);
             this.showModal(this.createModalParams(true, 'Error al actualizar los datos.'));
           }
         });

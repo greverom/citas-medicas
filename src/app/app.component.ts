@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
     });
 
     this.userData$.subscribe((data) => {
-      console.log('Datos del usuario:', data);
+      //console.log('Datos del usuario:', data);
     });
     //spinner para cambios de pagina
     this.router.events.subscribe(event => {

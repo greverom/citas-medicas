@@ -16,10 +16,12 @@ export class ModalComponent {
   @Input() isError: boolean = true;  // Flag to determine error or success
   @Input() isSuccess: boolean = false;  // Success flag for success message
   @Input() isConfirm: boolean = false;
+  @Input() showRedirectButton: boolean = false;
 
   @Output() close = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>(); 
-  @Output() cancel = new EventEmitter<void>(); 
+  @Output() cancel = new EventEmitter<void>();
+  @Output() redirect = new EventEmitter<void>(); 
   shake: boolean = false;
 
   ngOnChanges() {
@@ -43,6 +45,11 @@ export class ModalComponent {
 
   cancelAction() {
     this.cancel.emit();
+    this.closeModal();
+  }
+
+  redirectAction() {
+    this.redirect.emit(); 
     this.closeModal();
   }
 }

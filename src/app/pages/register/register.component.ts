@@ -13,7 +13,6 @@ import { SpinnerService } from '../../services/spinner.service';
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule,
     ReactiveFormsModule,
     ModalComponent
   ],
@@ -23,6 +22,8 @@ import { SpinnerService } from '../../services/spinner.service';
 export class RegisterComponent implements OnInit {
   passwordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
+  hasPasswordText: boolean = false;
+  hasConfirmPasswordText: boolean = false;
   registerForm: FormGroup;
   modal: ModalDto = modalInitializer();
 
@@ -73,7 +74,8 @@ export class RegisterComponent implements OnInit {
     this.authService.register(registerData).subscribe({
       next: () => {
         this.spinnerService.hide();
-        this.showModal(this.createModalParams(false, 'El usuario se registró correctamente.', 'login'));
+        this.showModal(this.createModalParams(false, 'El usuario se registró correctamente.'));
+        this.registerForm.reset();
       },
       error: (error) => {
         this.spinnerService.hide();
@@ -109,11 +111,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onPasswordInput(): void {
-    this.registerForm.get('password')?.markAsTouched();
+    const passwordValue = this.registerForm.get('password')?.value || '';
+    this.hasPasswordText = passwordValue.length > 0;
   }
 
   onConfirmPasswordInput(): void {
-    this.registerForm.get('confirmPassword')?.markAsTouched();
+    const confirmPasswordValue = this.registerForm.get('confirmPassword')?.value || '';
+    this.hasConfirmPasswordText = confirmPasswordValue.length > 0;
   }
 
   togglePasswordVisibility(): void {

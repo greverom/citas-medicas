@@ -17,7 +17,7 @@ export interface UserDto {
   }
 
   export interface DetallesPaciente {
-    medicoIds: Partial<UserDto>[];
+    medicoIds?: Partial<UserDto>[];
     cedula: string;
     fechaNacimiento: string;
     direccion: string;

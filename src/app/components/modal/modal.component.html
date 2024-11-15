@@ -11,5 +11,10 @@
       <button class="confirm-btn" (click)="confirmAction()">Confirmar</button>
       <button class="cancel-btn" (click)="cancelAction()">Cancelar</button>
     </div>
+
+    <!-- Botón para redirigir al perfil -->
+    <div *ngIf="showRedirectButton" class="modal-buttons">
+      <button class="confirm-btn" (click)="redirectAction()">Ir a Perfil</button>
+    </div>
   </div>
 </div>

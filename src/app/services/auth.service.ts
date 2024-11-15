@@ -54,7 +54,7 @@ export class AuthService {
 
           return this.userDataService.addUserToDatabase(newUser).pipe(
             map(() => {
-              this.store.dispatch(setUserData({ data: newUser }));
+              //this.store.dispatch(setUserData({ data: newUser }));
               this.store.dispatch(setAdminStatus({ isAdmin: role === UserRole.Admin }));
             })
           );

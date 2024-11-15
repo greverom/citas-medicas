@@ -12,6 +12,7 @@ import { PacienteTurnoComponent } from '../paciente-turno/paciente-turno.compone
 import { TurnoDto } from '../../models/turno.dto';
 import { Diagnostico } from '../../models/diagnostico.dto';
 import { cedulaEcuatorianaValidator, CedulaEcuatorianaValidatorDirective } from '../../directives/cedula-ecuatoriana.directive';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pacientes',
@@ -41,6 +42,7 @@ export class PacientesComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private store: Store,
     public pacienteService: PacienteService,
   ) {
@@ -66,6 +68,22 @@ export class PacientesComponent implements OnInit{
     this.store.select(selectUserData).subscribe((userData) => {
       if (userData && userData.role === 'medico') {
         this.medicoData = { id: userData.id, name: userData.name };
+
+        const medicoDetallesCompletos =
+        userData.detalles &&
+        'numeroLicencia' in userData.detalles &&
+        userData.detalles.numeroLicencia &&
+        userData.name;
+
+        if (!medicoDetallesCompletos) {
+          this.mostrarModal(
+            'Por favor, complete su perfil para gestionar pacientes.',
+            true,
+            false, 
+            undefined, 
+            '/perfil' 
+          );
+        }
         this.obtenerPacientes();
       }
     });
@@ -221,19 +239,32 @@ export class PacientesComponent implements OnInit{
     );
   }
 
-  mostrarModal(mensaje: string, esError: boolean, esConfirmacion: boolean = false, accionConfirmacion?: () => void) {
+  mostrarModal(
+    mensaje: string,
+    esError: boolean,
+    esConfirmacion: boolean = false,
+    accionConfirmacion?: () => void,
+    rutaRedireccion?: string 
+  ) {
     this.modal = {
       show: true,
       message: mensaje,
       isError: esError && !esConfirmacion,
       isSuccess: !esError && !esConfirmacion,
-      isConfirm: esConfirmacion || false,  
+      isConfirm: esConfirmacion || false,
+      showRedirectButton: !!rutaRedireccion, 
       close: () => this.closeModal(),
       confirm: accionConfirmacion,
+      redirect: rutaRedireccion
+        ? () => {
+            this.router.navigate([rutaRedireccion]);
+            this.closeModal();
+          }
+        : undefined, // Solo define si hay ruta
     };
   
-    if (!esConfirmacion) {
-      setTimeout(() => this.closeModal(), 2000);
+    if (!esConfirmacion && !rutaRedireccion) {
+      setTimeout(() => this.closeModal(), 2000); 
     }
   }
 
