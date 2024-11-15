@@ -38,4 +38,8 @@ export const routes: Routes = [
       path: 'ver-tratamiento', 
       loadComponent: () => import('./pages/ver-tratamiento/ver-tratamiento.component').then(c => c.VerTratamientoComponent)
     },
+    { 
+      path: 'perfil', 
+      loadComponent: () => import('./pages/usuario-perfil/usuario-perfil.component').then(c => c.UsuarioPerfilComponent)
+    },
 ];

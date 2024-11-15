@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Database, get, ref, set } from '@angular/fire/database';
+import { Database, get, ref, set, update } from '@angular/fire/database';
 import { UserDto } from '../models/user.dto';
 import { from, map, Observable } from 'rxjs';
 
@@ -25,5 +25,10 @@ export class UserDataService {
         }
       })
     );
+  }
+
+  updateUserInDatabase(userId: string, updatedData: Partial<UserDto>): Observable<void> {
+    const userRef = ref(this.db, `usuarios/${userId}`);
+    return from(update(userRef, updatedData));
   }
 }

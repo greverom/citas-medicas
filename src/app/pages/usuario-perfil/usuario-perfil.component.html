@@ -1,0 +1,90 @@
+<div class="container">
+    <div class="perfil-usuario-container">
+        <h2>
+            Perfil de Usuario
+            <button class="editar-btn" (click)="abrirModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#007bff">
+                    <path d="M560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v120h-80v-80H520v-200H240v640h240v80H240Zm280-400Zm241 199-19-18 37 37-18-19Z"/>
+                </svg>
+            </button>
+        </h2>
+        <!-- Información Básica -->
+        <div class="info-basica">
+            <p><strong>Nombre:</strong> {{ userData?.name || 'No especificado' }}</p>
+            <p><strong>Email:</strong> {{ userData?.email }}</p>
+        </div>
+        <!-- Bloque para Detalles del Paciente -->
+        <div *ngIf="isPaciente$ | async" class="detalles-paciente">
+            <ng-container *ngIf="userData && userData.detalles && isPacienteDetalles(userData.detalles)">
+                <p><strong>Cédula:</strong> {{ userData.detalles.cedula }}</p>
+                <p><strong>Fecha de Nacimiento:</strong> {{ userData.detalles.fechaNacimiento }}</p>
+                <p><strong>Dirección:</strong> {{ userData.detalles.direccion }}</p>
+                <p><strong>Teléfono:</strong> {{ userData.detalles.telefono }}</p>
+            </ng-container>
+        </div>
+        <!-- Bloque para Detalles del Médico -->
+        <div *ngIf="isMedico$ | async" class="detalles-medico">
+            <ng-container *ngIf="userData && userData.detalles && isMedicoDetalles(userData.detalles)">
+                <p><strong>Cédula:</strong> {{ userData.detalles.cedula }}</p>
+                <p><strong>Número de Licencia:</strong> {{ userData.detalles.numeroLicencia }}</p>
+                <p><strong>Especialidad:</strong> {{ userData.detalles.especialidad || 'No especificada' }}</p>
+            </ng-container>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" *ngIf="modalAbierto">
+        <div class="modal-content">
+          <button class="cerrar-modal" (click)="cerrarModal()">X</button>
+          <h3>Completar Perfil</h3>
+          <form [formGroup]="usuarioForm" (ngSubmit)="guardarCambios()">
+            <!-- Campos para el Paciente -->
+            <div *ngIf="isPaciente$ | async">
+              <label for="nombre">Nombre:</label>
+              <input id="nombre" formControlName="name" type="text" placeholder="Nombre completo">
+      
+              <label for="cedula">Cédula:</label>
+              <input id="cedula" formControlName="cedula" type="text" placeholder="Cédula">
+      
+              <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+              <input id="fechaNacimiento" formControlName="fechaNacimiento" type="date">
+      
+              <label for="direccion">Dirección:</label>
+              <input id="direccion" formControlName="direccion" type="text" placeholder="Dirección">
+      
+              <label for="telefono">Teléfono:</label>
+              <input id="telefono" formControlName="telefono" type="text" placeholder="Teléfono">
+            </div>
+      
+            <!-- Campos para el Médico -->
+            <div *ngIf="isMedico$ | async">
+              <label for="nombre">Nombre:</label>
+              <input id="nombre" formControlName="name" type="text" placeholder="Nombre completo">
+      
+              <label for="cedula">Cédula:</label>
+              <input id="cedula" formControlName="cedula" type="text" placeholder="Cédula">
+      
+              <label for="numeroLicencia">Número de Licencia:</label>
+              <input id="numeroLicencia" formControlName="numeroLicencia" type="text" placeholder="Número de Licencia">
+      
+              <label for="especialidad">Especialidad:</label>
+              <input id="especialidad" formControlName="especialidad" type="text" placeholder="Especialidad">
+            </div>
+      
+            <div class="botones-modal">
+              <button type="submit" class="guardar-btn">Guardar</button>
+              <button type="button" class="cancelar-btn" (click)="cerrarModal()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+</div>
+
+<!-- Modal de éxito o error -->
+<app-modal
+[showModal]="modal.show"
+[message]="modal.message"
+[isError]="modal.isError"
+[isSuccess]="modal.isSuccess"
+(close)="modal.close()">
+</app-modal>
