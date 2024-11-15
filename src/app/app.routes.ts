@@ -39,6 +39,10 @@ export const routes: Routes = [
       loadComponent: () => import('./pages/ver-tratamiento/ver-tratamiento.component').then(c => c.VerTratamientoComponent)
     },
     { 
+      path: 'servicios', 
+      loadComponent: () => import('./pages/paciente-servicios/paciente-servicios.component').then(c => c.PacienteServiciosComponent)
+    },
+    { 
       path: 'perfil', 
       loadComponent: () => import('./pages/usuario-perfil/usuario-perfil.component').then(c => c.UsuarioPerfilComponent)
     },
