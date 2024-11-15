@@ -1,0 +1,21 @@
+.container {
+    padding: 1rem;
+    background-color: #ffffff;
+    margin-top: 2rem; 
+}
+
+.servicio-bloque {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 1.5rem; 
+}
+
+.servicio-bloque h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #333;
+}

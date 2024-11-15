@@ -1,0 +1,49 @@
+
+.turnos-table {
+    width: 100%; 
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #ffffff; 
+}
+
+.turnos-table thead tr {
+    background-color: #009879; 
+    color: #ffffff; 
+    font-weight: bold; 
+}
+
+.turnos-table th,
+.turnos-table td {
+    padding: 15px; 
+    font-size: 13px;
+    border: 1px solid #dddddd; 
+}
+
+.turnos-table tbody tr {
+    border-bottom: 1px solid #dddddd; 
+}
+
+.turnos-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3; 
+}
+
+.turnos-table tbody tr:hover {
+    background-color: #f1f1f1; 
+    cursor: pointer; 
+}
+
+/* Ajustes responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+    .turnos-table {
+        font-size: 14px; 
+        width: 95%; 
+    }
+
+    .turnos-table th,
+    .turnos-table td {
+        padding: 10px; 
+    }
+}

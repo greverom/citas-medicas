@@ -118,6 +118,26 @@ export class PacienteService {
     );
   }
 
+  // Método para obtener turnos por pacienteId
+obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
+  const pacienteRef = child(this.dbRef, pacienteId); 
+  
+  return from(get(pacienteRef)).pipe(
+    map(snapshot => {
+      if (snapshot.exists()) {
+        const paciente = snapshot.val() as PacienteDto; 
+        return paciente.turnos || []; 
+      } else {
+        return [];
+      }
+    }),
+    catchError(error => {
+      console.error('Error al obtener turnos del paciente:', error);
+      return of([]); 
+    })
+  );
+}
+
   // Actualizar un paciente
   actualizarPaciente(id: string, paciente: PacienteDto): Observable<void> {
     if (!paciente.id) {

@@ -1,1 +1,29 @@
-<p>citas works!</p>
+
+  <div *ngIf="turnos$ | async as turnos; else noCitas">
+    <table class="turnos-table" *ngIf="turnos.length > 0; else noCitas">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Estado</th>
+          <th>Médico</th>
+          <th>Instrucciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of turnos">
+          <td>{{ turno.fecha }}</td>
+          <td>{{ turno.hora }}</td>
+          <td>{{ turno.estado }}</td>
+          <td>{{ turno.nombreMedico }}</td>
+          <td>{{ turno.instrucciones || 'N/A' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+<ng-template #noCitas>
+  <p>No tienes citas agendadas.</p>
+</ng-template>
