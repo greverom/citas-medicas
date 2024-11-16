@@ -1,0 +1,40 @@
+.diagnosticos-table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .diagnosticos-table {
+    width: 75%;
+    margin: auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .diagnosticos-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .diagnosticos-table th,
+  .diagnosticos-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+  }
+  
+  .diagnosticos-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+  
+  .diagnosticos-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TurnoDto } from '../../../models/turno.dto';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { PacienteService } from '../../../services/pacientes.service';
 import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
@@ -25,19 +25,28 @@ export class CitasComponent implements OnInit {
 
   ngOnInit(): void {
     this.turnos$ = this.store.select(selectUserData).pipe(
-      switchMap(userData => {
+      switchMap((userData) => {
         const userCedula = userData?.detalles?.cedula;
         if (userCedula) {
           return this.pacienteService.obtenerPacientes().pipe(
-            map(pacientes => pacientes.find(p => p.cedula === userCedula)),
-            switchMap(paciente =>
-              paciente
-                ? this.pacienteService.obtenerTurnosPorPacienteId(paciente.id!)
-                : of([])
-            )
+            map((pacientes) =>
+              pacientes.filter((p) => p.cedula === userCedula) 
+            ),
+            switchMap((pacientes) => {
+              if (pacientes.length > 0) {
+                const turnosObservables = pacientes.map((paciente) =>
+                  this.pacienteService.obtenerTurnosPorPacienteId(paciente.id!)
+                );
+  
+                return forkJoin(turnosObservables).pipe(
+                  map((turnosPorPaciente) => turnosPorPaciente.flat()) 
+                );
+              }
+              return of([]);
+            })
           );
         }
-        return of([]); 
+        return of([]);
       })
     );
   }

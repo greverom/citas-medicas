@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Database, ref, set, update, remove, get, child, push } from '@angular/fire/database';
-import { PacienteDto } from '../models/user.dto';
+import { PacienteDto, UserDto } from '../models/user.dto';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { TurnoDto } from '../models/turno.dto';
@@ -53,6 +53,19 @@ export class PacienteService {
       catchError(error => {
         console.error('Error al obtener pacientes:', error);
         return of([]); 
+      })
+    );
+  }
+// Obtener un Medico por ID
+  obtenerMedicoPorId(medicoId: string): Observable<Partial<UserDto> | null> {
+    const medicoRef = ref(this.db, `usuarios/${medicoId}`);
+    return from(get(medicoRef)).pipe(
+      map((snapshot) => 
+        snapshot.exists() ? snapshot.val() as Partial<UserDto> : null
+      ),
+      catchError((error) => {
+        console.error('Error al obtener médico:', error);
+        return of(null);
       })
     );
   }
@@ -224,6 +237,25 @@ obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
       catchError(error => {
         console.error('Error al agregar diagnóstico:', error);
         throw error;
+      })
+    );
+  }
+
+  obtenerDiagnosticosPorPacienteId(pacienteId: string): Observable<Diagnostico[]> {
+    const pacienteRef = child(this.dbRef, pacienteId);
+  
+    return from(get(pacienteRef)).pipe(
+      map(snapshot => {
+        if (snapshot.exists()) {
+          const paciente = snapshot.val() as PacienteDto;
+          return paciente.diagnosticos || []; 
+        } else {
+          return [];
+        }
+      }),
+      catchError(error => {
+        console.error('Error al obtener diagnósticos del paciente:', error);
+        return of([]); 
       })
     );
   }

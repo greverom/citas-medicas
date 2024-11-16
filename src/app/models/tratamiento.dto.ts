@@ -6,4 +6,5 @@ export interface TratamientoDto {
     fechaCreacion: string;
     medicamentos: { nombre: string; dosis: string; frecuencia: string }[];
     notas: string;
+    nombreMedico?: string;
   }
