@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PacienteDto } from '../../models/user.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { CommonModule } from '@angular/common';
