@@ -1,5 +1,5 @@
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { PacienteDto } from '../../models/user.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { CommonModule } from '@angular/common';
@@ -26,6 +26,7 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
   tratamientos: TratamientoDto[] = [];
   private destroy$ = new Subject<void>();
   modal: ModalDto = modalInitializer(); 
+  @Output() agendarTurno = new EventEmitter<PacienteDto>();
 
   constructor(private pacienteService: PacienteService,
               private router: Router
@@ -46,6 +47,12 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next(); 
     this.destroy$.complete(); 
+  }
+
+  emitirAgendarTurno() {
+    if (this.paciente) {
+      this.agendarTurno.emit(this.paciente);
+    }
   }
 
   agregarDiagnostico() {

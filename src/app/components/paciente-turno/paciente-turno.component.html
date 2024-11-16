@@ -20,6 +20,9 @@
     </div>
   
     <div class="boton-agendar">
-      <button (click)="agendarTurno()">Agendar Turno</button>
+      <button (click)="agendarTurno()" 
+            [disabled]="!fechaSeleccionada || !horaSeleccionada || !paciente || !medicoId">
+      Agendar Turno
+    </button>
     </div>
   </div>

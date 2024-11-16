@@ -3,7 +3,6 @@ import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { selectIsLoggedIn, selectUserData } from '../../store/user.selector';
-import { setLoggedInStatus, unsetUserData } from '../../store/user.action';
 import { CommonModule } from '@angular/common';
 import { UserRole } from '../../models/user.dto';
 import { AuthService } from '../../services/auth.service';

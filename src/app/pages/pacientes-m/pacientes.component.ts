@@ -260,7 +260,7 @@ export class PacientesComponent implements OnInit{
             this.router.navigate([rutaRedireccion]);
             this.closeModal();
           }
-        : undefined, // Solo define si hay ruta
+        : undefined, 
     };
   
     if (!esConfirmacion && !rutaRedireccion) {

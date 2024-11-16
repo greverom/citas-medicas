@@ -40,7 +40,11 @@
   
         <!-- Botón de guardar -->
         <div class="botones-accion">
-          <button type="submit" class="btn guardar-btn" (click)="guardarTratamiento()">Guardar Tratamiento</button>
+          <button type="submit" class="btn guardar-btn" 
+                        (click)="guardarTratamiento()" 
+                        [disabled]="!tratamientoForm.get('nombreTratamiento')?.value">
+                    Guardar Tratamiento
+                </button>
           <button type="button" class="btn cancelar-btn" (click)="cancelar()">Cancelar</button>
         </div>
       </form>

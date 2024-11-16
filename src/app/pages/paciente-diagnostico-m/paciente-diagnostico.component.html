@@ -23,7 +23,11 @@
     </div>
 
     <div class="botones">
-      <button class="boton-accion agregar" (click)="agregarDiagnostico()">Agregar Diagnóstico</button>
+      <button class="boton-accion agregar" 
+              (click)="agregarDiagnostico()" 
+              [disabled]="!descripcion || !recomendaciones || !titulo">
+        Agregar Diagnóstico
+      </button>
       <button class="boton-accion cancelar" (click)="cancelar()">Cancelar</button>
     </div>
 

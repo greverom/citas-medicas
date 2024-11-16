@@ -31,6 +31,7 @@
   
   .turnos-container h3 {
     text-align: left;
+    margin-top: 1.5rem;
     margin-bottom: 15px;
     font-size: 1.2em;
     font-weight: bold;
@@ -180,6 +181,13 @@
   margin-top: 20px;
 }
 
+.tratamientos-container h3 {
+  font-size: 1.2rem; 
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 .tratamientos-tabla {
   width: 100%;
   border-collapse: collapse;
@@ -232,6 +240,29 @@
       font-size: 14px;
     }
 
+    .turnos-tabla th,
+  .turnos-tabla td {
+    padding: 8px; 
+    font-size: 0.8em; 
+  }
+
+  .turnos-tabla th {
+    font-size: 0.9em; 
+  }
+
+  .turnos-tabla td {
+    font-size: 0.75em; 
+  }
+
+  .eliminar-btn {
+    padding: 3px; 
+  }
+
+  .eliminar-btn svg {
+    width: 16px;
+    height: 16px; 
+  }
+
     .diagnosticos-tabla {
       width: 100%; 
       font-size: 13px; 
@@ -254,6 +285,39 @@
     .ver-btn svg, .eliminar-btn svg {
       width: 18px;
       height: 18px; 
+    }
+
+    .tratamientos-container h3 {
+      font-size: 1.2rem; 
+    }
+
+    .tratamientos-tabla {
+      font-size: 0.85rem; 
+      width: 100%; 
+    }
+  
+    .tratamientos-tabla th,
+    .tratamientos-tabla td {
+      padding: 8px 10px; 
+      font-size: 0.8rem; 
+    }
+  
+    .tratamientos-tabla ul {
+      padding-left: 15px;
+      font-size: 0.8rem; 
+    }
+  
+    .tratamientos-tabla svg {
+      width: 20px; 
+      height: 20px;
+    }
+  
+    .tratamientos-tabla tr:nth-child(even) {
+      background-color: #ffffff; 
+    }
+  
+    .tratamientos-container {
+      overflow-x: auto; 
     }
   }
 

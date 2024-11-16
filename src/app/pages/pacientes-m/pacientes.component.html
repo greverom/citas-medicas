@@ -189,7 +189,9 @@
         <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
       </svg>
     </button>-->
-    <app-paciente-datos></app-paciente-datos>
+    <app-paciente-datos 
+    (agendarTurno)="abrirTurnoPaciente($event)">
+  </app-paciente-datos>
 </div>
 
 <app-modal
