@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectIsLoggedIn } from '../../store/user.selector';
 import { CommonModule } from '@angular/common';
+import { FooterComponent } from '../../components/home-c/footer/footer.component';
 
 
 
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     HeroComponent,
     ProductsComponent,
-    LoginComponent
+    LoginComponent,
+    FooterComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

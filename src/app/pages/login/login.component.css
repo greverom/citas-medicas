@@ -47,8 +47,10 @@
 
 .login-card .btn-primary {
     padding: 12px 0; 
+    background-color: rgba(89, 86, 86, 1); 
     font-size: 1rem; 
     border-radius: 5px; 
+    border: none;
 }
 
 .login-image {
