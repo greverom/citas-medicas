@@ -5,6 +5,7 @@ import { PacienteService } from '../../../services/pacientes.service';
 import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
+import { SpinnerService } from '../../../services/spinner.service';
 
 @Component({
   selector: 'app-citas',
@@ -20,24 +21,27 @@ export class CitasComponent implements OnInit {
 
   constructor(
     private pacienteService: PacienteService,
-    private store: Store
+    private store: Store,
+    private spinnerService: SpinnerService
   ) {}
 
   ngOnInit(): void {
+    this.spinnerService.show(); 
+
     this.turnos$ = this.store.select(selectUserData).pipe(
       switchMap((userData) => {
         const userCedula = userData?.detalles?.cedula;
         if (userCedula) {
           return this.pacienteService.obtenerPacientes().pipe(
             map((pacientes) =>
-              pacientes.filter((p) => p.cedula === userCedula) 
+              pacientes.filter((p) => p.cedula === userCedula)
             ),
             switchMap((pacientes) => {
               if (pacientes.length > 0) {
                 const turnosObservables = pacientes.map((paciente) =>
                   this.pacienteService.obtenerTurnosPorPacienteId(paciente.id!)
                 );
-  
+
                 return forkJoin(turnosObservables).pipe(
                   map((turnosPorPaciente) => turnosPorPaciente.flat()) 
                 );
@@ -47,6 +51,10 @@ export class CitasComponent implements OnInit {
           );
         }
         return of([]);
+      }),
+      map((result) => {
+        this.spinnerService.hide(); 
+        return result;
       })
     );
   }

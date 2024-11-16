@@ -1,11 +1,4 @@
-.diagnosticos-table-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 1rem;
-  }
-  
+
   .diagnosticos-table {
     width: 75%;
     margin: auto;
