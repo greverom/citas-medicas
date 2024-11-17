@@ -51,7 +51,7 @@ export class ProductsComponent implements AfterViewInit {
     const slideWidth = slide.getBoundingClientRect().width;
     const slideMargin = parseFloat(getComputedStyle(slide).marginRight) +
                         parseFloat(getComputedStyle(slide).marginLeft);
-    return slideWidth + slideMargin; // Ancho de tarjeta más márgenes
+    return slideWidth + slideMargin; 
   }
 
   private updateTrackPosition(): void {
@@ -101,4 +101,5 @@ export class ProductsComponent implements AfterViewInit {
       }
     });
   }
+  
 }
