@@ -1,7 +1,11 @@
 
 <app-hero></app-hero>
-<app-products></app-products>
+<div *ngIf="!(isLoggedIn$ | async)">
+    <app-products></app-products>
+</div>
 <div id="login-section" *ngIf="!(isLoggedIn$ | async)">
     <app-login></app-login>
 </div>
-<app-footer></app-footer>
+<div *ngIf="!(isLoggedIn$ | async)">
+    <app-footer></app-footer>
+</div>

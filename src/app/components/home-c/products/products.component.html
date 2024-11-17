@@ -8,25 +8,44 @@
         </p>
         <button class="explore-button">Explorar Todo</button>
       </div>
-  
+      <div class="overlay-block"></div>
       <!-- Segundo Bloque: Tarjetas de Servicios -->
       <div class="services-section">
-        <div class="service-card">
-          <img src="assets/img/citas.jpg" alt="Gestión de Citas" class="service-image" />
-          <h3 class="service-title">Gestión de Citas</h3>
-          <p class="service-description">Administre sus citas con facilidad.</p>
-        </div>
-  
-        <div class="service-card">
-          <img src="assets/img/paciente.jpg" alt="Historial del Paciente" class="service-image" />
-          <h3 class="service-title">Historial del Paciente</h3>
-          <p class="service-description">Acceda a los historiales médicos.</p>
-        </div>
-  
-        <div class="service-card">
-          <img src="assets/img/diagnostico.jpg" alt="Diagnóstico Médico" class="service-image" />
-          <h3 class="service-title">Diagnóstico Médico</h3>
-          <p class="service-description">Emita diagnósticos precisos.</p>
+        <div class="carousel">
+          <button class="carousel-btn prev-btn">&lt;</button>
+          <div class="carousel-track-container">
+            <div class="carousel-track">
+              <!-- Duplicados al inicio -->
+              <div class="service-card">
+                <img src="assets/img/diagnostico.jpg" alt="Diagnóstico Médico" class="service-image" />
+                <h3 class="service-title">Diagnóstico Médico</h3>
+                <p class="service-description">Emita diagnósticos precisos.</p>
+              </div>
+              <!-- Tarjetas originales -->
+              <div class="service-card">
+                <img src="assets/img/citas.jpg" alt="Gestión de Citas" class="service-image" />
+                <h3 class="service-title">Gestión de Citas</h3>
+                <p class="service-description">Administre sus citas con facilidad.</p>
+              </div>
+              <div class="service-card">
+                <img src="assets/img/paciente.jpg" alt="Historial del Paciente" class="service-image" />
+                <h3 class="service-title">Historial del Paciente</h3>
+                <p class="service-description">Acceda a los historiales médicos.</p>
+              </div>
+              <div class="service-card">
+                <img src="assets/img/diagnostico.jpg" alt="Diagnóstico Médico" class="service-image" />
+                <h3 class="service-title">Diagnóstico Médico</h3>
+                <p class="service-description">Emita diagnósticos precisos.</p>
+              </div>
+              <!-- Duplicados al final -->
+              <div class="service-card">
+                <img src="assets/img/citas.jpg" alt="Gestión de Citas" class="service-image" />
+                <h3 class="service-title">Gestión de Citas</h3>
+                <p class="service-description">Administre sus citas con facilidad.</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-btn next-btn">&gt;</button>
         </div>
       </div>
     </div>

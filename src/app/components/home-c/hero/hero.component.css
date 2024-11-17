@@ -12,7 +12,7 @@
 
  .container {
   display: flex;
-  padding: 0rem 2rem;
+  margin-left: 5%;
   flex-direction: column;
   align-items: flex-start;
   width: 80%; 
@@ -29,7 +29,6 @@
 .welcome-title {
   width: 100%;
   color: #40e0d0;
-  font-size: 40px;
   font-weight: bold;
   text-align: left;
 }
@@ -41,7 +40,8 @@
 }
 
 .user-name {
-  font-size: 1.7rem;  
+  font-size: 1.6rem; 
+  color: #8f8f8f;  
 }
 
 .welcome-title .user-icon {
@@ -91,7 +91,7 @@
 
 .hero-button:nth-child(1) {
   background-color: #40e0d0;
-  color: white;
+  color: #333;
   border: none;
 }
 
@@ -110,7 +110,7 @@
 }
 
 .row {
-  width: 60%;
+  width: 70%;
   display: flex;
   justify-content: center; 
   align-items: center;
@@ -119,12 +119,13 @@
 .col-image {
   width: 100%;
   display: flex;
+  margin-right: 7rem;
   justify-content: center;
 }
+
 .hero-image {
-  width: 100%;
+  width: 60%;
   object-fit: cover;
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
   }
 
 
