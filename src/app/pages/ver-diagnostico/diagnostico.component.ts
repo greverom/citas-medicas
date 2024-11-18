@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Diagnostico } from '../../models/diagnostico.dto';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PacienteService } from '../../services/pacientes.service';
+import { Diagnostico } from '../../models/diagnostico.dto';
+
 
 @Component({
   selector: 'app-diagnostico',

@@ -16,31 +16,31 @@ export const routes: Routes = [
     },
     { 
       path: 'pacientes', 
-      loadComponent: () => import('./pages/pacientes-m/pacientes.component').then(c => c.PacientesComponent) 
+      loadComponent: () => import('./pages/lista-pacientes-de-medico/pacientes.component').then(c => c.PacientesComponent) 
     },
     { 
       path: 'diagnosticos', 
-      loadComponent: () => import('./pages/paciente-diagnostico-m/paciente-diagnostico.component').then(c => c.PacienteDiagnosticoComponent) 
+      loadComponent: () => import('./pages/crear-diagnostico-medico/paciente-diagnostico.component').then(c => c.PacienteDiagnosticoComponent) 
     },
     { 
       path: 'ver-diagnostico', 
-      loadComponent: () => import('./components/diagnostico/diagnostico.component').then(c => c.DiagnosticoComponent) 
+      loadComponent: () => import('./pages/ver-diagnostico/diagnostico.component').then(c => c.DiagnosticoComponent) 
     },
     { 
       path: 'agenda-medico', 
-      loadComponent: () => import('./pages/agenda-medico-m/agenda-medico.component').then(c => c.AgendaMedicoComponent) 
+      loadComponent: () => import('./pages/calendario-medico/agenda-medico.component').then(c => c.AgendaMedicoComponent) 
     },
     { 
       path: 'tratamientos', 
-      loadComponent: () => import('./pages/tratamientos-medico-m/tratamientos-medico.component').then(c => c.TratamientosMedicoComponent) 
+      loadComponent: () => import('./pages/crear-tratamientos-medico/tratamientos-medico.component').then(c => c.TratamientosMedicoComponent) 
     },
     { 
       path: 'ver-tratamiento', 
-      loadComponent: () => import('./pages/ver-tratamiento-m/ver-tratamiento.component').then(c => c.VerTratamientoComponent)
+      loadComponent: () => import('./pages/ver-tratamiento/ver-tratamiento.component').then(c => c.VerTratamientoComponent)
     },
     { 
       path: 'servicios', 
-      loadComponent: () => import('./pages/paciente-servicios-p/paciente-servicios.component').then(c => c.PacienteServiciosComponent)
+      loadComponent: () => import('./pages/servicios-paciente/paciente-servicios.component').then(c => c.PacienteServiciosComponent)
     },
     { 
       path: 'perfil', 

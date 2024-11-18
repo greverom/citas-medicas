@@ -1,14 +1,14 @@
 
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { PacienteDto } from '../../models/user.dto';
-import { PacienteService } from '../../services/pacientes.service';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil} from 'rxjs';
 import { Router } from '@angular/router';
-import { Diagnostico } from '../../models/diagnostico.dto';
-import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
-import { ModalComponent } from '../../components/modal/modal.component';
-import { TratamientoDto } from '../../models/tratamiento.dto';
+import { PacienteService } from '../../../services/pacientes.service';
+import { PacienteDto } from '../../../models/user.dto';
+import { ModalComponent } from '../../modal/modal.component';
+import { Diagnostico } from '../../../models/diagnostico.dto';
+import { TratamientoDto } from '../../../models/tratamiento.dto';
+import { ModalDto, modalInitializer } from '../../modal/modal.dto';
 
 @Component({
   selector: 'app-paciente-datos',

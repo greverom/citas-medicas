@@ -36,7 +36,7 @@
     <div class="modal-overlay" *ngIf="modalAbierto">
         <div class="modal-content">
           <button class="cerrar-modal" (click)="cerrarModal()">X</button>
-          <h3>Completar Perfil</h3>
+          <h3>Editar Perfil del Usuario</h3>
           <form [formGroup]="usuarioForm" (ngSubmit)="guardarCambios()">
             <!-- Campos para el Paciente -->
             <div *ngIf="isPaciente$ | async">

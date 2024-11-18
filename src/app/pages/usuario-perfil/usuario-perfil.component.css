@@ -1,4 +1,3 @@
-/* Estilos generales */
 .container {
     width: 100%;
     display: flex;
@@ -8,7 +7,6 @@
     background-color: #ffffff;
   }
   
-  /* Contenedor principal del perfil de usuario */
   .perfil-usuario-container {
     width: 100%;
     max-width: 700px; 
@@ -27,12 +25,10 @@
     padding-bottom: 10px;
   }
   
-  /* Información básica y bloques de detalles */
   .info-basica, .detalles-paciente, .detalles-medico {
     margin-bottom: 20px;
   }
   
-  /* Estilo de cada elemento de información */
   .info-basica p, .detalles-paciente p, .detalles-medico p {
     font-size: 16px;
     color: #555;
@@ -42,13 +38,11 @@
     border-radius: 5px;
   }
   
-  /* Etiquetas en negrita */
   .info-basica strong, .detalles-paciente strong, .detalles-medico strong {
     color: #333;
     font-weight: 600;
   }
   
-  /* Colores diferenciados para el paciente y médico */
   .detalles-paciente {
     background-color: #ffffff;
     padding: 15px;
@@ -116,13 +110,30 @@
     margin-bottom: 10px;
     width: 100%;
   }
-  
-  input[type="text"], input[type="date"], button {
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+
+  .modal-content input {
+    height: 40px; 
+    padding: 8px; 
+    border-radius: 5px; 
+    font-size: 14px; 
+    border: 1px solid #ccc; 
+    box-sizing: border-box; 
   }
+  
+  .modal-content input[type="number"]#cedula {
+    appearance: none; 
+    -moz-appearance: textfield; 
+    -webkit-appearance: none;
+  }
+
+  .modal-content input[type="number"]#cedula::-webkit-inner-spin-button,
+  .modal-content input[type="number"]#cedula::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Quita flechas en WebKit */
+}
+
+  .modal-content input[type="number"]#cedula::-moz-inner-spin-button {
+   display: none; /* Quita flechas en Firefox */
+}
   
   .botones-modal {
     display: flex;

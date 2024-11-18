@@ -7,12 +7,13 @@ import { CommonModule } from '@angular/common';
 import { PacienteService } from '../../services/pacientes.service';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { ModalComponent } from '../../components/modal/modal.component';
-import { PacienteTurnoComponent } from '../../components/paciente-turno/paciente-turno.component';
 import { TurnoDto } from '../../models/turno.dto';
 import { Diagnostico } from '../../models/diagnostico.dto';
 import { cedulaEcuatorianaValidator, CedulaEcuatorianaValidatorDirective } from '../../directives/cedula-ecuatoriana.directive';
 import { Router } from '@angular/router';
-import { PacienteDatosComponent } from '../../components/paciente-datos/paciente-datos.component';
+import { PacienteDatosComponent } from '../../components/medico/paciente-datos/paciente-datos.component';
+import { PacienteTurnoComponent } from '../../components/medico/paciente-turno/paciente-turno.component';
+
 
 @Component({
   selector: 'app-pacientes',

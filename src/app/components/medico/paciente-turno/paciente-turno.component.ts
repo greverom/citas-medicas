@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PacienteDto} from '../../models/user.dto';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { PacienteService } from '../../services/pacientes.service';
-import { EstadoTurno, TurnoDto } from '../../models/turno.dto';
 import { Store } from '@ngrx/store';
-import { selectUserData } from '../../store/user.selector';
+import { PacienteDto } from '../../../models/user.dto';
+import { EstadoTurno, TurnoDto } from '../../../models/turno.dto';
+import { PacienteService } from '../../../services/pacientes.service';
+import { selectUserData } from '../../../store/user.selector';
 
 @Component({
   selector: 'app-paciente-turno',
