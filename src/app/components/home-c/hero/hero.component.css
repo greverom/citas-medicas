@@ -28,7 +28,7 @@
 
 .welcome-title {
   width: 100%;
-  color: #40e0d0;
+  color: #009879;
   font-weight: bold;
   text-align: left;
 }
@@ -36,7 +36,7 @@
 .welcome-title  {
   font-size: 2rem; 
   font-weight: normal; 
-  color: rgb(45, 180, 173);
+  color: turquoise;
 }
 
 .user-name {
@@ -53,12 +53,21 @@
 }
 
 .web-description {
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column; 
+  align-items: left;    
+  text-align: left;     
+  margin-top: 0px;       
+}
+
+.web-description-part {
   font-size: 55px; 
   font-weight: bold;
-  color: #444;
-  line-height: 1.2;
-  text-align: left;
+}
+
+.web-description-part.highlight {
+  color: turquoise; 
+  margin-top: -15px;
 }
 
 .welcome-text {
@@ -90,8 +99,8 @@
 }
 
 .hero-button:nth-child(1) {
-  background-color: #40e0d0;
-  color: #333;
+  background-color: turquoise;
+  color: #393939;
   border: none;
 }
 
@@ -124,7 +133,7 @@
 }
 
 .hero-image {
-  width: 60%;
+  width: 70%;
   object-fit: cover;
   }
 
@@ -150,8 +159,8 @@
       font-size: 16px; 
   }
 
-  .web-description{
-    font-size: 3rem;
+  .web-description-part {
+    font-size: 2.9rem;
   }
 
   .hero-buttons {
@@ -168,8 +177,10 @@
   .hero-container{
     padding-right: 0px;
   }
+
   .container{
-    padding-left: 12px;
+    padding-left: 0px;
+    width: 90%;
   }
 
   .hero-welcome {
@@ -189,13 +200,13 @@
       font-size: 15px; 
   }
 
-  .web-description{
-    font-size: 2.8rem;
+  .web-description-part{
+    font-size: 2.6rem;
   }
 
   .hero-buttons {
     margin-top: 3rem;
-      align-items: left;
+    align-items: center;
   }
 
   .hero-button {
@@ -203,6 +214,7 @@
     font-size: 12px;
     width: 150px; 
     max-width: 100%;
+    text-align: center;
   }
   .row {
     width: 17%;
@@ -228,16 +240,21 @@
       font-size: 20px; 
   }
 
-  .web-description{
-    font-size: 2rem;
+  .web-description-part{
+    font-size: 2.2rem;
+  }
+
+  .web-description-part.highlight {
+    color: turquoise; 
+    margin-top: -5px;
   }
 
   .welcome-text {
       font-size: 14px; 
   }
 
-  .hero-buttons {
-      flex-direction: column; 
+  .hero-buttons { 
+    width: 100%;
       align-items: left; 
       gap: 10px; 
   }

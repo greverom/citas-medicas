@@ -18,18 +18,49 @@
   
   /* Título del perfil */
   .perfil-usuario-container h2 {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
     font-size: 24px;
     color: #333;
     margin-bottom: 20px;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #40e0d0;
     padding-bottom: 10px;
+}
+
+  .info-basica-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+    margin-bottom: 20px; 
+  }
+
+  .info-imagen {
+    flex: 0 0 120px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user-image {
+    width: 100px; 
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd; 
+  }
+
+  .info-basica {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
   }
   
-  .info-basica, .detalles-paciente, .detalles-medico {
+  .detalles-paciente, .detalles-medico {
     margin-bottom: 20px;
   }
   
-  .info-basica p, .detalles-paciente p, .detalles-medico p {
+  .detalles-paciente p, .detalles-medico p {
     font-size: 16px;
     color: #555;
     margin: 8px 0;
@@ -38,7 +69,7 @@
     border-radius: 5px;
   }
   
-  .info-basica strong, .detalles-paciente strong, .detalles-medico strong {
+  .detalles-paciente strong, .detalles-medico strong {
     color: #333;
     font-weight: 600;
   }

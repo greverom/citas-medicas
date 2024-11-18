@@ -8,7 +8,12 @@
         </svg>
       </div>
       <div class="web-description">
-        Gestión médica sencilla y Segura para todos
+        <div class="web-description-part">
+          Gestión médica sencilla y
+        </div>
+        <div class="web-description-part highlight">
+          Segura para todos
+        </div>
       </div>
       <div class="welcome-text" *ngIf="!(isLoggedIn$ | async)">
         Gestiona tus pacientes, tratamientos y diagnósticos con facilidad
@@ -27,13 +32,18 @@
       </ng-container>
       <ng-template #agendaButton>
         <a routerLink="/agenda-medico" class="hero-button" *ngIf="isMedico$ | async">Revisar Agenda</a>
+        <a routerLink="/servicios" class="hero-button" *ngIf="isPaciente$ | async">Ver mis Servicios</a>
+        <a routerLink="/register" class="hero-button" *ngIf="isAdmin$ | async">Registrar Usuario</a>
       </ng-template>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-image">
+    <div class="col-image" *ngIf="isPaciente$ | async">
       <img src="assets/img/imagen-hero.png" alt="Paciente" class="hero-image" />
+    </div>
+    <div class="col-image" *ngIf="!(isLoggedIn$ | async) || (isMedico$ | async)">
+      <img src="/assets/img/imagen2 medico.png" alt="No logueado" class="hero-image" />
     </div>
   </div>
 </div>

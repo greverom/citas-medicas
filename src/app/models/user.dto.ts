@@ -3,6 +3,7 @@ import { TurnoDto } from "./turno.dto";
 
 export interface UserDto {
     id?: string;
+    photoUrl?:string;
     name: string;
     email: string;
     role?: UserRole;

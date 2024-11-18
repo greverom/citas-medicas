@@ -1,7 +1,19 @@
 .hero-container {
-    margin-top: 50px; 
+    margin-top: 25px; 
   }
 
 .footer-container{
     margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+  .hero-container {
+    margin-top: 0px; 
+  }
+}
+
+@media (max-width: 492px) {
+  .hero-container {
+    margin-top: -10px; 
+  }
 }
