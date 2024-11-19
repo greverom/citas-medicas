@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { selectIsLoggedIn, selectUserData } from '../../store/user.selector';
 import { CommonModule } from '@angular/common';
-import { UserRole } from '../../models/user.dto';
+import { UserDto, UserRole } from '../../models/user.dto';
 import { AuthService } from '../../services/auth.service';
 import { ModalComponent } from '../modal/modal.component';
 import { ModalDto, modalInitializer } from '../modal/modal.dto';
@@ -26,6 +26,7 @@ export class NavbarComponent {
   isAdmin$: Observable<boolean>;
   isMedico$: Observable<boolean>;
   isPaciente$: Observable<boolean>;
+  navTitle$: Observable<string>;
 
   constructor(private store: Store, 
               private router: Router, 
@@ -40,6 +41,20 @@ export class NavbarComponent {
     );
     this.isPaciente$ = this.store.select(selectUserData).pipe(
       map(user => user?.role === UserRole.Paciente)
+    );
+
+    this.navTitle$ = this.store.select(selectUserData).pipe(
+      map((user: UserDto | null) => {
+        if (user?.role === UserRole.Medico) {
+          return 'Médico';
+        } else if (user?.role === UserRole.Paciente) {
+          return 'Paciente';
+        } else if (user?.role === UserRole.Admin) {
+          return 'Administrador';
+        } else {
+          return 'Citas Médicas'; 
+        }
+      })
     );
   }
 

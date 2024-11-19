@@ -9,6 +9,7 @@ import { UserDataService } from '../../services/user-data.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { setUserData } from '../../store/user.action';
+import { cedulaEcuatorianaValidator, CedulaEcuatorianaValidatorDirective } from '../../directives/cedula-ecuatoriana.directive';
 
 @Component({
   selector: 'app-usuario-perfil',
@@ -16,7 +17,8 @@ import { setUserData } from '../../store/user.action';
   imports: [
       CommonModule,
       ReactiveFormsModule,
-      ModalComponent
+      ModalComponent,
+      CedulaEcuatorianaValidatorDirective
   ],
   templateUrl: './usuario-perfil.component.html',
   styleUrl: './usuario-perfil.component.css'
@@ -72,7 +74,7 @@ export class UsuarioPerfilComponent implements OnInit {
     if (this.isPacienteDetalles(data.detalles)) {
       this.usuarioForm = this.fb.group({
         name: [data.name || '', Validators.required],
-        cedula: [data.detalles.cedula || ''],
+        cedula: [data.detalles.cedula || '', [Validators.required, cedulaEcuatorianaValidator()]],
         fechaNacimiento: [data.detalles.fechaNacimiento || ''],
         direccion: [data.detalles.direccion || ''],
         telefono: [data.detalles.telefono || '']
@@ -80,7 +82,7 @@ export class UsuarioPerfilComponent implements OnInit {
     } else if (this.isMedicoDetalles(data.detalles)) {
       this.usuarioForm = this.fb.group({
         name: [data.name || '', Validators.required],
-        cedula: [data.detalles.cedula || ''],
+        cedula: [data.detalles.cedula || '', [Validators.required, cedulaEcuatorianaValidator()]],
         numeroLicencia: [data.detalles.numeroLicencia || ''],
         especialidad: [data.detalles.especialidad || '']
       });

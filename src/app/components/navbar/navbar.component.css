@@ -16,7 +16,7 @@
     transition: background-color 0.3s ease; 
     position: relative; 
     left: -45px; 
-    padding-left: calc(20px +1rem);
+    padding-left: calc(20px + 1rem);
   }
   
   .navbar-nav {

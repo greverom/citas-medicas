@@ -14,3 +14,16 @@
     <app-tratamientos></app-tratamientos>
   </div>
 </div>
+
+<app-modal
+  [showModal]="modal.show"
+  [message]="modal.message"
+  [isError]="modal.isError"
+  [isSuccess]="modal.isSuccess"
+  [isConfirm]="modal.isConfirm"
+  [showRedirectButton]="modal.showRedirectButton ?? false"
+  (close)="closeModal()"
+  (confirm)="modal.confirm && modal.confirm()"
+  (cancel)="closeModal()"
+  (redirect)="modal.redirect && modal.redirect()">
+</app-modal>

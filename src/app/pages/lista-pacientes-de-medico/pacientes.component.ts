@@ -208,7 +208,7 @@ export class PacientesComponent implements OnInit{
   
       this.pacienteService.actualizarPaciente(id, pacienteActualizado).subscribe({
         next: () => {
-          console.log('Paciente actualizado');
+          //console.log('Paciente actualizado');
           this.mostrarModal('Paciente actualizado exitosamente.', false);
           this.obtenerPacientes(); 
           this.cerrarModalEditar();
@@ -229,8 +229,11 @@ export class PacientesComponent implements OnInit{
       () => {
         this.pacienteService.eliminarPaciente(id).subscribe({
           next: () => {
-            console.log('Paciente eliminado');
+           //console.log('Paciente eliminado');
             this.mostrarModal('Paciente eliminado exitosamente.', false);
+            if (this.pacienteActivoId === id) {
+              this.cerrarPacienteSeleccionado(); 
+            }
             this.obtenerPacientes(); 
           },
           error: (error) => {

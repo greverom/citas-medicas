@@ -49,7 +49,16 @@
               <input id="nombre" formControlName="name" type="text" placeholder="Nombre completo">
       
               <label for="cedula">Cédula:</label>
-              <input id="cedula" formControlName="cedula" type="number" placeholder="Cédula">
+              <input id="cedula" 
+                    formControlName="cedula" 
+                    type="number" 
+                    cedulaEcuatoriana 
+                    placeholder="Cédula"
+                    [ngClass]="{'error': usuarioForm.get('cedula')?.invalid && usuarioForm.get('cedula')?.touched}">
+              <div *ngIf="usuarioForm.get('cedula')?.invalid && usuarioForm.get('cedula')?.touched" class="error-message">
+                <span *ngIf="usuarioForm.get('cedula')?.hasError('cedulaEcuatoriana')">Cédula no válida</span>
+                <span *ngIf="usuarioForm.get('cedula')?.hasError('required')">Campo obligatorio</span>
+              </div>
       
               <label for="fechaNacimiento">Fecha de Nacimiento:</label>
               <input id="fechaNacimiento" formControlName="fechaNacimiento" type="date">
@@ -67,7 +76,16 @@
               <input id="nombre" formControlName="name" type="text" placeholder="Nombre completo">
       
               <label for="cedula">Cédula:</label>
-              <input id="cedula" formControlName="cedula" type="number" placeholder="Cédula">
+              <input id="cedula" 
+                    formControlName="cedula" 
+                    type="number" 
+                    cedulaEcuatoriana 
+                    placeholder="Cédula"
+                    [ngClass]="{'error': usuarioForm.get('cedula')?.invalid && usuarioForm.get('cedula')?.touched}">
+              <div *ngIf="usuarioForm.get('cedula')?.invalid && usuarioForm.get('cedula')?.touched" class="error-message">
+                <span *ngIf="usuarioForm.get('cedula')?.hasError('cedulaEcuatoriana')">Cédula no válida</span>
+                <span *ngIf="usuarioForm.get('cedula')?.hasError('required')">Campo obligatorio</span>
+              </div>
       
               <label for="numeroLicencia">Número de Licencia:</label>
               <input id="numeroLicencia" formControlName="numeroLicencia" type="text" placeholder="Número de Licencia">

@@ -165,6 +165,32 @@
   .modal-content input[type="number"]#cedula::-moz-inner-spin-button {
    display: none; /* Quita flechas en Firefox */
 }
+
+  input.ng-invalid.ng-touched {
+    border: 1px solid red; 
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px; 
+    margin-left: 2px; 
+    position: relative; 
+  }
+
+  .error-icon {
+    color: red;
+    font-size: 14px;
+    margin-right: 5px;
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%);
+    right: 10px; 
+  }
+  
+  .form-group {
+    position: relative; 
+  }
   
   .botones-modal {
     display: flex;
