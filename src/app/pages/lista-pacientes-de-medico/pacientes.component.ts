@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PacienteDto, UserDto } from '../../models/user.dto';
 import { selectUserData } from '../../store/user.selector';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -29,6 +29,8 @@ import { PacienteTurnoComponent } from '../../components/medico/paciente-turno/p
   styleUrl: './pacientes.component.css'
 })
 export class PacientesComponent implements OnInit{
+  @ViewChild(PacienteTurnoComponent) turnoComponent!: PacienteTurnoComponent;
+  
   pacienteForm: FormGroup;
   editarPacienteForm: FormGroup;
   modalAbierto = false;
@@ -285,6 +287,13 @@ export class PacientesComponent implements OnInit{
   abrirTurnoPaciente(paciente: PacienteDto) {
     this.pacienteSeleccionadoParaTurno = paciente;
     this.modalTurnoAbierto = true;
+
+    setTimeout(() => {
+      if (this.turnoComponent) {
+        this.turnoComponent.filtrarHorasPorFecha();
+      }
+    }, 0);
+    
   }
 
   actualizarTurnos(nuevoTurno: TurnoDto) {

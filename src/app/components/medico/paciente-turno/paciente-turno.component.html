@@ -2,7 +2,7 @@
     <div class="row">
       <div class="sub-bloque calendario">
         <h3>Seleccionar Fecha</h3>
-        <input type="date" [(ngModel)]="fechaSeleccionada" [min]="fechaMinima" />
+        <input type="date" [(ngModel)]="fechaSeleccionada" [min]="fechaMinima" (change)="onFechaSeleccionadaChange($event)"/>
       </div>
   
       <div class="sub-bloque hora">

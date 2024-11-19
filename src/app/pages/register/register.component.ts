@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router} from '@angular/router';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { AuthService } from '../../services/auth.service';
@@ -76,6 +76,12 @@ export class RegisterComponent implements OnInit {
         this.spinnerService.hide();
         this.showModal(this.createModalParams(false, 'El usuario se registró correctamente.'));
         this.registerForm.reset();
+        setTimeout(() => {
+          if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+            localStorage.removeItem('accessToken');
+          }
+          this.router.navigate(['/home']);
+        }, 2500); 
       },
       error: (error) => {
         this.spinnerService.hide();

@@ -66,6 +66,36 @@ export class PacienteTurnoComponent implements OnInit {
     return horas;
   }
 
+  onFechaSeleccionadaChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement; 
+    if (inputElement && inputElement.value) {
+      this.fechaSeleccionada = inputElement.value; 
+      this.filtrarHorasPorFecha(); 
+    } else {
+      console.log('Fecha seleccionada no válida');
+    }
+  }
+
+  filtrarHorasPorFecha() {
+    if (!this.medicoId || !this.fechaSeleccionada) {
+      return; 
+    }
+    this.pacienteService.obtenerTurnosDePacientesPorMedico(this.medicoId).subscribe({
+      next: (turnos) => {
+        const horasOcupadas = turnos
+          .filter(turno => turno.fecha === this.fechaSeleccionada) 
+          .map(turno => turno.hora); 
+  
+        this.horasDisponibles = this.generarHorasDisponibles().filter(
+          hora => !horasOcupadas.includes(hora)
+        );
+      },
+      error: (error) => {
+        console.error('Error al obtener turnos para la fecha seleccionada:', error);
+      }
+    });
+  }
+
   agendarTurno() {
     if (this.fechaSeleccionada && this.horaSeleccionada && this.paciente && this.medicoId) {
       const turno: TurnoDto = {

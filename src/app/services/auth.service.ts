@@ -35,30 +35,43 @@ export class AuthService {
             email: user.email || '',
             role,
             isAdmin: role === UserRole.Admin,
+          ...(role !== UserRole.Admin && {
             detalles: role === UserRole.Paciente
               ? {
-                  medicoIds: [], 
+                  medicoIds: [],
                   cedula: '',
                   fechaNacimiento: '',
                   direccion: '',
                   telefono: '',
                 } as DetallesPaciente
-              : role === UserRole.Medico
-              ? {
+              : {
                   especialidad: '',
                   numeroLicencia: '',
                   cedula: '',
-                } as DetallesMedico
-              : undefined,
-          };
+                } as DetallesMedico,
+          }),
+        };
 
-          return this.userDataService.addUserToDatabase(newUser).pipe(
-            map(() => {
-              //this.store.dispatch(setUserData({ data: newUser }));
-              this.store.dispatch(setAdminStatus({ isAdmin: role === UserRole.Admin }));
-            })
-          );
-        }
+        return this.userDataService.addUserToDatabase(newUser).pipe(
+          switchMap(() => {
+            // Cerrar la sesión del usuario recién creado
+            return from(signOut(this.auth)).pipe(
+              switchMap(() => {
+                // Mantener la sesión del usuario actual
+                const currentUser = this.auth.currentUser;
+                if (currentUser) {
+                  return from(currentUser.getIdToken(true)).pipe(
+                    map(() => {
+                      this.store.dispatch(setAdminStatus({ isAdmin: role === UserRole.Admin }));
+                    })
+                  );
+                }
+                return of(null);
+              })
+            );
+          })
+        );
+      }
         return of(null);
       }),
       catchError((error) => {
