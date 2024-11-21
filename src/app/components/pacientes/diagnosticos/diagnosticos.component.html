@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let diagnostico of diagnosticos">
+        <tr *ngFor="let diagnostico of diagnosticos" (click)="seleccionarDiagnostico(diagnostico)">
           <td>{{ diagnostico.fecha }}</td>
           <td>{{ diagnostico.titulo }}</td>
           <td>{{ diagnostico.nombreMedico }}</td>
@@ -19,6 +19,30 @@
   </div>
 </div>
 
+
 <ng-template #noDiagnosticos>
   <p *ngIf="showNoDiagnosticoMessage">No tienes diagnósticos disponibles.</p>
 </ng-template>
+
+<div *ngIf="diagnosticoSeleccionado" class="diagnostico-detalle">
+  <div class="row">
+    <div class="column">
+      <h3>Datos del Paciente</h3>
+      <p><strong>Nombre:</strong> {{ paciente?.nombres || 'N/A' }}</p>
+      <p><strong>Apellido:</strong> {{ paciente?.apellidos || 'N/A' }}</p>
+      <p><strong>Cédula:</strong> {{ paciente?.cedula || 'N/A' }}</p>
+      <p><strong>Teléfono:</strong> {{ paciente?.telefono || 'N/A' }}</p>
+    </div>
+    <div class="column">
+      <h3>Datos del Médico</h3>
+      <p><strong>Nombre:</strong> {{ diagnosticoSeleccionado.nombreMedico || 'N/A' }}</p>
+    </div>
+  </div>
+  <div class="detalle-diagnostico">
+    <h3>Detalles del Diagnóstico</h3>
+    <p><strong>Título:</strong> {{ diagnosticoSeleccionado.titulo }}</p>
+    <p><strong>Fecha:</strong> {{ diagnosticoSeleccionado.fecha }}</p>
+    <p><strong>Descripción:</strong> {{ diagnosticoSeleccionado.descripcion }}</p>
+    <p><strong>Recomendaciones:</strong> {{ diagnosticoSeleccionado.recomendaciones || 'No aplicable' }}</p>
+  </div>
+</div>

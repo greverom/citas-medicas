@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
 import { SpinnerService } from '../../../services/spinner.service';
+import { PacienteDto } from '../../../models/user.dto';
 
 @Component({
   selector: 'app-diagnosticos',
@@ -19,6 +20,8 @@ import { SpinnerService } from '../../../services/spinner.service';
 export class DiagnosticosComponent implements OnInit {
   diagnosticos$: Observable<Diagnostico[]> = of([]);
   showNoDiagnosticoMessage: boolean = false;
+  diagnosticoSeleccionado: Diagnostico | null = null;
+  paciente: PacienteDto | null = null;
 
   constructor(
     private pacienteService: PacienteService,
@@ -71,5 +74,23 @@ export class DiagnosticosComponent implements OnInit {
         return result;
       })
     );
+  }
+
+  seleccionarDiagnostico(diagnostico: Diagnostico): void {
+    this.diagnosticoSeleccionado = diagnostico;
+    //console.log('Diagnóstico seleccionado:', diagnostico);
+    this.pacienteService.seleccionarDiagnostico(diagnostico);
+  
+    if (diagnostico.pacienteId) {
+      this.pacienteService.obtenerPaciente(diagnostico.pacienteId).subscribe({
+        next: (paciente) => {
+          this.paciente = paciente;
+         // console.log('Datos del paciente:', paciente);
+        },
+        error: (err) => {
+          console.error('Error al obtener datos del paciente:', err);
+        },
+      });
+    }
   }
 }
