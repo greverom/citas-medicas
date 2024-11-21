@@ -1,45 +1,42 @@
 import { Component } from '@angular/core';
-import { CitasComponent } from '../../components/pacientes/citas/citas.component';
 import { CommonModule } from '@angular/common';
-import { DiagnosticosComponent } from '../../components/pacientes/diagnosticos/diagnosticos.component';
-import { TratamientosComponent } from "../../components/pacientes/tratamientos/tratamientos.component";
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { selectUserData } from '../../store/user.selector';
 import { ModalComponent } from '../../components/modal/modal.component';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-paciente-servicios',
   standalone: true,
   imports: [
     CommonModule,
-    CitasComponent,
-    DiagnosticosComponent,
-    TratamientosComponent,
-    ModalComponent
+    ModalComponent,
+    RouterOutlet,
+    SpinnerComponent
 ],
   templateUrl: './paciente-servicios.component.html',
   styleUrl: './paciente-servicios.component.css'
 })
 export class PacienteServiciosComponent {
   modal: ModalDto = modalInitializer();
+  selectedButton: string | null = null;
+  currentTitle: string = 'Servicios del Paciente';
 
-  constructor(private store: Store, private router: Router) {}
+  constructor(private store: Store, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.store.select(selectUserData).subscribe((userData) => {
-      if (userData && userData.role === 'paciente') {
-        const cedulaCompletada = userData.detalles && 'cedula' in userData.detalles && userData.detalles.cedula;
-
-        if (!cedulaCompletada) {
-          this.mostrarModal(
-            'Por favor, complete su perfil para acceder a los servicios médicos.',
-            true, false, undefined, '/perfil' 
-          );
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const route = this.activatedRoute.firstChild?.snapshot.url[0]?.path;
+        if (route) {
+          this.selectedButton = route;
+          this.updateTitle(route);
         }
-      }
-    });
+      });
   }
 
   mostrarModal(
@@ -73,5 +70,27 @@ export class PacienteServiciosComponent {
 
   closeModal() {
     this.modal = modalInitializer();
+  }
+
+  navigateTo(route: string): void {
+    this.selectedButton = route; 
+    this.router.navigate([`/servicios/${route}`]); 
+  }
+
+  updateTitle(route: string): void {
+    switch (route) {
+      case 'citas':
+        this.currentTitle = 'Citas del Paciente';
+        break;
+      case 'diagnosticos':
+        this.currentTitle = 'Diagnósticos del Paciente';
+        break;
+      case 'tratamientos':
+        this.currentTitle = 'Tratamientos del Paciente';
+        break;
+      default:
+        this.currentTitle = 'Servicios del Paciente';
+        break;
+    }
   }
 }

@@ -1,5 +1,5 @@
-
-  <div *ngIf="turnos$ | async as turnos; else noCitas">
+<div *ngIf="turnos$ | async as turnos; else noCitas">
+  <div class="turnos-table-container">
     <table class="turnos-table" *ngIf="turnos.length > 0; else noCitas">
       <thead>
         <tr>
@@ -21,9 +21,8 @@
       </tbody>
     </table>
   </div>
-
-
+</div>
 
 <ng-template #noCitas>
-  <p>No tienes citas agendadas.</p>
+  <p *ngIf="showNoCitasMessage">No tienes citas agendadas.</p>
 </ng-template>

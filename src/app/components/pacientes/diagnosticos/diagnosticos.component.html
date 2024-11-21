@@ -1,24 +1,24 @@
+<div *ngIf="diagnosticos$ | async as diagnosticos; else noDiagnosticos">
+  <div class="diagnosticos-table-container">
+    <table class="diagnosticos-table" *ngIf="diagnosticos.length > 0; else noDiagnosticos">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Título</th>
+          <th>Médico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let diagnostico of diagnosticos">
+          <td>{{ diagnostico.fecha }}</td>
+          <td>{{ diagnostico.titulo }}</td>
+          <td>{{ diagnostico.nombreMedico }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-    <div *ngIf="diagnosticos$ | async as diagnosticos; else noDiagnosticos">
-      <table class="diagnosticos-table" *ngIf="diagnosticos.length > 0; else noDiagnosticos">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Título</th>
-            <th>Médico</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let diagnostico of diagnosticos">
-            <td>{{ diagnostico.fecha }}</td>
-            <td>{{ diagnostico.titulo }}</td>
-            <td>{{ diagnostico.nombreMedico }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  
-  <ng-template #noDiagnosticos>
-    <p>No tienes diagnósticos disponibles.</p>
-  </ng-template>
+<ng-template #noDiagnosticos>
+  <p *ngIf="showNoDiagnosticoMessage">No tienes diagnósticos disponibles.</p>
+</ng-template>

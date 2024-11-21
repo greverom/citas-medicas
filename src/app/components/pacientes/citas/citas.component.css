@@ -1,3 +1,8 @@
+.turnos-table-container {
+    width: 100%;
+    overflow-x: auto; 
+    margin: 0 auto; 
+}
 
 .turnos-table {
     width: 100%; 
@@ -7,19 +12,29 @@
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     background-color: #ffffff; 
+    min-width: 600px;
 }
 
 .turnos-table thead tr {
-    background-color: #009879; 
+    background-color: #007bff;
     color: #ffffff; 
     font-weight: bold; 
 }
 
-.turnos-table th,
-.turnos-table td {
+.turnos-table th {
     padding: 15px; 
     font-size: 13px;
     border: 1px solid #dddddd; 
+}
+
+.turnos-table td {
+    padding: 15px; 
+    font-size: 13px;
+    border: 1px solid #dddddd;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 150px; 
 }
 
 .turnos-table tbody tr {
@@ -35,15 +50,40 @@
     cursor: pointer; 
 }
 
-/* Ajustes responsivos para pantallas pequeñas */
 @media (max-width: 768px) {
-    .turnos-table {
-        font-size: 14px; 
-        width: 95%; 
+    .turnos-table-container {
+        padding: 0 8px; 
+    }
+    .turnos-table { 
+        width: 90%; 
+        margin: auto;
     }
 
     .turnos-table th,
     .turnos-table td {
         padding: 10px; 
+        font-size: 12px;
     }
+
+    .no-citas-message {
+        font-size: 0.9rem; 
+        margin-top: 1rem; 
+      }
 }
+
+@media (max-width: 492px) {
+    .turnos-table {
+      font-size: 12px; 
+      width: 100%; 
+    }
+  
+    .turnos-table th,
+    .turnos-table td {
+      padding: 8px; 
+    }
+  
+    .no-citas-message {
+      font-size: 0.85rem; 
+      margin-top: 1rem; 
+    }
+  }

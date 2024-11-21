@@ -1,18 +1,31 @@
+<app-spinner></app-spinner>
 <div class="container">
-  <div class="servicio-bloque">
-    <h3>Citas</h3>
-    <app-citas></app-citas>
+  <h1>Servicios del Paciente</h1>
+  <div class="buttons">
+    <button 
+      [class.active]="selectedButton === 'citas'" 
+      (click)="navigateTo('citas')">
+      Citas
+    </button>
+    <button 
+      [class.active]="selectedButton === 'diagnosticos'" 
+      (click)="navigateTo('diagnosticos')">
+      Diagnósticos
+    </button>
+    <button 
+      [class.active]="selectedButton === 'tratamientos'" 
+      (click)="navigateTo('tratamientos')">
+      Tratamientos
+    </button>
   </div>
 
-  <div class="servicio-bloque">
-    <h3>Diagnósticos</h3>
-    <app-diagnosticos></app-diagnosticos>
+
+  <div *ngIf="!selectedButton">
+    <p>Seleccione un servicio para visualizar la información.</p>
   </div>
 
-  <div class="servicio-bloque">
-    <h3>Tratamientos</h3>
-    <app-tratamientos></app-tratamientos>
-  </div>
+
+  <router-outlet *ngIf="selectedButton"></router-outlet>
 </div>
 
 <app-modal

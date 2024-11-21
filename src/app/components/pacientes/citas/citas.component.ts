@@ -17,17 +17,17 @@ import { SpinnerService } from '../../../services/spinner.service';
   styleUrl: './citas.component.css'
 })
 export class CitasComponent implements OnInit {
-  turnos$: Observable<TurnoDto[]> = of([]); 
+  turnos$: Observable<TurnoDto[]> = of([]);
+  showNoCitasMessage: boolean = false; 
 
   constructor(
     private pacienteService: PacienteService,
     private store: Store,
-    private spinnerService: SpinnerService
+    private spinners: SpinnerService
   ) {}
 
   ngOnInit(): void {
-    this.spinnerService.show(); 
-
+    this.spinners.show();
     this.turnos$ = this.store.select(selectUserData).pipe(
       switchMap((userData) => {
         const userCedula = userData?.detalles?.cedula;
@@ -53,7 +53,12 @@ export class CitasComponent implements OnInit {
         return of([]);
       }),
       map((result) => {
-        this.spinnerService.hide(); 
+        this.spinners.hide(); 
+        if (result.length === 0) {
+          setTimeout(() => {
+            this.showNoCitasMessage = true; 
+          }, 2000);
+        }
         return result;
       })
     );

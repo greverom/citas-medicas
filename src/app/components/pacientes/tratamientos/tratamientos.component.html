@@ -1,26 +1,26 @@
+<div class="tratamientos-table-container">
+  <div *ngIf="tratamientos$ | async as tratamientos; else noTratamientos">
+    <table class="tratamientos-table" *ngIf="tratamientos.length > 0; else noTratamientos">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tratamiento</th>
+          <th>Médico</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tratamiento of tratamientos">
+          <td>{{ tratamiento.fechaCreacion | date: 'shortDate' }}</td>
+          <td>{{ tratamiento.nombreTratamiento }}</td>
+          <td>{{ tratamiento.nombreMedico }}</td>
+          <td>{{ tratamiento.notas || 'N/A' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div *ngIf="tratamientos$ | async as tratamientos; else noTratamientos">
-      <table class="tratamientos-table" *ngIf="tratamientos.length > 0; else noTratamientos">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Tratamiento</th>
-            <th>Médico</th>
-            <th>Notas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let tratamiento of tratamientos">
-            <td>{{ tratamiento.fechaCreacion | date: 'shortDate' }}</td>
-            <td>{{ tratamiento.nombreTratamiento }}</td>
-            <td>{{ tratamiento.nombreMedico }}</td>
-            <td>{{ tratamiento.notas || 'N/A' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  
   <ng-template #noTratamientos>
-    <p>No tienes tratamientos registrados.</p>
+    <p *ngIf="showNoTratamientoMessage" class="no-tratamientos-message">No tienes tratamientos registrados.</p>
   </ng-template>
+</div>

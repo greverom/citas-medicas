@@ -54,14 +54,21 @@ export const routes: Routes = [
       canActivate: [authGuard, roleGuard],
       data: { role: 'medico' }
     },
+    
     { 
       path: 'servicios', 
       loadComponent: () => import('./pages/servicios-paciente/paciente-servicios.component').then(c => c.PacienteServiciosComponent),
       canActivate: [authGuard, roleGuard],
-      data: { role: 'paciente' }
+      data: { role: 'paciente' },
+      children: [
+        {path: 'citas',loadComponent: () => import('./components/pacientes/citas/citas.component').then(c => c.CitasComponent)},
+        {path: 'diagnosticos',loadComponent: () => import('./components/pacientes/diagnosticos/diagnosticos.component').then(c => c.DiagnosticosComponent)},
+        {path: 'tratamientos',loadComponent: () => import('./components/pacientes/tratamientos/tratamientos.component').then(c => c.TratamientosComponent)},
+        {path: '', redirectTo: 'citas',pathMatch: 'full'}
+      ]
     },
-    { 
-      path: 'perfil', 
+
+    { path: 'perfil', 
       loadComponent: () => import('./pages/usuario-perfil/usuario-perfil.component').then(c => c.UsuarioPerfilComponent),
       canActivate: [authGuard]
     },
