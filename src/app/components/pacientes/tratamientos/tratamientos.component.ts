@@ -6,6 +6,7 @@ import { PacienteService } from '../../../services/pacientes.service';
 import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
 import { SpinnerService } from '../../../services/spinner.service';
+import { PacienteDto } from '../../../models/user.dto';
 
 @Component({
   selector: 'app-tratamientos',
@@ -18,7 +19,9 @@ import { SpinnerService } from '../../../services/spinner.service';
 })
 export class TratamientosComponent implements OnInit {
   tratamientos$: Observable<TratamientoDto[]> = of([]);
-  showNoTratamientoMessage:boolean = false
+  showNoTratamientoMessage:boolean = false;
+  tratamientoSeleccionado: TratamientoDto | null = null;
+  paciente: PacienteDto | null = null;
 
   constructor(private pacienteService: PacienteService, 
               private store: Store,
@@ -64,5 +67,21 @@ export class TratamientosComponent implements OnInit {
                   return result;
                 })
             );
+          }
+
+          seleccionarTratamiento(tratamiento: TratamientoDto): void {
+            this.tratamientoSeleccionado = tratamiento;
+       //console.log(tratamiento)
+            // Obtener los datos del paciente
+            if (tratamiento.pacienteId) {
+              this.pacienteService.obtenerPaciente(tratamiento.pacienteId).subscribe({
+                next: (paciente) => {
+                  this.paciente = paciente;
+                },
+                error: (err) => {
+                  console.error('Error al obtener datos del paciente:', err);
+                }
+              });
+            }
           }
 }

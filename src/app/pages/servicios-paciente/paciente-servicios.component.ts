@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { selectUserData } from '../../store/user.selector';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { filter } from 'rxjs';

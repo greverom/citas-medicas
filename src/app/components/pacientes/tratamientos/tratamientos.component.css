@@ -46,6 +46,85 @@
   margin-top: 1rem;
 }
 
+.tratamiento-card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  background-color: #ffffff;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+/* Bloques en filas */
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Bloques en columnas */
+.card-column {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #ffffff;
+  text-align: left;
+}
+
+.card-column h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+}
+
+.card-column p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.card-section {
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #ffffff;
+  text-align: left;
+}
+
+.card-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+}
+
+.card-section p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.card-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-section ul li {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.card-section ul li p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 768px) {
   .tratamientos-table-container {
       padding: 0 8px; 

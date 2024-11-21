@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let tratamiento of tratamientos">
+        <tr *ngFor="let tratamiento of tratamientos" (click)="seleccionarTratamiento(tratamiento)">
           <td>{{ tratamiento.fechaCreacion | date: 'shortDate' }}</td>
           <td>{{ tratamiento.nombreTratamiento }}</td>
           <td>{{ tratamiento.nombreMedico }}</td>
@@ -18,9 +18,45 @@
         </tr>
       </tbody>
     </table>
-  </div>
+</div>
 
-  <ng-template #noTratamientos>
+<ng-template #noTratamientos>
     <p *ngIf="showNoTratamientoMessage" class="no-tratamientos-message">No tienes tratamientos registrados.</p>
   </ng-template>
+</div>
+
+<div *ngIf="tratamientoSeleccionado" class="tratamiento-card">
+  <div class="card-row">
+    <div class="card-column">
+      <h3>Datos del Paciente</h3>
+      <p><strong>Nombre:</strong> {{ paciente?.nombres | titlecase }} {{ paciente?.apellidos | titlecase }}</p>
+      <p><strong>Cédula:</strong> {{ paciente?.cedula || 'N/A' }}</p>
+      <p><strong>Teléfono:</strong> {{ paciente?.telefono || 'N/A' }}</p>
+    </div>
+
+    <div class="card-column">
+      <h3>Datos del Médico</h3>
+      <p><strong>Nombre:</strong> {{ tratamientoSeleccionado.nombreMedico | titlecase }}</p>
+    </div>
+  </div>
+
+  <div class="card-section">
+    <h3>Detalles del Tratamiento</h3>
+    <p><strong>Tratamiento:</strong> {{ tratamientoSeleccionado.nombreTratamiento }}</p>
+    <p><strong>Notas:</strong> {{ tratamientoSeleccionado.notas || 'N/A' }}</p>
+  </div>
+
+  <div class="card-section">
+    <h3>Medicamentos</h3>
+    <ul *ngIf="tratamientoSeleccionado?.medicamentos?.length; else noMedicamentos">
+      <li *ngFor="let medicamento of tratamientoSeleccionado?.medicamentos">
+        <p><strong>Nombre:</strong> {{ medicamento.nombre }}</p>
+        <p><strong>Dosis:</strong> {{ medicamento.dosis }}</p>
+        <p><strong>Frecuencia:</strong> {{ medicamento.frecuencia }}</p>
+      </li>
+    </ul>
+    <ng-template #noMedicamentos>
+      <p>No hay medicamentos registrados para este tratamiento.</p>
+    </ng-template>
+  </div>
 </div>
