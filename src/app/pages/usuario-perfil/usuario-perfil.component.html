@@ -93,11 +93,11 @@
       
               <label for="especialidad">Especialidad:</label>
               <input id="especialidad" formControlName="especialidad" type="text" placeholder="Especialidad">
+              
+              <label for="direccionConsultorio">Dirección del Consultorio:</label>
+              <input id="direccionConsultorio" formControlName="direccionConsultorio" type="text" placeholder="Dirección completa">
+              
             </div>
-
-            <label for="direccionConsultorio">Dirección del Consultorio:</label>
-            <input id="direccionConsultorio" formControlName="direccionConsultorio" type="text" placeholder="Dirección completa">
-            
 
             <div *ngIf="isAdmin$ | async">
               <label for="nombre">Nombre:</label>

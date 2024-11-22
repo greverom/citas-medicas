@@ -15,5 +15,5 @@ export interface TurnoDto {
 
   export enum EstadoTurno {
     Programado = 'programado',
-    Cancelado = 'cancelado',
+    Cancelado = 'suspendido',
   }

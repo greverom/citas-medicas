@@ -205,6 +205,28 @@ obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
     );
   }
 
+  actualizarEstadoTurno(pacienteId: string, turnoId: string, nuevoEstado: string): Observable<void> {
+    const pacienteRef = child(this.dbRef, pacienteId);
+  
+    return from(get(pacienteRef)).pipe(
+      switchMap((snapshot) => {
+        if (snapshot.exists()) {
+          const pacienteData = snapshot.val() as PacienteDto;
+          const turnosActualizados = (pacienteData.turnos || []).map((turno) =>
+            turno.id === turnoId ? { ...turno, estado: nuevoEstado } : turno
+          );
+          return from(update(pacienteRef, { turnos: turnosActualizados }));
+        } else {
+          throw new Error('Paciente no encontrado');
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al actualizar el estado del turno:', error);
+        throw error;
+      })
+    );
+  }
+
   eliminarTurno(pacienteId: string, turnoId: string): Observable<void> {
     const pacienteRef = child(this.dbRef, pacienteId);
   

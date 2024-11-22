@@ -11,6 +11,7 @@ import { TratamientoDto } from '../../../models/tratamiento.dto';
 import { ModalDto, modalInitializer } from '../../modal/modal.dto';
 import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
+import { EstadoTurno, TurnoDto } from '../../../models/turno.dto';
 
 @Component({
   selector: 'app-paciente-datos',
@@ -103,6 +104,33 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  cambiarEstadoTurno(turno: TurnoDto) {
+    if (!this.paciente) {
+      console.error('No hay un paciente seleccionado.');
+      return;
+    }
+  
+    const nuevoEstado = turno.estado === EstadoTurno.Programado 
+      ? EstadoTurno.Cancelado 
+      : EstadoTurno.Programado;
+  
+    this.pacienteService
+      .actualizarEstadoTurno(this.paciente.id!, turno.id, nuevoEstado)
+      .subscribe({
+        next: () => {
+          if (this.paciente?.turnos) {
+            this.paciente.turnos = this.paciente.turnos.map((t) =>
+              t.id === turno.id ? { ...t, estado: nuevoEstado } : t
+            );
+          }
+          console.log('Estado del turno actualizado con éxito');
+        },
+        error: (error) => {
+          console.error('Error al actualizar el estado del turno:', error);
+        },
+      });
   }
 
   limpiarTurnosPasados(userId: string): void {
