@@ -72,6 +72,152 @@
     border-radius: 5px;
 }
 
+.solicitud-actions {
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  .solicitud-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .solicitud-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    text-align: left;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+  
+  .cerrar-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #444;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: flex-start;
+  }
+  
+  p {
+    font-size: 0.9rem;
+    margin: 0 0 10px;
+    text-align: left;
+  }
+  
+  label {
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  textarea,
+  input[type="date"],
+  input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+  }
+  
+  textarea:focus,
+  input[type="date"]:focus,
+  input[type="time"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+  }
+  
+  textarea {
+    resize: none;
+    min-height: 80px;
+  }
+  
+  .error-message {
+    color: #d9534f;
+    font-size: 0.8rem;
+    margin-top: -10px;
+  }
+  
+  .botones-modal {
+    display: flex;
+    justify-content: center; 
+    gap: 15px; 
+    width: 100%; 
+  }
+  
+  .botones-modal button {
+    width: 120px; 
+    height: 40px; 
+    font-size: 0.9rem; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .guardar-btn {
+    background-color: #4caf50; 
+    color: white;
+  }
+  
+  .guardar-btn:hover {
+    background-color: #45a049; 
+  }
+  
+  .cancelar-btn {
+    background-color: #f44336; 
+    color: white;
+  }
+  
+  .cancelar-btn:hover {
+    background-color: #e53935; 
+  }
+  
 @media (max-width: 768px) {
     .turnos-table-container {
         padding: 0 8px; 

@@ -125,7 +125,7 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
               t.id === turno.id ? { ...t, estado: nuevoEstado } : t
             );
           }
-          console.log('Estado del turno actualizado con éxito');
+          //console.log('Estado del turno actualizado con éxito');
         },
         error: (error) => {
           console.error('Error al actualizar el estado del turno:', error);

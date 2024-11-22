@@ -3,7 +3,7 @@ import { Database, ref, set, update, remove, get, child, push } from '@angular/f
 import { PacienteDto, UserDto } from '../models/user.dto';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { TurnoDto } from '../models/turno.dto';
+import { SolicitudDto, TurnoDto } from '../models/turno.dto';
 import { Diagnostico } from '../models/diagnostico.dto';
 import { TratamientoDto } from '../models/tratamiento.dto';
 
@@ -223,6 +223,19 @@ obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
       catchError((error) => {
         console.error('Error al actualizar el estado del turno:', error);
         throw error;
+      })
+    );
+  }
+
+  crearSolicitud(solicitud: SolicitudDto): Observable<void> {
+    const solicitudesRef = ref(this.db, 'solicitudes'); 
+    const nuevaSolicitudRef = push(solicitudesRef); 
+    solicitud.id = nuevaSolicitudRef.key ?? ''; 
+  
+    return from(set(nuevaSolicitudRef, solicitud)).pipe(
+      catchError(error => {
+        console.error('Error al crear la solicitud:', error);
+        throw error; 
       })
     );
   }

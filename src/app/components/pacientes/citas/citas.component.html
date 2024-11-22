@@ -38,6 +38,47 @@
     <p><strong>Instrucciones:</strong> {{ turnoSeleccionado.instrucciones || 'N/A' }}</p>
     <p><strong>Dirección Consultorio:</strong> {{ turnoSeleccionado.detallesMedico?.direccionConsultorio || 'N/A' }}</p>
   </div>
-
+  <div class="solicitud-actions">
+    <button class="solicitud-btn" (click)="abrirModalSolicitarCambio(turnoSeleccionado)">
+      Solicitar Cambio
+    </button>
+  </div>
 
 </div>
+
+<div class="modal-overlay" *ngIf="modalAbierto">
+  <div class="modal-content">
+    <button class="cerrar-modal" (click)="cerrarModal()">X</button>
+    <h3>Solicitar Cambio de Turno</h3>
+    <form [formGroup]="solicitudForm" (ngSubmit)="enviarSolicitud()">
+      <p><strong>Fecha Actual:</strong> {{ turnoSeleccionado?.fecha }}</p>
+      <p><strong>Hora Actual:</strong> {{ turnoSeleccionado?.hora }}</p>
+      <p><strong>Médico:</strong> {{ turnoSeleccionado?.nombreMedico }}</p>
+      
+      <label for="motivo">Motivo de Solicitud:</label>
+      <textarea id="motivo" formControlName="motivo" placeholder="Describe el motivo"></textarea>
+      <div *ngIf="solicitudForm.get('motivo')?.invalid && solicitudForm.get('motivo')?.touched" class="error-message">
+        Motivo es obligatorio.
+      </div>
+
+      <label for="fechaPropuesta">Nueva Fecha (opcional):</label>
+      <input id="fechaPropuesta" type="date" formControlName="fechaPropuesta">
+      
+      <label for="horaPropuesta">Nueva Hora (opcional):</label>
+      <input id="horaPropuesta" type="time" formControlName="horaPropuesta">
+
+      <div class="botones-modal">
+        <button type="submit" class="guardar-btn">Enviar Solicitud</button>
+        <button type="button" class="cancelar-btn" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-modal
+    [showModal]="modal.show"
+    [message]="modal.message"
+    [isError]="modal.isError"
+    [isSuccess]="modal.isSuccess"
+    (close)="modal.close()">
+</app-modal>

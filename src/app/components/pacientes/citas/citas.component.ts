@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TurnoDto } from '../../../models/turno.dto';
+import { SolicitudDto, TurnoDto } from '../../../models/turno.dto';
 import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { PacienteService } from '../../../services/pacientes.service';
 import { Store } from '@ngrx/store';
@@ -7,27 +7,45 @@ import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
 import { SpinnerService } from '../../../services/spinner.service';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { PacienteDto } from '../../../models/user.dto';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ModalComponent } from '../../modal/modal.component';
+import { ModalDto, modalInitializer } from '../../modal/modal.dto';
 
 @Component({
   selector: 'app-citas',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    ModalComponent
   ],
   templateUrl: './citas.component.html',
   styleUrl: './citas.component.css'
 })
 export class CitasComponent implements OnInit {
+  paciente: PacienteDto | null = null;
   turnos$: Observable<TurnoDto[]> = of([]);
   turnoSeleccionado: TurnoDto | null = null;
   safeMapUrl: SafeResourceUrl | null = null;
   showNoCitasMessage: boolean = false; 
+  modalAbierto = false;
+  solicitudForm: FormGroup;
+
+  modal: ModalDto = modalInitializer();
 
   constructor(
     private pacienteService: PacienteService,
     private store: Store,
-    private spinners: SpinnerService
-  ) {}
+    private spinners: SpinnerService,
+    private fb: FormBuilder
+  ) {
+    this.solicitudForm = this.fb.group({
+      motivo: ['', Validators.required],
+      fechaPropuesta: [''],
+      horaPropuesta: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.limpiarTurnosPasados();
@@ -91,5 +109,91 @@ export class CitasComponent implements OnInit {
         });
       }
     });
+  }
+
+  enviarSolicitud() {
+    if (this.solicitudForm.invalid) {
+      this.solicitudForm.markAllAsTouched();
+      //console.error('Formulario inválido.');
+      if (this.solicitudForm.get('motivo')?.hasError('required')) {
+        this.mostrarModal(true, 'El campo "Motivo de Solicitud" es obligatorio.', false);
+      }
+      return;
+    }
+    const { motivo, fechaPropuesta, horaPropuesta } = this.solicitudForm.value;
+    if (this.turnoSeleccionado) {
+      this.crearSolicitud(
+        this.turnoSeleccionado,
+        motivo,
+        fechaPropuesta,
+        horaPropuesta
+      );
+    } else {
+      console.error('No hay un turno seleccionado.');
+    }
+  }
+
+  crearSolicitud(turno: TurnoDto, motivo: string, fechaPropuesta: string, horaPropuesta: string) {
+    if (!turno.pacienteId) {
+      console.error('El turno no tiene un pacienteId asociado.');
+      return;
+    }
+
+    const nuevaSolicitud: SolicitudDto = {
+      id: '',
+      pacienteId: turno.pacienteId,
+      medicoId: turno.medicoId,
+      turnoId: turno.id,
+      motivo,
+      fechaPropuesta,
+      horaPropuesta,
+      estado: 'pendiente',
+      fechaCreacion: new Date().toISOString(),
+    };
+
+    this.pacienteService.crearSolicitud(nuevaSolicitud).subscribe({
+      next: () => {
+        this.mostrarModal(false, 'Solicitud creada exitosamente.', true);
+        this.cerrarModal();
+      },
+      error: (error) => {
+        console.error('Error al crear solicitud:', error);
+        this.mostrarModal(true, 'Error al crear la solicitud.', false);
+      },
+    });
+  }
+
+  abrirModalSolicitarCambio(turno: TurnoDto): void {
+    //console.log('Datos del turno seleccionado:', turno);
+    this.turnoSeleccionado = turno; 
+    this.modalAbierto = true; 
+  }
+
+  cerrarModal() {
+    this.modalAbierto = false;
+    this.turnoSeleccionado = null;
+
+    if (this.solicitudForm) {
+      this.solicitudForm.reset();
+    }
+  }
+
+  mostrarModal(isError: boolean, message: string, isSuccess: boolean) {
+    this.modal = {
+      ...this.modal,
+      show: true,
+      message,
+      isError,
+      isSuccess,
+      close: () => this.cerrarModal(),
+    };
+  
+    setTimeout(() => {
+      this.closeModal();
+    }, 2000); 
+  }
+
+  closeModal() {
+    this.modal = modalInitializer();
   }
 }
