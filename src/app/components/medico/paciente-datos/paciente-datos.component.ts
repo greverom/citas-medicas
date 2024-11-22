@@ -9,6 +9,8 @@ import { ModalComponent } from '../../modal/modal.component';
 import { Diagnostico } from '../../../models/diagnostico.dto';
 import { TratamientoDto } from '../../../models/tratamiento.dto';
 import { ModalDto, modalInitializer } from '../../modal/modal.dto';
+import { Store } from '@ngrx/store';
+import { selectUserData } from '../../../store/user.selector';
 
 @Component({
   selector: 'app-paciente-datos',
@@ -29,7 +31,8 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
   @Output() agendarTurno = new EventEmitter<PacienteDto>();
 
   constructor(private pacienteService: PacienteService,
-              private router: Router
+              private router: Router,
+              private store: Store
   ) {}
 
   ngOnInit() {
@@ -40,6 +43,11 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
         //console.log('paciente recibido en paciente-datos:', this.paciente);
         if (this.paciente?.id) {
           this.obtenerTratamientos(this.paciente.id);
+        }
+      });
+      this.store.select(selectUserData).subscribe((userData) => {
+        if (userData?.id) {
+          this.limpiarTurnosPasados(userData.id); 
         }
       });
   }
@@ -95,6 +103,17 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  limpiarTurnosPasados(userId: string): void {
+    this.pacienteService.eliminarTurnosPasados(userId).subscribe({
+      next: () => {
+        //console.log('Turnos pasados eliminados correctamente.');
+      },
+      error: (error) => {
+        console.error('Error al eliminar turnos pasados:', error);
+      }
+    });
   }
 
   obtenerTratamientos(pacienteId: string) {

@@ -13,10 +13,7 @@ export interface TurnoDto {
   detallesMedico?: DetallesMedico;
 }
 
-
   export enum EstadoTurno {
     Programado = 'programado',
-    Completado = 'completado',
     Cancelado = 'cancelado',
-    NoAsistido = 'no_asistido'
   }

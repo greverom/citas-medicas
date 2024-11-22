@@ -30,7 +30,10 @@ export class CitasComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.limpiarTurnosPasados();
+
     this.spinners.show();
+
     this.turnos$ = this.store.select(selectUserData).pipe(
       switchMap((userData) => {
         const userCedula = userData?.detalles?.cedula;
@@ -73,5 +76,20 @@ export class CitasComponent implements OnInit {
     this.turnoSeleccionado = turno;
     //console.log(turno);
     this.pacienteService.seleccionarTurno(turno);
+  }
+
+  limpiarTurnosPasados(): void {
+    this.store.select(selectUserData).subscribe(userData => {
+      if (userData?.id) {
+        this.pacienteService.eliminarTurnosPasados(userData.id).subscribe({
+          next: () => {
+            //console.log('Turnos pasados eliminados para el paciente.');
+          },
+          error: (error) => {
+            console.error('Error al eliminar turnos pasados del paciente:', error);
+          }
+        });
+      }
+    });
   }
 }

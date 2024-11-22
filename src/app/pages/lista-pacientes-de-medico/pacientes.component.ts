@@ -295,7 +295,7 @@ export class PacientesComponent implements OnInit{
       if (this.turnoComponent) {
         this.turnoComponent.filtrarHorasPorFecha();
       }
-    }, 0);
+    }, 500);
     
   }
 

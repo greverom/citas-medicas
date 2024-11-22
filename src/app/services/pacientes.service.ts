@@ -225,6 +225,36 @@ obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
     );
   }
 
+  eliminarTurnosPasados(userId: string): Observable<void> {
+    return from(get(this.dbRef)).pipe(
+      switchMap((snapshot) => {
+        if (snapshot.exists()) {
+          const pacientesObj = snapshot.val();
+          const updates: { [key: string]: any } = {};
+  
+          Object.keys(pacientesObj).forEach((key) => {
+            const paciente: PacienteDto = { id: key, ...pacientesObj[key] };
+            if (paciente.medicoId === userId && paciente.turnos) { 
+              const turnosFiltrados = paciente.turnos.filter(
+                (turno) => new Date(turno.fecha) >= new Date()
+              );
+  
+              updates[`pacientes/${key}/turnos`] = turnosFiltrados; 
+            }
+          });
+  
+          return from(update(ref(this.db), updates)); 
+        } else {
+          return of(); 
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al eliminar turnos pasados:', error);
+        throw error;
+      })
+    );
+  }
+
   seleccionarTurno(turno: TurnoDto | null): void {
     this.turnoSeleccionado.next(turno);
   }

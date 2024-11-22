@@ -77,9 +77,15 @@ export class PacienteTurnoComponent implements OnInit {
   }
 
   filtrarHorasPorFecha() {
-    if (!this.medicoId || !this.fechaSeleccionada) {
-      return; 
+    if (!this.medicoId) {
+      console.error('No hay medicoId disponible para filtrar turnos.');
+      return;
     }
+  
+    if (!this.fechaSeleccionada) {
+      this.setFechaActual(); 
+    }
+  
     this.pacienteService.obtenerTurnosDePacientesPorMedico(this.medicoId).subscribe({
       next: (turnos) => {
         const horasOcupadas = turnos
