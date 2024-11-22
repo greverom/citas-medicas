@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
 import { SpinnerService } from '../../../services/spinner.service';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-citas',
@@ -18,6 +19,8 @@ import { SpinnerService } from '../../../services/spinner.service';
 })
 export class CitasComponent implements OnInit {
   turnos$: Observable<TurnoDto[]> = of([]);
+  turnoSeleccionado: TurnoDto | null = null;
+  safeMapUrl: SafeResourceUrl | null = null;
   showNoCitasMessage: boolean = false; 
 
   constructor(
@@ -64,5 +67,11 @@ export class CitasComponent implements OnInit {
         return result;
       })
     );
+  }
+
+  seleccionarTurno(turno: TurnoDto): void {
+    this.turnoSeleccionado = turno;
+    //console.log(turno);
+    this.pacienteService.seleccionarTurno(turno);
   }
 }

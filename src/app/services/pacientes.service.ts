@@ -19,6 +19,8 @@ export class PacienteService {
   diagnosticoSeleccionado$ = this.diagnosticoSeleccionado.asObservable();
   private tratamientoSeleccionado = new BehaviorSubject<TratamientoDto | null>(null);
   tratamientoSeleccionado$: Observable<TratamientoDto | null> = this.tratamientoSeleccionado.asObservable();
+  private turnoSeleccionado = new BehaviorSubject<TurnoDto | null>(null);
+  turnoSeleccionado$ = this.turnoSeleccionado.asObservable();  
   
 
   constructor(private db: Database) {}
@@ -221,6 +223,10 @@ obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
         throw error;
       })
     );
+  }
+
+  seleccionarTurno(turno: TurnoDto | null): void {
+    this.turnoSeleccionado.next(turno);
   }
 
   agregarDiagnostico(diagnostico: Diagnostico): Observable<void> {

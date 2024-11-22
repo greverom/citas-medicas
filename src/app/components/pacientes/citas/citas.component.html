@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let turno of turnos">
+        <tr *ngFor="let turno of turnos" (click)="seleccionarTurno(turno)">
           <td>{{ turno.fecha }}</td>
           <td>{{ turno.hora }}</td>
           <td>{{ turno.estado }}</td>
@@ -28,3 +28,16 @@
 <ng-template #noCitas>
   <p *ngIf="showNoCitasMessage">No tienes citas agendadas.</p>
 </ng-template>
+
+<div *ngIf="turnoSeleccionado" class="turno-container">
+  <div class="turno-details">
+    <p><strong>Fecha:</strong> {{ turnoSeleccionado.fecha }}</p>
+    <p><strong>Hora:</strong> {{ turnoSeleccionado.hora }}</p>
+    <p><strong>Estado:</strong> {{ turnoSeleccionado.estado }}</p>
+    <p><strong>Médico:</strong> {{ turnoSeleccionado.nombreMedico }}</p>
+    <p><strong>Instrucciones:</strong> {{ turnoSeleccionado.instrucciones || 'N/A' }}</p>
+    <p><strong>Dirección Consultorio:</strong> {{ turnoSeleccionado.detallesMedico?.direccionConsultorio || 'N/A' }}</p>
+  </div>
+
+
+</div>
