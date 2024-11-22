@@ -1,5 +1,5 @@
 <div *ngIf="solicitudesDetalladas$ | async as solicitudes; else noSolicitudes">
-    <h3>Solicitudes de Cambio de Turno</h3>
+    <h3>Solicitudes de cambio o cancelación de Turno</h3>
     <table>
       <thead>
         <tr>
@@ -10,14 +10,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let detalle of solicitudes">
+        <tr *ngFor="let detalle of solicitudes" (click)="seleccionarSolicitud(detalle.solicitud)">
           <td>{{ detalle.paciente?.nombres | titlecase }} {{ detalle.paciente?.apellidos | titlecase }}</td>
           <td>{{ detalle.turno?.fecha || 'N/A' }} - {{ detalle.turno?.hora || '' }}</td>
           <td>{{ detalle.solicitud.motivo }}</td>
           <td>
-            {{ detalle.solicitud.fechaPropuesta || 'No especificada' }} 
-            - 
-            {{ detalle.solicitud.horaPropuesta || 'No especificada' }}
+            {{ detalle.solicitud.fechaPropuesta || 'No especificada' }} - {{ detalle.solicitud.horaPropuesta || 'No especificada' }}
           </td>
         </tr>
       </tbody>
@@ -27,3 +25,26 @@
   <ng-template #noSolicitudes>
     <p>No hay solicitudes pendientes.</p>
   </ng-template>
+
+  <div *ngIf="solicitudSeleccionada" class="detalle-solicitud">
+    <h3>Detalle de la Solicitud Seleccionada</h3>
+    <p><strong>Paciente:</strong> {{ solicitudSeleccionada.paciente?.nombres | titlecase }} {{ solicitudSeleccionada.paciente?.apellidos | titlecase }}</p>
+    <p><strong>Fecha Prevista:</strong> {{ solicitudSeleccionada.turno?.fecha }} - {{ solicitudSeleccionada.turno?.hora }}</p>
+    <p><strong>Motivo:</strong> {{ solicitudSeleccionada.solicitud.motivo }}</p>
+    <p><strong>Nueva Fecha:</strong> {{ solicitudSeleccionada.solicitud.fechaPropuesta || 'No especificada' }} - {{ solicitudSeleccionada.solicitud.horaPropuesta || 'No especificada' }}</p>
+  
+    <div class="acciones">
+      <button class="aceptar-btn" (click)="cambiarFechaTurno()">Cambiar Fecha</button>
+      <button class="rechazar-btn">Eliminar Turno</button>
+    </div>
+  </div>
+
+<app-modal
+  [showModal]="modal.show"
+  [message]="modal.message"
+  [isError]="modal.isError"
+  [isSuccess]="modal.isSuccess"
+  [isConfirm]="modal.isConfirm"
+  (close)="cerrarModal()"
+  (confirm)="modal.confirm && modal.confirm()">
+</app-modal>
