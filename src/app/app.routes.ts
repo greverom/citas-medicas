@@ -72,6 +72,10 @@ export const routes: Routes = [
       loadComponent: () => import('./pages/usuario-perfil/usuario-perfil.component').then(c => c.UsuarioPerfilComponent),
       canActivate: [authGuard]
     },
+
+    { path: 'solicitudes', 
+      loadComponent: () => import('./components/medico/solicitud-turno/solicitud-turno.component').then(c => c.SolicitudTurnoComponent),
+    },
     {
       path: '**', 
       redirectTo: '/home', 

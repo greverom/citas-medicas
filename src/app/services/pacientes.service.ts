@@ -133,6 +133,26 @@ export class PacienteService {
     );
   }
 
+  obtenerTurnoPorId(pacienteId: string, turnoId: string): Observable<TurnoDto | null> {
+    const pacienteRef = child(this.dbRef, pacienteId);
+  
+    return from(get(pacienteRef)).pipe(
+      map((snapshot) => {
+        if (snapshot.exists()) {
+          const paciente = snapshot.val() as PacienteDto;
+          const turno = (paciente.turnos || []).find((t) => t.id === turnoId);
+          return turno || null;
+        } else {
+          return null;
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al obtener turno:', error);
+        return of(null);
+      })
+    );
+  }
+
   // Método para obtener turnos por pacienteId
 obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
   const pacienteRef = child(this.dbRef, pacienteId); 
@@ -236,6 +256,27 @@ obtenerTurnosPorPacienteId(pacienteId: string): Observable<TurnoDto[]> {
       catchError(error => {
         console.error('Error al crear la solicitud:', error);
         throw error; 
+      })
+    );
+  }
+
+  obtenerSolicitudesPorMedico(medicoId: string): Observable<SolicitudDto[]> {
+    const solicitudesRef = ref(this.db, 'solicitudes'); // Referencia al nodo de solicitudes
+  
+    return from(get(solicitudesRef)).pipe(
+      map((snapshot) => {
+        if (snapshot.exists()) {
+          const solicitudesObj = snapshot.val();
+          return Object.keys(solicitudesObj)
+            .map((key) => ({ id: key, ...solicitudesObj[key] }))
+            .filter((solicitud: SolicitudDto) => solicitud.medicoId === medicoId);
+        } else {
+          return []; 
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al obtener solicitudes:', error);
+        return of([]); // Retorna un array vacío en caso de error
       })
     );
   }

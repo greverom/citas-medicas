@@ -1,0 +1,29 @@
+<div *ngIf="solicitudesDetalladas$ | async as solicitudes; else noSolicitudes">
+    <h3>Solicitudes de Cambio de Turno</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Fecha Prevista</th>
+          <th>Motivo</th>
+          <th>Nueva Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let detalle of solicitudes">
+          <td>{{ detalle.paciente?.nombres | titlecase }} {{ detalle.paciente?.apellidos | titlecase }}</td>
+          <td>{{ detalle.turno?.fecha || 'N/A' }} - {{ detalle.turno?.hora || '' }}</td>
+          <td>{{ detalle.solicitud.motivo }}</td>
+          <td>
+            {{ detalle.solicitud.fechaPropuesta || 'No especificada' }} 
+            - 
+            {{ detalle.solicitud.horaPropuesta || 'No especificada' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <ng-template #noSolicitudes>
+    <p>No hay solicitudes pendientes.</p>
+  </ng-template>
