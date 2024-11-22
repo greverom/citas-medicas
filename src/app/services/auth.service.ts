@@ -48,16 +48,15 @@ export class AuthService {
                   especialidad: '',
                   numeroLicencia: '',
                   cedula: '',
+                  direccion: '',
                 } as DetallesMedico,
           }),
         };
 
         return this.userDataService.addUserToDatabase(newUser).pipe(
           switchMap(() => {
-            // Cerrar la sesión del usuario recién creado
             return from(signOut(this.auth)).pipe(
               switchMap(() => {
-                // Mantener la sesión del usuario actual
                 const currentUser = this.auth.currentUser;
                 if (currentUser) {
                   return from(currentUser.getIdToken(true)).pipe(

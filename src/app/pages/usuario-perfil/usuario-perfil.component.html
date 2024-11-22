@@ -33,6 +33,7 @@
                 <p><strong>Cédula:</strong> {{ userData.detalles.cedula }}</p>
                 <p><strong>Número de Licencia:</strong> {{ userData.detalles.numeroLicencia }}</p>
                 <p><strong>Especialidad:</strong> {{ userData.detalles.especialidad || 'No especificada' }}</p>
+                <p><strong>Dirección del Consultorio:</strong> {{ userData.detalles.direccionConsultorio || 'No especificada' }}</p>
             </ng-container>
         </div>
     </div>
@@ -93,6 +94,10 @@
               <label for="especialidad">Especialidad:</label>
               <input id="especialidad" formControlName="especialidad" type="text" placeholder="Especialidad">
             </div>
+
+            <label for="direccionConsultorio">Dirección del Consultorio:</label>
+            <input id="direccionConsultorio" formControlName="direccionConsultorio" type="text" placeholder="Dirección completa">
+            
 
             <div *ngIf="isAdmin$ | async">
               <label for="nombre">Nombre:</label>

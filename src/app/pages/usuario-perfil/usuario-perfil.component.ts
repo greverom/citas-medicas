@@ -84,7 +84,8 @@ export class UsuarioPerfilComponent implements OnInit {
         name: [data.name || '', Validators.required],
         cedula: [data.detalles.cedula || '', [Validators.required, cedulaEcuatorianaValidator()]],
         numeroLicencia: [data.detalles.numeroLicencia || ''],
-        especialidad: [data.detalles.especialidad || '']
+        especialidad: [data.detalles.especialidad || ''],
+        direccionConsultorio: [data.detalles.direccionConsultorio || '', Validators.required]
       });
     } else if (data.role === UserRole.Admin) {
       this.usuarioForm = this.fb.group({
@@ -122,6 +123,7 @@ export class UsuarioPerfilComponent implements OnInit {
               cedula: this.usuarioForm.value.cedula || null,
               numeroLicencia: this.usuarioForm.value.numeroLicencia || null,
               especialidad: this.usuarioForm.value.especialidad || null,
+              direccionConsultorio: this.usuarioForm.value.direccionConsultorio || null,
             }
           : undefined, 
       };

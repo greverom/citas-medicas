@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TurnoDto } from '../../../models/turno.dto';
-import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { PacienteService } from '../../../services/pacientes.service';
 import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
@@ -41,9 +41,11 @@ export class CitasComponent implements OnInit {
                 const turnosObservables = pacientes.map((paciente) =>
                   this.pacienteService.obtenerTurnosPorPacienteId(paciente.id!)
                 );
-
                 return forkJoin(turnosObservables).pipe(
-                  map((turnosPorPaciente) => turnosPorPaciente.flat()) 
+                  map((turnosPorPaciente) => turnosPorPaciente.flat()),
+                  tap((turnos) => {
+                    //console.log(turnos); 
+                  })
                 );
               }
               return of([]);

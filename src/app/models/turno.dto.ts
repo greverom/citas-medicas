@@ -1,4 +1,4 @@
-import { PacienteDto, UserDto } from "./user.dto";
+import { DetallesMedico, PacienteDto, UserDto } from "./user.dto";
 
 export interface TurnoDto {
   id: string;
@@ -10,7 +10,9 @@ export interface TurnoDto {
   nombreMedico?: string;
   nombresPaciente?: string;
   instrucciones?: string;
+  detallesMedico?: DetallesMedico;
 }
+
 
   export enum EstadoTurno {
     Programado = 'programado',

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { PacienteDto } from '../../../models/user.dto';
+import { DetallesMedico, PacienteDto } from '../../../models/user.dto';
 import { EstadoTurno, TurnoDto } from '../../../models/turno.dto';
 import { PacienteService } from '../../../services/pacientes.service';
 import { selectUserData } from '../../../store/user.selector';
@@ -96,29 +96,40 @@ export class PacienteTurnoComponent implements OnInit {
     });
   }
 
-  agendarTurno() {
-    if (this.fechaSeleccionada && this.horaSeleccionada && this.paciente && this.medicoId) {
-      const turno: TurnoDto = {
-        id: '', 
-        pacienteId: this.paciente.id!,
-        medicoId: this.medicoId,
-        fecha: this.fechaSeleccionada,
-        hora: this.horaSeleccionada,
-        estado: EstadoTurno.Programado, 
-        nombreMedico: this.nombreMedico,
-        instrucciones: this.instrucciones || ''
-      };
-      this.pacienteService.agendarTurno(this.paciente.id!, turno).subscribe({
-        next: () => {
-          //console.log('Turno agendado con éxito:', turno);
-          this.turnoAgendado.emit(turno);
-        },
-        error: (error) => {
-          console.error('Error al agendar el turno:', error);
+ agendarTurno() {
+  if (this.fechaSeleccionada && this.horaSeleccionada && this.paciente && this.medicoId) {
+    this.pacienteService.obtenerMedicoPorId(this.medicoId).subscribe((medico) => {
+      if (medico) {
+        const turno: TurnoDto = {
+          id: '', 
+          pacienteId: this.paciente?.id!,
+          medicoId: this.medicoId!,
+          fecha: this.fechaSeleccionada,
+          hora: this.horaSeleccionada,
+          estado: EstadoTurno.Programado, 
+          nombreMedico: medico.name, 
+          detallesMedico: medico.detalles as DetallesMedico, 
+          instrucciones: this.instrucciones || ''
+        };
+
+        if (this.paciente?.id) {
+          this.pacienteService.agendarTurno(this.paciente.id, turno).subscribe({
+            next: () => {
+              this.turnoAgendado.emit(turno);
+            },
+            error: (error) => {
+              console.error('Error al agendar el turno:', error);
+            }
+          });
+        } else {
+          console.error('El ID del paciente no está disponible.');
         }
-      });
-    } else {
-      console.log('Por favor, selecciona una fecha, una hora, y asegúrate de tener datos del paciente y médico.');
-    }
+      } else {
+        console.error('Error: No se encontraron datos del médico o paciente.');
+      }
+    });
+  } else {
+    console.error('Error: Selecciona una fecha, una hora, y asegúrate de tener datos del paciente y médico.');
   }
+}
 }

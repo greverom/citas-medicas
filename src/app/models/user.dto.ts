@@ -30,7 +30,8 @@ export interface UserDto {
   export interface DetallesMedico {
     especialidad?: string;
     numeroLicencia: string;
-    cedula:string
+    cedula:string;
+    direccionConsultorio?: string; 
   }
 
   export interface PacienteDto {

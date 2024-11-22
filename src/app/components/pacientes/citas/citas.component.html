@@ -7,6 +7,7 @@
           <th>Hora</th>
           <th>Estado</th>
           <th>Médico</th>
+          <th>Dirección del Consultorio</th>
           <th>Instrucciones</th>
         </tr>
       </thead>
@@ -16,6 +17,7 @@
           <td>{{ turno.hora }}</td>
           <td>{{ turno.estado }}</td>
           <td>{{ turno.nombreMedico }}</td>
+          <td>{{ turno.detallesMedico?.direccionConsultorio || 'N/A' }}</td>
           <td>{{ turno.instrucciones || 'N/A' }}</td>
         </tr>
       </tbody>
