@@ -21,9 +21,13 @@ import { ModalComponent } from '../../modal/modal.component';
 })
 export class SolicitudTurnoComponent implements OnInit {
   medicoId: string | null = null;
-  solicitudesDetalladas$: Observable<any[]> | null = null;
+  solicitudesDetalladas$: Observable<{
+    pendientes: { solicitud: SolicitudDto; paciente: PacienteDto | null; turno: TurnoDto | null }[];
+    aprobadas: { solicitud: SolicitudDto; paciente: PacienteDto | null; turno: TurnoDto | null }[];}> | null = null;
   solicitudSeleccionada: { solicitud: SolicitudDto; paciente: PacienteDto | null; turno: TurnoDto | null } | null = null;
   modal: ModalDto = modalInitializer();
+  vistaActual: 'pendientes' | 'aprobadas' = 'pendientes'; 
+
   constructor(
     private store: Store,
     private pacienteService: PacienteService
@@ -59,10 +63,20 @@ export class SolicitudTurnoComponent implements OnInit {
                     )
                 )
               )
-            )
+            ),
+            map((solicitudes) => {
+              return {
+                pendientes: solicitudes.filter((s) => s.solicitud.estado === 'pendiente'),
+                aprobadas: solicitudes.filter((s) => s.solicitud.estado === 'aprobada'),
+              };
+            })
           );
       }
     });
+  }
+
+  cambiarVista(vista: 'pendientes' | 'aprobadas'): void {
+    this.vistaActual = vista;
   }
 
   seleccionarSolicitud(solicitud: SolicitudDto): void {
@@ -98,19 +112,58 @@ export class SolicitudTurnoComponent implements OnInit {
       console.error('El paciente no tiene un ID asociado.');
       return;
     }
+  
     this.pacienteService
-    .actualizarFechaHoraTurno(paciente.id, turno.id, solicitud.fechaPropuesta!, solicitud.horaPropuesta!)
-    .subscribe({
+      .actualizarFechaHoraTurno(paciente.id, turno.id, solicitud.fechaPropuesta!, solicitud.horaPropuesta!)
+      .subscribe({
+        next: () => {
+          console.log('Fecha y hora del turno actualizadas exitosamente');
+          this.actualizarEstadoSolicitud(solicitud.id, 'aprobada');
+          this.solicitudSeleccionada = null;
+        },
+        error: (error) => {
+          console.error('Error al actualizar la fecha del turno:', error);
+          this.mostrarNotificacion('Error al actualizar el turno.', true);
+        },
+      });
+  }
+  
+  actualizarEstadoSolicitud(solicitudId: string, nuevoEstado: string): void {
+    this.pacienteService.actualizarEstadoSolicitud(solicitudId, nuevoEstado).subscribe({
       next: () => {
-        console.log('Fecha y hora del turno actualizadas exitosamente');
-        this.mostrarNotificacion('Turno actualizado correctamente.', false);
+        console.log('Estado de la solicitud actualizado a:', nuevoEstado);
+        this.mostrarNotificacion('Solicitud aprobada correctamente.', false);
+
+        this.actualizarListasLocales(solicitudId, nuevoEstado);
       },
       error: (error) => {
-        console.error('Error al actualizar la fecha del turno:', error);
-        this.mostrarNotificacion('Error al actualizar el turno.', true);
+        console.error('Error al actualizar el estado de la solicitud:', error);
+        this.mostrarNotificacion('Error al actualizar el estado de la solicitud.', true);
       },
     });
-}
+  }
+
+  actualizarListasLocales(solicitudId: string, nuevoEstado: string): void {
+    if (!this.solicitudesDetalladas$) return;
+  
+    this.solicitudesDetalladas$.subscribe((detalladas) => {
+      const solicitudPendienteIndex = detalladas.pendientes.findIndex(
+        (solicitud) => solicitud.solicitud.id === solicitudId
+      );
+  
+      if (solicitudPendienteIndex !== -1 && nuevoEstado === 'aprobada') {
+        const solicitudAprobada = detalladas.pendientes.splice(solicitudPendienteIndex, 1)[0];
+        solicitudAprobada.solicitud.estado = nuevoEstado; // Actualizar el estado localmente
+        detalladas.aprobadas.push(solicitudAprobada);
+  
+        this.solicitudesDetalladas$ = new Observable((observer) => {
+          observer.next(detalladas);
+          observer.complete();
+        });
+      }
+    });
+  }
+
 
 mostrarNotificacion(mensaje: string, esError: boolean): void {
   this.modal = {

@@ -1,3 +1,52 @@
+.botones-vista {
+  display: flex;
+  justify-content: flex-start; 
+  max-width: 90%; 
+  margin: 0 auto; 
+  margin-top: 3rem;
+  padding: 10px; 
+  background-color: #ffffff; 
+  border-bottom: 1px solid rgb(205, 205, 205);
+  gap: 10px;
+}
+
+.btn-vista {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-vista:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-vista.activo {
+  font-weight: bold;
+}
+
+.btn-vista.activo[vista="pendientes"] {
+  background-color: #ffcccc; 
+  color: #900; 
+}
+
+.btn-vista.activo[vista="aprobadas"] {
+  background-color: #4caf50; 
+  color: white;
+}
+
+.no-pendientes {
+  text-align: center; 
+  color: #e57373; 
+  font-size: 14px; 
+  font-weight: 400; 
+  margin: 20px 0; 
+}
+
 h3 {
     text-align: center; 
     font-size: 24px;
@@ -32,13 +81,6 @@ table {
   
   tbody tr:hover {
     background-color: #bbe3e2;
-  }
-  
-  .no-solicitudes {
-    text-align: center;
-    color: #888;
-    font-size: 14px;
-    margin-top: 20px;
   }
 
   .detalle-solicitud {

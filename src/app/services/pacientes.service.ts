@@ -305,6 +305,24 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
     );
   }
 
+  actualizarEstadoSolicitud(solicitudId: string, nuevoEstado: string): Observable<void> {
+    const solicitudRef = ref(this.db, `solicitudes/${solicitudId}`);
+  
+    return from(get(solicitudRef)).pipe(
+      switchMap((snapshot) => {
+        if (snapshot.exists()) {
+          return from(update(solicitudRef, { estado: nuevoEstado }));
+        } else {
+          throw new Error('Solicitud no encontrada');
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al actualizar estado de la solicitud:', error);
+        throw error;
+      })
+    );
+  }
+
   eliminarTurno(pacienteId: string, turnoId: string): Observable<void> {
     const pacienteRef = child(this.dbRef, pacienteId);
   
