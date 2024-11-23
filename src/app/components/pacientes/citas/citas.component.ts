@@ -31,6 +31,7 @@ export class CitasComponent implements OnInit {
   showNoCitasMessage: boolean = false; 
   modalAbierto = false;
   solicitudForm: FormGroup;
+  solicitudPendiente: boolean = false;
 
   modal: ModalDto = modalInitializer();
 
@@ -92,7 +93,15 @@ export class CitasComponent implements OnInit {
 
   seleccionarTurno(turno: TurnoDto): void {
     this.turnoSeleccionado = turno;
-    //console.log(turno);
+    this.pacienteService.verificarSolicitudPendiente(turno.id).subscribe({
+      next: (existePendiente) => {
+        this.solicitudPendiente = existePendiente;
+      },
+      error: (error) => {
+        this.solicitudPendiente = false; 
+        this.mostrarModal(true, 'Error al verificar el estado de la solicitud.', false);
+      }
+    });
     this.pacienteService.seleccionarTurno(turno);
   }
 

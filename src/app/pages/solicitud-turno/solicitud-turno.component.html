@@ -50,6 +50,7 @@
           <th>Fecha Prevista</th>
           <th>Motivo</th>
           <th>Nueva Fecha</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -58,6 +59,9 @@
           <td>{{ detalle.turno?.fecha || 'N/A' }} - {{ detalle.turno?.hora || '' }}</td>
           <td>{{ detalle.solicitud.motivo }}</td>
           <td>{{ detalle.solicitud.fechaPropuesta || 'No especificada' }} - {{ detalle.solicitud.horaPropuesta || 'No especificada' }}</td>
+          <button class="delete-btn" (click)="confirmarEliminacionSolicitud(detalle.solicitud.id)">
+            <span class="material-icons">delete</span>
+          </button>
         </tr>
       </tbody>
     </table>
@@ -85,7 +89,8 @@
 
   <div class="acciones">
     <button class="aceptar-btn" (click)="cambiarFechaTurno()">Cambiar Fecha</button>
-    <button class="rechazar-btn">Eliminar Turno</button>
+    <button class="rechazar-btn" (click)="eliminarTurnoSeleccionado()">Eliminar Turno</button>
+    <button class="eliminar-solicitud-btn" (click)="eliminarSolicitudTurno(solicitudSeleccionada.solicitud.id)">Eliminar Solicitud</button>
   </div>
 </div>
 

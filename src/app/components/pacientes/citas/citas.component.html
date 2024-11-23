@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let turno of turnos" (click)="seleccionarTurno(turno)">
+        <tr *ngFor="let turno of turnos" (click)="seleccionarTurno(turno)" [ngClass]="{ 'turno-seleccionado': turno === turnoSeleccionado }">
           <td>{{ turno.fecha }}</td>
           <td>{{ turno.hora }}</td>
           <td>{{ turno.estado }}</td>
@@ -29,7 +29,9 @@
   <p *ngIf="showNoCitasMessage">No tienes citas agendadas.</p>
 </ng-template>
 
-<div *ngIf="turnoSeleccionado" class="turno-container">
+<div *ngIf="turnoSeleccionado" class="turno-container"
+  [ngClass]="{ 'solicitud-pendiente': solicitudPendiente }">
+  <h2 class="turno-titulo">Turno Seleccionado</h2>
   <div class="turno-details">
     <p><strong>Fecha:</strong> {{ turnoSeleccionado.fecha }}</p>
     <p><strong>Hora:</strong> {{ turnoSeleccionado.hora }}</p>
@@ -39,7 +41,13 @@
     <p><strong>Dirección Consultorio:</strong> {{ turnoSeleccionado.detallesMedico?.direccionConsultorio || 'N/A' }}</p>
   </div>
   <div class="solicitud-actions">
-    <button class="solicitud-btn" (click)="abrirModalSolicitarCambio(turnoSeleccionado)">
+    <p *ngIf="solicitudPendiente" class="warning-message">
+      Existe una solicitud pendiente para este turno.
+    </p>
+    <button 
+      class="solicitud-btn" 
+      [disabled]="solicitudPendiente" 
+      (click)="abrirModalSolicitarCambio(turnoSeleccionado)">
       Solicitar Cambio
     </button>
   </div>

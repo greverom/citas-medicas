@@ -323,6 +323,36 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
     );
   }
 
+  verificarSolicitudPendiente(turnoId: string): Observable<boolean> {
+    const solicitudesRef = ref(this.db, 'solicitudes'); 
+    
+    return from(get(solicitudesRef)).pipe(
+      map((snapshot) => {
+        if (snapshot.exists()) {
+          const solicitudesObj = snapshot.val();
+          return Object.keys(solicitudesObj)
+            .map((key) => solicitudesObj[key])
+            .some((solicitud: SolicitudDto) => solicitud.turnoId === turnoId && solicitud.estado === 'pendiente');
+        }
+        return false; 
+      }),
+      catchError((error) => {
+        console.error('Error al verificar solicitud pendiente:', error);
+        return of(false); 
+      })
+    );
+  }
+
+  eliminarSolicitud(solicitudId: string): Observable<void> {
+    const solicitudRef = ref(this.db, `solicitudes/${solicitudId}`);
+    return from(remove(solicitudRef)).pipe(
+      catchError(error => {
+        console.error('Error al eliminar la solicitud:', error);
+        throw error;
+      })
+    );
+  }
+
   eliminarTurno(pacienteId: string, turnoId: string): Observable<void> {
     const pacienteRef = child(this.dbRef, pacienteId);
   
@@ -338,6 +368,31 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
       }),
       catchError(error => {
         console.error('Error al eliminar turno:', error);
+        throw error;
+      })
+    );
+  }
+
+  eliminarTurnoYSolicitud(pacienteId: string, turnoId: string, solicitudId: string): Observable<void> {
+    const pacienteRef = child(this.dbRef, pacienteId);
+    const solicitudRef = ref(this.db, `solicitudes/${solicitudId}`);
+  
+    return from(get(pacienteRef)).pipe(
+      switchMap(snapshot => {
+        if (snapshot.exists()) {
+          const pacienteData = snapshot.val() as PacienteDto;
+          const turnosActualizados = (pacienteData.turnos || []).filter(turno => turno.id !== turnoId);
+          const updates: { [key: string]: any } = {};
+          updates[`pacientes/${pacienteId}/turnos`] = turnosActualizados;
+          updates[`solicitudes/${solicitudId}`] = null; 
+  
+          return from(update(ref(this.db), updates));
+        } else {
+          throw new Error('Paciente no encontrado');
+        }
+      }),
+      catchError(error => {
+        console.error('Error al eliminar turno y solicitud:', error);
         throw error;
       })
     );
