@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { SolicitudDto, TurnoDto } from '../../../models/turno.dto';
 import { forkJoin, map, Observable, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { PacienteService } from '../../../services/pacientes.service';
-import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
-import { PacienteDto } from '../../../models/user.dto';
-import { ModalDto, modalInitializer } from '../../modal/modal.dto';
-import { ModalComponent } from '../../modal/modal.component';
+import { SolicitudDto, TurnoDto } from '../../models/turno.dto';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { PacienteDto } from '../../models/user.dto';
+import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
+import { PacienteService } from '../../services/pacientes.service';
+import { selectUserData } from '../../store/user.selector';
 
 @Component({
   selector: 'app-solicitud-turno',

@@ -74,7 +74,7 @@ export const routes: Routes = [
     },
 
     { path: 'solicitudes', 
-      loadComponent: () => import('./components/medico/solicitud-turno/solicitud-turno.component').then(c => c.SolicitudTurnoComponent),
+      loadComponent: () => import('./pages/solicitud-turno/solicitud-turno.component').then(c => c.SolicitudTurnoComponent),
     },
     {
       path: '**', 
