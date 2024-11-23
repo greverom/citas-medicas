@@ -69,6 +69,47 @@ table {
     color: #000;
     font-weight: bold;
   }
+
+  .fechas-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 20px;
+  }
+  
+  .fecha-prevista {
+    flex: 1;
+    text-align: center;
+    background-color: #ffcccc; 
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fecha-nueva {
+    flex: 1;
+    text-align: center;
+    background-color: #ccffcc; 
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fecha-prevista h4,
+  .fecha-nueva h4 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .fecha-prevista p,
+  .fecha-nueva p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+  }
   
   .detalle-solicitud .acciones {
     margin-top: 15px;
