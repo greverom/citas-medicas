@@ -1,4 +1,4 @@
-<app-notificacion-solicitud></app-notificacion-solicitud>
+<app-notificacion-solicitud *ngIf="isMedico$ | async"></app-notificacion-solicitud>
 
 <div class="hero-container">
   <app-hero></app-hero>

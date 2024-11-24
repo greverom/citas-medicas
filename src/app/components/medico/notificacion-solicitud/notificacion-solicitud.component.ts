@@ -24,7 +24,6 @@ export class NotificacionSolicitudComponent {
   ) {}
 
   ngOnInit(): void {
-    // Obtenemos el ID del médico desde el store
     this.store.select(selectUserData).subscribe((userData) => {
       if (userData?.id) {
         this.medicoId = userData.id;
