@@ -1,14 +1,22 @@
-<app-notificacion-solicitud *ngIf="isMedico$ | async"></app-notificacion-solicitud>
+<div class="home-container">
+  <app-notificacion-solicitud 
+    *ngIf="(isMedico$ | async) && solicitudesPendientes.length > 0" 
+    class="absolute-notification">
+  </app-notificacion-solicitud> 
 
-<div class="hero-container">
-  <app-hero></app-hero>
-</div>
-<div *ngIf="!(isLoggedIn$ | async)">
-  <app-products></app-products>
-</div>
-<div id="login-section" *ngIf="!(isLoggedIn$ | async)">
-  <app-login></app-login>
-</div>
-<div class="footer-container" *ngIf="!(isLoggedIn$ | async)">
-  <app-footer></app-footer>
+  <div class="hero-container">
+    <app-hero></app-hero>
+  </div>
+
+  <div *ngIf="!(isLoggedIn$ | async)">
+    <app-products></app-products>
+  </div>
+
+  <div id="login-section" *ngIf="!(isLoggedIn$ | async)">
+    <app-login></app-login>
+  </div>
+
+  <div class="footer-container" *ngIf="!(isLoggedIn$ | async)">
+    <app-footer></app-footer>
+  </div>
 </div>

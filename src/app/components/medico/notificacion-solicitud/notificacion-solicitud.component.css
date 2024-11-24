@@ -1,19 +1,65 @@
 .notificaciones-container {
     position: relative;
-    margin-top: 0px; 
-    background-color: #fff0c0;
+    background-color: #ebebebaf;
     border-radius: 5px;
-    padding: 15px 20px;
-    color: #856404;
+    padding: 5px 10px;
+    color: #1b1b1b;
     font-size: 14px;
     font-weight: 400;
     overflow: hidden;
-    animation: slideDown 0.5s ease-in-out; /* Animación */
+    animation: slideDown 0.5s ease-in-out; 
+    width: 50%; 
+    max-width: 800px; 
+    margin: auto;
+    border-radius: 0px 0px 15px 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+  }
+
+  .notificaciones-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .notificaciones-header p {
+    margin: 5px 0px 10px 0px;
+    font-size: 13px; 
+    color: rgb(230, 118, 49);
   }
   
-  .notificaciones-container p {
-    margin: 0 0 10px 0;
-    font-size: 14px;
+  .dropdown-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .dropdown-icon.open {
+    transform: rotate(180deg); 
+  }
+
+  .notificacion-lista {
+    margin-top: 20px;
+    padding-left: 0;
+    list-style: none;
+    transition: max-height 0.8s ease-in-out;
+  }
+  
+  .notificacion-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    align-items: center;
+    color: #606060;
+    margin-bottom: 10px;
+    padding: 10px 8px;
+    border-top: 1px solid rgb(188, 188, 188);
+    cursor: pointer; 
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .notificacion-item:hover {
+    color: #1b1b1b;
   }
   
   .notificaciones-container ul {
@@ -27,19 +73,6 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-  }
-  
-  .ver-solicitudes-btn {
-    background: none;
-    border: none;
-    color: #0056b3;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .ver-solicitudes-btn:hover {
-    color: #004085;
   }
   
   /* Animación de deslizamiento hacia abajo */

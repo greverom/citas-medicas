@@ -72,7 +72,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           },
         });
       } else {
-        console.log('El usuario no es médico o no tiene un ID válido.');
+        //console.log('El usuario no es médico o no tiene un ID válido.');
       }
     });
   }
