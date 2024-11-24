@@ -1,0 +1,55 @@
+.notificaciones-container {
+    position: relative;
+    margin-top: 0px; 
+    background-color: #fff0c0;
+    border-radius: 5px;
+    padding: 15px 20px;
+    color: #856404;
+    font-size: 14px;
+    font-weight: 400;
+    overflow: hidden;
+    animation: slideDown 0.5s ease-in-out; /* Animación */
+  }
+  
+  .notificaciones-container p {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+  }
+  
+  .notificaciones-container ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .notificaciones-container li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .ver-solicitudes-btn {
+    background: none;
+    border: none;
+    color: #0056b3;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .ver-solicitudes-btn:hover {
+    color: #004085;
+  }
+  
+  /* Animación de deslizamiento hacia abajo */
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }

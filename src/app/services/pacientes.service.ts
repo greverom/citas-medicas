@@ -305,6 +305,12 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
     );
   }
 
+  obtenerSolicitudesPendientesPorMedico(medicoId: string): Observable<SolicitudDto[]> {
+    return this.obtenerSolicitudesPorMedico(medicoId).pipe(
+      map((solicitudes) => solicitudes.filter((solicitud) => solicitud.estado === 'pendiente'))
+    );
+  }
+
   actualizarEstadoSolicitud(solicitudId: string, nuevoEstado: string): Observable<void> {
     const solicitudRef = ref(this.db, `solicitudes/${solicitudId}`);
   

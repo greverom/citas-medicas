@@ -1,0 +1,9 @@
+<div class="notificaciones-container" *ngIf="solicitudesPendientes.length > 0">
+    <p><strong>Tienes {{ solicitudesPendientes.length }} solicitudes pendientes</strong></p>
+    <ul class="notificacion-lista">
+      <li *ngFor="let solicitud of solicitudesPendientes">
+        <span>Paciente: {{ solicitud.nombrePaciente }}</span>
+        <button class="ver-solicitudes-btn" (click)="verSolicitud(solicitud.solicitud)">Ver</button>
+      </li>
+    </ul>
+  </div>
