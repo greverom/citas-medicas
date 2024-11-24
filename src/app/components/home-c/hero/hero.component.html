@@ -33,6 +33,7 @@
       <ng-template #agendaButton>
         <a routerLink="/agenda-medico" class="hero-button" *ngIf="isMedico$ | async">Revisar Agenda</a>
         <a routerLink="/servicios" class="hero-button" *ngIf="isPaciente$ | async">Ver mis Servicios</a>
+        <a routerLink="/solicitud" class="hero-button" *ngIf="isPaciente$ | async">Solicitudes</a>
         <a routerLink="/register" class="hero-button" *ngIf="isAdmin$ | async">Registrar Usuario</a>
       </ng-template>
     </div>

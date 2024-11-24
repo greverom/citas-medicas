@@ -27,5 +27,5 @@ export interface TurnoDto {
     fechaPropuesta?: string; 
     horaPropuesta?: string; 
     estado: 'pendiente' | 'aprobada'; 
-    fechaCreacion: string; 
+    fechaCreacion: string;
   }

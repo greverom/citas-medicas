@@ -1,0 +1,43 @@
+<div class="solicitudes-container">
+  <h2>Solicitudes Pendientes</h2>
+
+  <div *ngIf="solicitudesPendientes.length > 0; else noSolicitudes">
+    <div
+      class="solicitud-bloque"
+      *ngFor="let solicitudDetalle of solicitudesPendientes">
+      <div class="solicitud-datos">
+        <div class="bloque-principal">
+          <div class="bloque-medico">
+            <p><strong>Médico:</strong> {{ solicitudDetalle.medico?.name || 'Desconocido' }}</p>
+            <p><strong>Especialidad:</strong> {{ obtenerEspecialidad(solicitudDetalle.medico) }}</p>
+          </div>
+          <div class="fila-bloques">
+            <div class="bloque fecha-prevista">
+              <p>
+                <strong>Fecha Prevista:</strong> {{ solicitudDetalle.turno?.fecha || 'No disponible' }}
+              </p>
+              <p>
+                <strong>Hora Prevista:</strong> {{ solicitudDetalle.turno?.hora || 'No disponible' }}
+              </p>
+            </div>
+            <div class="bloque fecha-nueva">
+              <p>
+                <strong>Fecha Nueva:</strong> {{ solicitudDetalle.solicitud.fechaPropuesta || 'No definida' }}
+              </p>
+              <p>
+                <strong>Hora Nueva:</strong> {{ solicitudDetalle.solicitud.horaPropuesta || 'No definida' }}
+              </p>
+            </div>
+          </div>
+          <p class="estado-pendiente">Estado: Pendiente</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noSolicitudes>
+    <div class="sin-solicitudes">
+      <p>No tienes solicitudes pendientes en este momento.</p>
+    </div>
+  </ng-template>
+</div>

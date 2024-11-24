@@ -311,6 +311,27 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
     );
   }
 
+  obtenerSolicitudesPorPaciente(pacienteId: string): Observable<SolicitudDto[]> {
+    const solicitudesRef = ref(this.db, 'solicitudes');
+    return from(get(solicitudesRef)).pipe(
+      map((snapshot) => {
+        if (snapshot.exists()) {
+          const solicitudesObj = snapshot.val();
+          const solicitudes = Object.keys(solicitudesObj)
+            .map((key) => ({ id: key, ...solicitudesObj[key] }))
+            .filter((solicitud: SolicitudDto) => solicitud.pacienteId === pacienteId);
+          return solicitudes;
+        } else {
+          return [];
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al obtener solicitudes:', error);
+        return of([]); // Si hay un error, devolvemos un array vacío
+      })
+    );
+  }
+
   actualizarEstadoSolicitud(solicitudId: string, nuevoEstado: string): Observable<void> {
     const solicitudRef = ref(this.db, `solicitudes/${solicitudId}`);
   
@@ -574,6 +595,28 @@ seleccionarTratamiento(tratamiento: TratamientoDto) {
 
 limpiarSeleccion() {
   this.tratamientoSeleccionado.next(null);
+}
+
+obtenerPacientePorCedula(cedula: string): Observable<PacienteDto | null> {
+  return from(get(this.dbRef)).pipe(
+    map((snapshot) => {
+      if (snapshot.exists()) {
+        const pacientesObj = snapshot.val();
+        const pacientes = Object.keys(pacientesObj).map((key) => ({
+          id: key,
+          ...pacientesObj[key],
+        })) as PacienteDto[];
+
+        return pacientes.find((paciente) => paciente.cedula === cedula) || null;
+      } else {
+        return null; 
+      }
+    }),
+    catchError((error) => {
+      console.error('Error al buscar paciente por cédula:', error);
+      return of(null);
+    })
+  );
 }
 
 }

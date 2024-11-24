@@ -1,0 +1,85 @@
+.solicitudes-container {
+  margin: 20px;
+}
+
+.solicitud-bloque {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #ffffff;
+}
+
+.bloque-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bloque-medico {
+  display: flex;
+  flex-direction: column; 
+}
+
+.fila-bloques {
+  display: flex;
+  justify-content: center; 
+  gap: 16px;
+}
+
+.bloque {
+  flex: 1;
+  max-width: 40%; 
+  text-align: center;
+}
+
+.fecha-prevista {
+  background-color: #ffe5e5;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.fecha-nueva {
+  background-color: #e5ffe5;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.estado-pendiente {
+  margin-top: 16px;
+  font-weight: bold;
+  color: #d9534f;
+}
+
+.sin-solicitudes {
+  text-align: left;
+  margin-top: 40px;
+  font-size: 15px;
+  color: #555;
+}
+
+@media screen and (max-width: 768px) {
+  .fila-bloques {
+    flex-direction: column; 
+    align-items: center; 
+    gap: 12px; 
+  }
+
+  .bloque {
+    max-width: 100%; 
+    padding: 10px; 
+  }
+
+  .fecha-prevista, .fecha-nueva {
+    font-size: 12px;
+    padding: 12px; 
+    text-align: left; 
+  }
+
+  .estado-pendiente {
+    font-size: 12px; 
+    margin-top: 12px; 
+  }
+}

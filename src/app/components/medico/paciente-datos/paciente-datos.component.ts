@@ -1,7 +1,7 @@
 
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil} from 'rxjs';
+import { map, Observable, of, Subject, switchMap, takeUntil} from 'rxjs';
 import { Router } from '@angular/router';
 import { PacienteService } from '../../../services/pacientes.service';
 import { PacienteDto } from '../../../models/user.dto';
@@ -94,15 +94,56 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
 
   eliminarTurno(turnoId: string) {
     if (this.paciente && turnoId) {
-      this.pacienteService.eliminarTurno(this.paciente.id!, turnoId).subscribe({
+      this.verificarYEliminarSolicitud(turnoId).subscribe({
         next: () => {
-          this.paciente!.turnos = this.paciente!.turnos!.filter(turno => turno.id !== turnoId);
+          this.actualizarTurnosLocales(turnoId);
           this.cerrarModal();
+          this.mostrarNotificacion('Turno eliminado correctamente.', false, false);
         },
         error: (error) => {
-          console.error('Error al eliminar el turno:', error);
-        }
+          console.error('Error al eliminar turno y solicitud:', error);
+          this.mostrarNotificacion('Error al eliminar turno.', true, false);
+        },
       });
+    }
+  }
+  
+  private verificarYEliminarSolicitud(turnoId: string): Observable<void> {
+    return this.pacienteService.verificarSolicitudPendiente(turnoId).pipe(
+      switchMap((existeSolicitud) => {
+        if (existeSolicitud && this.paciente) {
+          return this.obtenerYEliminarSolicitud(turnoId, this.paciente.id!);
+        } else if (this.paciente) {
+          return this.pacienteService.eliminarTurno(this.paciente.id!, turnoId);
+        } else {
+          return of();
+        }
+      })
+    );
+  }
+  
+  private obtenerYEliminarSolicitud(turnoId: string, pacienteId: string): Observable<void> {
+    return this.pacienteService.obtenerSolicitudesPorMedico(this.paciente!.medicoId!).pipe(
+      map((solicitudes) =>
+        solicitudes.find((solicitud) => solicitud.turnoId === turnoId)
+      ),
+      switchMap((solicitudAsociada) => {
+        if (solicitudAsociada) {
+          return this.pacienteService.eliminarTurnoYSolicitud(
+            pacienteId,
+            turnoId,
+            solicitudAsociada.id
+          );
+        } else {
+          return this.pacienteService.eliminarTurno(pacienteId, turnoId);
+        }
+      })
+    );
+  }
+  
+  private actualizarTurnosLocales(turnoId: string): void {
+    if (this.paciente?.turnos) {
+      this.paciente.turnos = this.paciente.turnos.filter((turno) => turno.id !== turnoId);
     }
   }
 
@@ -217,6 +258,22 @@ export class PacienteDatosComponent implements OnInit, OnDestroy {
       close: () => this.cerrarModal(),
       confirm: () => this.eliminarDiagnostico(diagnosticoId)
     };
+  }
+
+  mostrarNotificacion(mensaje: string, esError: boolean, esConfirmacion: boolean = false): void {
+    this.modal = {
+      show: true,
+      message: mensaje,
+      isError: esError && !esConfirmacion,
+      isSuccess: !esError && !esConfirmacion,
+      isConfirm: esConfirmacion,
+      close: () => this.cerrarModal(),
+      confirm: esConfirmacion ? this.modal.confirm : undefined,
+    };
+  
+    if (!esConfirmacion) {
+      setTimeout(() => this.cerrarModal(), 2000); 
+    }
   }
 
   agregarTratamiento() {
