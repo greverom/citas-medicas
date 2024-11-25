@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Database, ref, set, update, remove, get, child, push } from '@angular/fire/database';
-import { PacienteDto, UserDto } from '../models/user.dto';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { DetallesMedico, PacienteDto, UserDto } from '../models/user.dto';
+import { BehaviorSubject, forkJoin, from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { SolicitudDto, TurnoDto } from '../models/turno.dto';
 import { Diagnostico } from '../models/diagnostico.dto';
@@ -615,6 +615,39 @@ obtenerPacientePorCedula(cedula: string): Observable<PacienteDto | null> {
     catchError((error) => {
       console.error('Error al buscar paciente por cédula:', error);
       return of(null);
+    })
+  );
+}
+
+obtenerMedicosAsociadosAPaciente(cedula: string): Observable<(UserDto & { detalles: DetallesMedico })[]> {
+  return from(get(this.dbRef)).pipe(
+    map((snapshot) => {
+      if (snapshot.exists()) {
+        const pacientesObj = snapshot.val();
+        // Filtrar los registros que coincidan con la cédula
+        const pacientes = Object.keys(pacientesObj).map((key) => ({
+          id: key,
+          ...pacientesObj[key],
+        })) as PacienteDto[];
+        return pacientes.filter((paciente) => paciente.cedula === cedula);
+      }
+      return [];
+    }),
+    switchMap((pacientes) => {
+      const medicoIds = Array.from(new Set(pacientes.map((paciente) => paciente.medicoId)));
+      const medicosObservables = medicoIds.map((medicoId) =>
+        this.obtenerMedicoPorId(medicoId).pipe(
+          map((medico) => ({
+            ...(medico as UserDto), // Convertir a UserDto
+            detalles: medico?.detalles as DetallesMedico, // Convertir detalles a DetallesMedico
+          }))
+        )
+      );
+      return forkJoin(medicosObservables);
+    }),
+    catchError((error) => {
+      console.error('Error al obtener médicos asociados al paciente:', error);
+      return of([]); // Retornar un array vacío en caso de error
     })
   );
 }

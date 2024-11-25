@@ -7,7 +7,7 @@ import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
 import { SpinnerService } from '../../../services/spinner.service';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { PacienteDto } from '../../../models/user.dto';
+import { DetallesMedico, PacienteDto, UserDto } from '../../../models/user.dto';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalComponent } from '../../modal/modal.component';
 import { ModalDto, modalInitializer } from '../../modal/modal.dto';
@@ -32,7 +32,7 @@ export class CitasComponent implements OnInit {
   modalAbierto = false;
   solicitudForm: FormGroup;
   solicitudPendiente: boolean = false;
-
+  medicosAsociados: (UserDto & { detalles: DetallesMedico })[] = [];
   modal: ModalDto = modalInitializer();
 
   constructor(
@@ -50,9 +50,10 @@ export class CitasComponent implements OnInit {
 
   ngOnInit(): void {
     this.limpiarTurnosPasados();
-
+  
     this.spinners.show();
-
+  
+    // Lógica para obtener turnos del paciente (sin cambios)
     this.turnos$ = this.store.select(selectUserData).pipe(
       switchMap((userData) => {
         const userCedula = userData?.detalles?.cedula;
@@ -63,13 +64,19 @@ export class CitasComponent implements OnInit {
             ),
             switchMap((pacientes) => {
               if (pacientes.length > 0) {
+                const paciente = pacientes[0]; // Usar el primer paciente encontrado
+                this.paciente = paciente;
+  
+                // Agregar lógica para obtener médicos asociados
+                this.obtenerMedicosAsociados(userCedula);
+  
                 const turnosObservables = pacientes.map((paciente) =>
                   this.pacienteService.obtenerTurnosPorPacienteId(paciente.id!)
                 );
                 return forkJoin(turnosObservables).pipe(
                   map((turnosPorPaciente) => turnosPorPaciente.flat()),
                   tap((turnos) => {
-                    //console.log(turnos); 
+                    //console.log(turnos);
                   })
                 );
               }
@@ -80,15 +87,27 @@ export class CitasComponent implements OnInit {
         return of([]);
       }),
       map((result) => {
-        this.spinners.hide(); 
+        this.spinners.hide();
         if (result.length === 0) {
           setTimeout(() => {
-            this.showNoCitasMessage = true; 
+            this.showNoCitasMessage = true;
           }, 2000);
         }
         return result;
       })
     );
+  }
+
+  obtenerMedicosAsociados(cedula: string): void {
+    this.pacienteService.obtenerMedicosAsociadosAPaciente(cedula).subscribe({
+      next: (medicos) => {
+        this.medicosAsociados = medicos;
+        console.log('Médicos asociados:', this.medicosAsociados);
+      },
+      error: (error) => {
+        console.error('Error al obtener médicos asociados al paciente:', error);
+      },
+    });
   }
 
   seleccionarTurno(turno: TurnoDto): void {
