@@ -34,6 +34,7 @@ export class CitasComponent implements OnInit {
   solicitudPendiente: boolean = false;
   medicosAsociados: (UserDto & { detalles: DetallesMedico })[] = [];
   modal: ModalDto = modalInitializer();
+  mostrarBloqueSolicitudTurno: boolean = false;
 
   constructor(
     private pacienteService: PacienteService,
@@ -42,6 +43,13 @@ export class CitasComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.solicitudForm = this.fb.group({
+      motivo: ['', Validators.required],
+      fechaPropuesta: [''],
+      horaPropuesta: ['']
+    });
+
+    this.solicitudForm = this.fb.group({
+      medicoId: ['', Validators.required], 
       motivo: ['', Validators.required],
       fechaPropuesta: [''],
       horaPropuesta: ['']
@@ -187,6 +195,56 @@ export class CitasComponent implements OnInit {
       error: (error) => {
         console.error('Error al crear solicitud:', error);
         this.mostrarModal(true, 'Error al crear la solicitud.', false);
+      },
+    });
+  }
+
+
+  activarBloqueSolicitudTurno(): void {
+    this.mostrarBloqueSolicitudTurno = true;
+  }
+
+  cancelarSolicitud(): void {
+    this.mostrarBloqueSolicitudTurno = false;
+    this.solicitudForm.reset(); 
+  }
+
+  solicitarNuevoTurno() {
+    if (this.solicitudForm.invalid) {
+      this.solicitudForm.markAllAsTouched();
+      if (this.solicitudForm.get('motivo')?.hasError('required')) {
+        this.mostrarModal(true, 'El campo "Motivo de Solicitud" es obligatorio.', false);
+      }
+      return;
+    }
+  
+    const { motivo, fechaPropuesta, horaPropuesta, medicoId } = this.solicitudForm.value;
+  
+    if (!this.paciente?.id) {
+      console.error('No se encontró el ID del paciente.');
+      return;
+    }
+  
+    const nuevaSolicitud: SolicitudDto = {
+      id: '',
+      pacienteId: this.paciente.id,
+      medicoId: medicoId, 
+      turnoId: '', 
+      motivo,
+      fechaPropuesta,
+      horaPropuesta,
+      estado: 'pendiente',
+      fechaCreacion: new Date().toISOString(),
+    };
+  
+    this.pacienteService.crearSolicitudTurno(nuevaSolicitud).subscribe({
+      next: () => {
+        this.mostrarModal(false, 'Solicitud de turno enviada exitosamente.', true);
+        this.cerrarModal(); 
+      },
+      error: (error) => {
+        console.error('Error al enviar la solicitud de turno:', error);
+        this.mostrarModal(true, 'Error al enviar la solicitud de turno.', false);
       },
     });
   }

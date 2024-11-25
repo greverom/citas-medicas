@@ -1,3 +1,44 @@
+
+<div class="solicitud-turno-intro">
+  <p>
+    Si necesitas agendar un turno, puedes solicitarlo seleccionando el médico de tu preferencia, la fecha y la hora que deseas. Completa el formulario para enviar tu solicitud.
+  </p>
+  <button class="solicitar-turno-btn" (click)="activarBloqueSolicitudTurno()">Solicitar Turno</button>
+</div>
+
+<div *ngIf="mostrarBloqueSolicitudTurno" class="bloque-solicitud-turno">
+  <h3>Solicitar un nuevo turno</h3>
+  <form [formGroup]="solicitudForm" (ngSubmit)="solicitarNuevoTurno()">
+
+    <label for="medicoId">Seleccione un médico:</label>
+    <select id="medicoId" formControlName="medicoId">
+      <option *ngFor="let medico of medicosAsociados" [value]="medico.id">
+        {{ medico.name }} ({{ medico.detalles.especialidad || 'General' }})
+      </option>
+    </select>
+    <div *ngIf="solicitudForm.get('medicoId')?.invalid && solicitudForm.get('medicoId')?.touched" class="error-message">
+      Seleccionar un médico es obligatorio.
+    </div>
+
+    <label for="motivo">Motivo de la solicitud:</label>
+    <textarea id="motivo" formControlName="motivo" placeholder="Describe el motivo"></textarea>
+    <div *ngIf="solicitudForm.get('motivo')?.invalid && solicitudForm.get('motivo')?.touched" class="error-message">
+      El motivo es obligatorio.
+    </div>
+
+    <label for="fechaPropuesta">Fecha Propuesta (opcional):</label>
+    <input id="fechaPropuesta" type="date" formControlName="fechaPropuesta">
+
+    <label for="horaPropuesta">Hora Propuesta (opcional):</label>
+    <input id="horaPropuesta" type="time" formControlName="horaPropuesta">
+
+    <div class="acciones-solicitud">
+      <button type="submit" class="enviar-btn">Enviar Solicitud</button>
+      <button type="button" class="cancelar-btn" (click)="cancelarSolicitud()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
 <div *ngIf="turnos$ | async as turnos; else noCitas">
   <div class="turnos-table-container">
     <table class="turnos-table" *ngIf="turnos.length > 0; else noCitas">

@@ -271,6 +271,19 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
     );
   }
 
+  crearSolicitudTurno(solicitudTurno: SolicitudDto): Observable<void> {
+    const solicitudTurnoRef = ref(this.db, 'solicitud-turnos'); 
+    const nuevaSolicitudRef = push(solicitudTurnoRef); 
+    solicitudTurno.id = nuevaSolicitudRef.key ?? ''; 
+  
+    return from(set(nuevaSolicitudRef, solicitudTurno)).pipe(
+      catchError((error) => {
+        console.error('Error al crear solicitud de turno:', error);
+        throw error;
+      })
+    );
+  }
+
   crearSolicitud(solicitud: SolicitudDto): Observable<void> {
     const solicitudesRef = ref(this.db, 'solicitudes'); 
     const nuevaSolicitudRef = push(solicitudesRef); 
@@ -285,7 +298,7 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
   }
 
   obtenerSolicitudesPorMedico(medicoId: string): Observable<SolicitudDto[]> {
-    const solicitudesRef = ref(this.db, 'solicitudes'); // Referencia al nodo de solicitudes
+    const solicitudesRef = ref(this.db, 'solicitudes'); 
   
     return from(get(solicitudesRef)).pipe(
       map((snapshot) => {

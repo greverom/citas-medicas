@@ -1,3 +1,124 @@
+.solicitud-turno-intro {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.solicitud-turno-intro p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.solicitar-turno-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.solicitar-turno-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo del bloque de solicitud */
+.bloque-solicitud-turno {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bloque-solicitud-turno h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Estilo del formulario */
+.bloque-solicitud-turno form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.bloque-solicitud-turno label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+}
+
+.bloque-solicitud-turno input,
+.bloque-solicitud-turno textarea,
+.bloque-solicitud-turno select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.bloque-solicitud-turno input:focus,
+.bloque-solicitud-turno textarea:focus,
+.bloque-solicitud-turno select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.bloque-solicitud-turno textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.error-message {
+  font-size: 12px;
+  color: red;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.acciones-solicitud {
+  display: flex;
+  justify-content: center; 
+  gap: 20px; 
+  margin-top: 20px; 
+}
+
+.enviar-btn {
+  background-color: #007bff; 
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease; 
+}
+
+.cancelar-btn {
+  background-color: #45a049 !important; 
+  color: black;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease; 
+}
+
 .turnos-table-container {
     width: 100%;
     overflow-x: auto; 
