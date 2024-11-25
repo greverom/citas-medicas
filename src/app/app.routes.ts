@@ -84,6 +84,10 @@ export const routes: Routes = [
       canActivate: [authGuard, roleGuard],
       data: { role: 'paciente' },
     },
+
+    { path: 'solicitud-turno', 
+      loadComponent: () => import('./components/medico/solicitudes-turnos/solicitudes-turnos.component').then(c => c.SolicitudesTurnosComponent),
+    },
     
     {
       path: '**', 

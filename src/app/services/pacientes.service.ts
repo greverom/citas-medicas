@@ -284,6 +284,30 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
     );
   }
 
+  obtenerSolicitudesNuevosTurnosPorMedico(medicoId: string): Observable<SolicitudDto[]> {
+    const solicitudTurnosRef = ref(this.db, 'solicitud-turnos'); 
+  
+    return from(get(solicitudTurnosRef)).pipe(
+      map((snapshot) => {
+        if (snapshot.exists()) {
+          const solicitudesObj = snapshot.val();
+          return Object.keys(solicitudesObj)
+            .map((key) => ({ id: key, ...solicitudesObj[key] }))
+            .filter(
+              (solicitud: SolicitudDto) =>
+                solicitud.medicoId === medicoId && solicitud.estado === 'pendiente'
+            );
+        } else {
+          return [];
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al obtener solicitudes de nuevos turnos:', error);
+        return of([]); 
+      })
+    );
+  }
+
   crearSolicitud(solicitud: SolicitudDto): Observable<void> {
     const solicitudesRef = ref(this.db, 'solicitudes'); 
     const nuevaSolicitudRef = push(solicitudesRef); 
