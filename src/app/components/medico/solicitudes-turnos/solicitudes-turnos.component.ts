@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
 import { PacienteDto } from '../../../models/user.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitudes-turnos',
@@ -19,7 +20,7 @@ export class SolicitudesTurnosComponent implements OnInit {
   medicoId: string | null = null; 
   solicitudesTurnos: { solicitud: SolicitudDto; paciente: PacienteDto | null }[] = [];
 
-  constructor(private pacienteService: PacienteService, private store: Store) {}
+  constructor(private pacienteService: PacienteService, private store: Store, private router:Router) {}
 
   ngOnInit(): void {
     this.store.select(selectUserData).subscribe((userData) => {
@@ -58,5 +59,9 @@ export class SolicitudesTurnosComponent implements OnInit {
         console.error('Error al obtener las solicitudes de turnos:', error);
       },
     });
+  }
+
+  irASolicitudes(): void {
+    this.router.navigate(['/solicitudes']);
   }
 }

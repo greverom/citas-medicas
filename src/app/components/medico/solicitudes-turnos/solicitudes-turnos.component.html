@@ -1,16 +1,15 @@
+<div class="boton-redirigir">
+  <button class="redirigir-btn" (click)="irASolicitudes()">Ir a Solicitudes</button>
+</div>
+
 <div class="notificaciones-container">
-    <!-- Título del componente -->
     <h2>Solicitudes de Nuevos Turnos</h2>
-  
     <ul *ngIf="solicitudesTurnos.length > 0; else noSolicitudes" class="solicitudes-lista">
       <li *ngFor="let item of solicitudesTurnos" class="solicitud-item">
         <div class="solicitud-tarjeta">
           <div class="paciente-info">
-            <h3>Paciente: {{ item.paciente?.nombres | titlecase}} {{ item.paciente?.apellidos | titlecase }}</h3>
-            <p><strong>Cédula:</strong> {{ item.paciente?.cedula || 'N/A' }}</p>
-            <p><strong>Teléfono:</strong> {{ item.paciente?.telefono || 'N/A' }}</p>
+            <h3>{{ item.paciente?.nombres | titlecase}} {{ item.paciente?.apellidos | titlecase }}</h3>
           </div>
-  
           <div class="solicitud-info">
             <p><strong>Motivo:</strong> {{ item.solicitud.motivo }}</p>
             <p><strong>Fecha Propuesta:</strong> 
@@ -19,9 +18,7 @@
             <p><strong>Hora Propuesta:</strong> 
               <span class="resaltar">{{ item.solicitud.horaPropuesta || 'No especificada' }}</span>
             </p>
-            <p><strong>Estado:</strong> {{ item.solicitud.estado }}</p>
           </div>
-  
           <div class="solicitud-acciones">
             <button class="aceptar-btn">Aceptar</button>
             <button class="rechazar-btn">Rechazar</button>

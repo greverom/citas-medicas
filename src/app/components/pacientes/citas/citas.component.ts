@@ -43,16 +43,10 @@ export class CitasComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.solicitudForm = this.fb.group({
-      motivo: ['', Validators.required],
-      fechaPropuesta: [''],
-      horaPropuesta: ['']
-    });
-
-    this.solicitudForm = this.fb.group({
-      medicoId: ['', Validators.required], 
-      motivo: ['', Validators.required],
-      fechaPropuesta: [''],
-      horaPropuesta: ['']
+      medicoId: [''], 
+      motivo: ['', Validators.required], 
+      fechaPropuesta: [''], 
+      horaPropuesta: [''], 
     });
   }
 
@@ -61,7 +55,6 @@ export class CitasComponent implements OnInit {
   
     this.spinners.show();
   
-    // Lógica para obtener turnos del paciente (sin cambios)
     this.turnos$ = this.store.select(selectUserData).pipe(
       switchMap((userData) => {
         const userCedula = userData?.detalles?.cedula;
@@ -72,10 +65,9 @@ export class CitasComponent implements OnInit {
             ),
             switchMap((pacientes) => {
               if (pacientes.length > 0) {
-                const paciente = pacientes[0]; // Usar el primer paciente encontrado
+                const paciente = pacientes[0]; 
                 this.paciente = paciente;
   
-                // Agregar lógica para obtener médicos asociados
                 this.obtenerMedicosAsociados(userCedula);
   
                 const turnosObservables = pacientes.map((paciente) =>
@@ -84,7 +76,6 @@ export class CitasComponent implements OnInit {
                 return forkJoin(turnosObservables).pipe(
                   map((turnosPorPaciente) => turnosPorPaciente.flat()),
                   tap((turnos) => {
-                    //console.log(turnos);
                   })
                 );
               }

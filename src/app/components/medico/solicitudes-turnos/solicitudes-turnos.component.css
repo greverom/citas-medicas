@@ -1,18 +1,39 @@
+
+.boton-redirigir {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.redirigir-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.redirigir-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
 /* Contenedor principal */
 .notificaciones-container {
     margin: 20px;
     padding: 15px;
-    background-color: #f8f9fa; /* Gris claro */
-    border: 1px solid #dee2e6; /* Gris */
+    background-color: #ffffff; 
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
   }
   
   /* Título del componente */
   .notificaciones-container h2 {
     font-size: 20px;
-    color: #084298; /* Azul vibrante */
+    color: #084298; 
     margin-bottom: 15px;
     text-align: left;
   }
@@ -31,42 +52,40 @@
     background-color: white;
     border: 1px solid #ced4da;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   /* Bloques internos */
   .paciente-info,
   .solicitud-info {
-    margin-bottom: 15px;
+    margin-bottom: 0px;
   }
   
   .paciente-info h3 {
-    font-size: 16px;
-    color: #495057; /* Gris oscuro */
+    font-size: 14px;
+    color: #495057; 
     margin: 0 0 5px 0;
   }
   
   .paciente-info p,
   .solicitud-info p {
     font-size: 14px;
-    color: #6c757d; /* Gris */
-    margin: 3px 0;
+    color: #6c757d;
   }
   
   .solicitud-info p strong {
-    color: #212529; /* Negro */
+    color: #212529; 
   }
   
   .solicitud-info .resaltar {
     font-weight: bold;
-    color: #084298; /* Azul vibrante */
+    color: #084298; 
     font-size: 16px;
+    margin-left: 5px;
   }
   
-  /* Botones centrados */
   .solicitud-acciones {
     display: flex;
-    justify-content: center; /* Centra los botones */
+    justify-content: center; 
     gap: 10px;
     margin-top: 15px;
   }
@@ -82,30 +101,27 @@
     transition: all 0.3s ease;
   }
   
-  /* Botón de aceptar */
   .aceptar-btn {
-    background-color: #0d6efd; /* Azul de Bootstrap */
+    background-color: #0d6efd; 
     color: white;
   }
   
   .aceptar-btn:hover {
-    background-color: #0a58ca; /* Azul más oscuro */
+    background-color: #0a58ca; 
   }
   
-  /* Botón de rechazar */
   .rechazar-btn {
-    background-color: #198754; /* Verde */
+    background-color: #198754; 
     color: white;
   }
   
   .rechazar-btn:hover {
-    background-color: #157347; /* Verde más oscuro */
+    background-color: #157347; 
   }
   
-  /* Mensaje cuando no hay solicitudes */
   .notificaciones-container p {
     font-size: 14px;
-    color: #6c757d; /* Gris */
+    color: #6c757d;
     text-align: left;
     margin: 10px 0;
   }

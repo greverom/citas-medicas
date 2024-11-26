@@ -87,6 +87,8 @@ export const routes: Routes = [
 
     { path: 'solicitud-turno', 
       loadComponent: () => import('./components/medico/solicitudes-turnos/solicitudes-turnos.component').then(c => c.SolicitudesTurnosComponent),
+      canActivate: [authGuard, roleGuard],
+      data: { role: 'medico' },
     },
     
     {

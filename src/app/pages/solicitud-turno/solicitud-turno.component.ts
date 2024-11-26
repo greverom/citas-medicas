@@ -8,6 +8,7 @@ import { PacienteDto } from '../../models/user.dto';
 import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
 import { PacienteService } from '../../services/pacientes.service';
 import { selectUserData } from '../../store/user.selector';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitud-turno',
@@ -21,6 +22,7 @@ import { selectUserData } from '../../store/user.selector';
 })
 export class SolicitudTurnoComponent implements OnInit {
   medicoId: string | null = null;
+  mostrarSolicitudesCambio: boolean = false;
   solicitudesDetalladas$: Observable<{
     pendientes: { solicitud: SolicitudDto; paciente: PacienteDto | null; turno: TurnoDto | null }[];
     aprobadas: { solicitud: SolicitudDto; paciente: PacienteDto | null; turno: TurnoDto | null }[];}> | null = null;
@@ -30,6 +32,7 @@ export class SolicitudTurnoComponent implements OnInit {
 
   constructor(
     private store: Store,
+    private router: Router,
     private pacienteService: PacienteService
   ) {}
 
@@ -77,6 +80,10 @@ export class SolicitudTurnoComponent implements OnInit {
 
   cambiarVista(vista: 'pendientes' | 'aprobadas'): void {
     this.vistaActual = vista;
+  }
+
+  toggleVistaSolicitudesCambio(): void {
+    this.mostrarSolicitudesCambio = !this.mostrarSolicitudesCambio;
   }
 
   seleccionarSolicitud(solicitud: SolicitudDto): void {
@@ -266,5 +273,9 @@ confirmarEliminacionSolicitud(solicitudId: string): void {
   
   cerrarModal(): void {
     this.modal = modalInitializer(); 
+  }
+
+  irASolicitudesTurnos(): void {
+    this.router.navigate(['/solicitud-turno']);
   }
 }
