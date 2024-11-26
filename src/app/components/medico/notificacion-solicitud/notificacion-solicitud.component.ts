@@ -83,7 +83,7 @@ export class NotificacionSolicitudComponent {
           return;
         }
         this.pacienteService.seleccionarTurno(turno);
-        this.router.navigate(['/solicitudes']);
+        this.router.navigate(['/solicitudes/solicitudes-cambioturno']);
       },
       error: (error) => {
         console.error('Error al obtener el turno:', error);

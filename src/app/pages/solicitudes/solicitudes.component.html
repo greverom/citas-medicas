@@ -1,0 +1,14 @@
+<div class="botones-principales">
+
+    <div class="boton-solicitud-turno">
+      <button class="redirigir-btn" (click)="irASolicitudesTurnos()">Solicitudes de Nuevos Turnos</button>
+    </div>
+  
+    <div class="boton-solicitud-cambio">
+      <button class="cambio-btn" (click)="toggleVistaSolicitudesCambio()">Ver Solicitudes de Cambio de Turnos</button>
+    </div>
+</div>
+
+<div class="contenido-hijo">
+    <router-outlet></router-outlet>
+</div>

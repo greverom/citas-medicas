@@ -73,22 +73,26 @@ export const routes: Routes = [
       canActivate: [authGuard]
     },
 
-    { path: 'solicitudes', 
-      loadComponent: () => import('./pages/solicitud-turno/solicitud-turno.component').then(c => c.SolicitudTurnoComponent),
-      canActivate: [authGuard, roleGuard],
-      data: { role: 'medico' }
-    },
-
+    
     { path: 'solicitud', 
       loadComponent: () => import('./components/pacientes/solicitudes-pendientes/solicitudes-pendientes.component').then(c => c.SolicitudesPendientesComponent),
       canActivate: [authGuard, roleGuard],
       data: { role: 'paciente' },
     },
 
-    { path: 'solicitud-turno', 
-      loadComponent: () => import('./components/medico/solicitudes-turnos/solicitudes-turnos.component').then(c => c.SolicitudesTurnosComponent),
+    { path: 'solicitudes', loadComponent: () => import('./pages/solicitudes/solicitudes.component').then((c) => c.SolicitudesComponent),
       canActivate: [authGuard, roleGuard],
       data: { role: 'medico' },
+      children: [
+        { path: 'solicitudes-cambioturno', loadComponent: () => import('./pages/solicitudes/solicitud-cambioturno/solicitud-turno.component').then((c) => c.SolicitudTurnoComponent),
+          canActivate: [authGuard, roleGuard],
+          data: { role: 'medico' },
+        },
+        { path: 'solicitud-nuevoturno', loadComponent: () => import('./pages/solicitudes/solicitudes-nuevosturnos/solicitudes-turnos.component').then((c) => c.SolicitudesTurnosComponent),
+          canActivate: [authGuard, roleGuard],
+          data: { role: 'medico' },
+        },
+      ],
     },
     
     {

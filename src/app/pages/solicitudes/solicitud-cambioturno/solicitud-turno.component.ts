@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
-import { SolicitudDto, TurnoDto } from '../../models/turno.dto';
-import { ModalComponent } from '../../components/modal/modal.component';
-import { PacienteDto } from '../../models/user.dto';
-import { ModalDto, modalInitializer } from '../../components/modal/modal.dto';
-import { PacienteService } from '../../services/pacientes.service';
-import { selectUserData } from '../../store/user.selector';
+import { SolicitudDto, TurnoDto } from '../../../models/turno.dto';
+import { ModalComponent } from '../../../components/modal/modal.component';
+import { PacienteDto } from '../../../models/user.dto';
+import { ModalDto, modalInitializer } from '../../../components/modal/modal.dto';
+import { PacienteService } from '../../../services/pacientes.service';
+import { selectUserData } from '../../../store/user.selector';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class SolicitudTurnoComponent implements OnInit {
   medicoId: string | null = null;
-  mostrarSolicitudesCambio: boolean = false;
+  mostrarSolicitudesCambio: boolean = true;
   solicitudesDetalladas$: Observable<{
     pendientes: { solicitud: SolicitudDto; paciente: PacienteDto | null; turno: TurnoDto | null }[];
     aprobadas: { solicitud: SolicitudDto; paciente: PacienteDto | null; turno: TurnoDto | null }[];}> | null = null;
@@ -80,10 +80,6 @@ export class SolicitudTurnoComponent implements OnInit {
 
   cambiarVista(vista: 'pendientes' | 'aprobadas'): void {
     this.vistaActual = vista;
-  }
-
-  toggleVistaSolicitudesCambio(): void {
-    this.mostrarSolicitudesCambio = !this.mostrarSolicitudesCambio;
   }
 
   seleccionarSolicitud(solicitud: SolicitudDto): void {
@@ -275,7 +271,4 @@ confirmarEliminacionSolicitud(solicitudId: string): void {
     this.modal = modalInitializer(); 
   }
 
-  irASolicitudesTurnos(): void {
-    this.router.navigate(['/solicitud-turno']);
-  }
 }

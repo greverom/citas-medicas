@@ -1,14 +1,4 @@
-<div class="botones-principales">
-  <!-- Botón para solicitudes de nuevos turnos -->
-  <div class="boton-solicitud-turno">
-    <button class="redirigir-btn" (click)="irASolicitudesTurnos()">Solicitudes de Nuevos Turnos</button>
-  </div>
 
-  <!-- Botón para solicitudes de cambio de turnos -->
-  <div class="boton-solicitud-cambio">
-    <button class="cambio-btn" (click)="toggleVistaSolicitudesCambio()">Ver Solicitudes de Cambio de Turnos</button>
-  </div>
-</div>
 
 <div *ngIf="mostrarSolicitudesCambio" class="solicitudes-cambio-container">
 <div class="botones-vista">

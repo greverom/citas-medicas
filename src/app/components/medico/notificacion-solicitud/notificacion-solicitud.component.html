@@ -18,7 +18,7 @@
       *ngFor="let solicitud of solicitudesPendientes"
       class="notificacion-item"
       (click)="verSolicitud(solicitud.solicitud)">
-      <span>Paciente: {{ solicitud.nombrePaciente }}</span>
+      <span>Paciente: {{ solicitud.nombrePaciente | titlecase }}</span>
     </li>
   </ul>
 </div>
