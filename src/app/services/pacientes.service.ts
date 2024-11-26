@@ -661,7 +661,6 @@ obtenerMedicosAsociadosAPaciente(cedula: string): Observable<(UserDto & { detall
     map((snapshot) => {
       if (snapshot.exists()) {
         const pacientesObj = snapshot.val();
-        // Filtrar los registros que coincidan con la cédula
         const pacientes = Object.keys(pacientesObj).map((key) => ({
           id: key,
           ...pacientesObj[key],
@@ -675,8 +674,8 @@ obtenerMedicosAsociadosAPaciente(cedula: string): Observable<(UserDto & { detall
       const medicosObservables = medicoIds.map((medicoId) =>
         this.obtenerMedicoPorId(medicoId).pipe(
           map((medico) => ({
-            ...(medico as UserDto), // Convertir a UserDto
-            detalles: medico?.detalles as DetallesMedico, // Convertir detalles a DetallesMedico
+            ...(medico as UserDto), 
+            detalles: medico?.detalles as DetallesMedico, 
           }))
         )
       );

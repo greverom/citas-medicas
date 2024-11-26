@@ -74,28 +74,28 @@
   </div>
 </div>
 
-<div *ngIf="solicitudSeleccionada" class="detalle-solicitud">
-  <h3>Detalle de la Solicitud Seleccionada</h3>
-  <p><strong>Paciente:</strong> {{ solicitudSeleccionada.paciente?.nombres | titlecase }} {{ solicitudSeleccionada.paciente?.apellidos | titlecase }}</p>
-  <p><strong>Motivo:</strong> {{ solicitudSeleccionada.solicitud.motivo }}</p>
+  <div *ngIf="solicitudSeleccionada" class="detalle-solicitud">
+    <h3>Detalle de la Solicitud Seleccionada</h3>
+    <p><strong>Paciente:</strong> {{ solicitudSeleccionada.paciente?.nombres | titlecase }} {{ solicitudSeleccionada.paciente?.apellidos | titlecase }}</p>
+    <p><strong>Motivo:</strong> {{ solicitudSeleccionada.solicitud.motivo }}</p>
 
-  <div class="fechas-row">
-    <div class="fecha-prevista">
-      <h4>Fecha Prevista</h4>
-      <p>{{ solicitudSeleccionada.turno?.fecha || 'N/A' }} - {{ solicitudSeleccionada.turno?.hora || '' }}</p>
+    <div class="fechas-row">
+      <div class="fecha-prevista">
+        <h4>Fecha Prevista</h4>
+        <p>{{ solicitudSeleccionada.turno?.fecha || 'N/A' }} - {{ solicitudSeleccionada.turno?.hora || '' }}</p>
+      </div>
+      <div class="fecha-nueva">
+        <h4>Nueva Fecha</h4>
+        <p>{{ solicitudSeleccionada.solicitud.fechaPropuesta || 'No especificada' }} - {{ solicitudSeleccionada.solicitud.horaPropuesta || 'No especificada' }}</p>
+      </div>
     </div>
-    <div class="fecha-nueva">
-      <h4>Nueva Fecha</h4>
-      <p>{{ solicitudSeleccionada.solicitud.fechaPropuesta || 'No especificada' }} - {{ solicitudSeleccionada.solicitud.horaPropuesta || 'No especificada' }}</p>
+
+    <div class="acciones">
+      <button class="aceptar-btn" (click)="cambiarFechaTurno()">Cambiar Fecha</button>
+      <button class="rechazar-btn" (click)="eliminarTurnoSeleccionado()">Eliminar Turno</button>
+      <button class="eliminar-solicitud-btn" (click)="eliminarSolicitudTurno(solicitudSeleccionada.solicitud.id)">Eliminar Solicitud</button>
     </div>
   </div>
-
-  <div class="acciones">
-    <button class="aceptar-btn" (click)="cambiarFechaTurno()">Cambiar Fecha</button>
-    <button class="rechazar-btn" (click)="eliminarTurnoSeleccionado()">Eliminar Turno</button>
-    <button class="eliminar-solicitud-btn" (click)="eliminarSolicitudTurno(solicitudSeleccionada.solicitud.id)">Eliminar Solicitud</button>
-  </div>
-</div>
 </div>
 
 <app-modal

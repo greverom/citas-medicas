@@ -28,7 +28,6 @@
   }
   
   .boton-accion {
-    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     font-size: 16px;
@@ -41,10 +40,22 @@
     transition: background-color 0.3s ease;
   }
   
-  .boton-accion:hover {
-    background-color: #0056b3;
+  .boton-agregar {
+    background-color: #007bff; 
   }
-
+  
+  .boton-agregar:hover {
+    background-color: #0056b3; 
+  }
+  
+  .boton-buscar {
+    background-color: #17a2b8; 
+  }
+  
+  .boton-buscar:hover {
+    background-color: #117a8b; 
+  }
+  
   .icono {
     margin-right: 10px;
   }

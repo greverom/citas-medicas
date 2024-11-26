@@ -24,3 +24,38 @@
     background-color: #0056b3;
     transform: scale(1.05);
   }
+
+  @media (max-width: 768px) {
+    .botones-principales {
+      width: 80%;
+      margin: auto;
+      gap: 10px; 
+      margin-top: 2rem; 
+      margin-bottom: 15px; 
+    }
+  
+    .boton-solicitud-turno .redirigir-btn,
+    .boton-solicitud-cambio .cambio-btn {
+      font-size: 13px;
+      padding: 6px 10px; 
+    }
+  
+  }
+
+
+ @media (max-width: 492px) {
+  .botones-principales {
+    width: 80%;
+    margin: auto;
+    gap: 10px; 
+    margin-top: 2rem; 
+    margin-bottom: 15px; 
+  }
+
+  .boton-solicitud-turno .redirigir-btn,
+  .boton-solicitud-cambio .cambio-btn {
+    font-size: 10px;
+    padding: 6px 10px; 
+  }
+
+}

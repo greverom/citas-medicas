@@ -17,8 +17,11 @@
     <li
       *ngFor="let solicitud of solicitudesPendientes"
       class="notificacion-item"
-      (click)="verSolicitud(solicitud.solicitud)">
+      (click)="verSolicitud(solicitud)">
       <span>Paciente: {{ solicitud.nombrePaciente | titlecase }}</span>
+      <span class="tipo-solicitud">
+        {{ solicitud.tipo === 'nuevo-turno' ? '🗓 Nuevo Turno' : '🔄 Cambio de Turno' }}
+      </span>
     </li>
   </ul>
 </div>

@@ -329,5 +329,9 @@ export class PacientesComponent implements OnInit{
     this.pacienteSeleccionadoParaTurno = null;
   }
 
+  irAgendaMedico(): void {
+    this.router.navigate(['/agenda-medico']);
+  }
+
   
 }

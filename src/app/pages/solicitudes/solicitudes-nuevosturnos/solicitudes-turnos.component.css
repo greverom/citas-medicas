@@ -123,5 +123,62 @@
     font-size: 14px;
     color: #6c757d;
     text-align: left;
-    margin: 10px 0;
+    margin: 10px 
+    0;
+  }
+
+  @media (max-width: 768px) {
+    .notificaciones-container h2 {
+      font-size: 18px; 
+    }
+  
+    .paciente-info h3 {
+      font-size: 12px; 
+    }
+  
+    .paciente-info p,
+    .solicitud-info p {
+      font-size: 12px; 
+    }
+  
+    .solicitud-info .resaltar {
+      font-size: 14px; 
+    }
+  
+    .aceptar-btn,
+    .rechazar-btn {
+      font-size: 12px; 
+    }
+  
+    .notificaciones-container p {
+      font-size: 12px; 
+    }
+  }
+
+  @media (max-width: 492px) {
+    .notificaciones-container h2 {
+      font-size: 14px; 
+    }
+  
+    .paciente-info h3 {
+      font-size: 10px; 
+    }
+  
+    .paciente-info p,
+    .solicitud-info p {
+      font-size: 12px; 
+    }
+  
+    .solicitud-info .resaltar {
+      font-size: 12px; 
+    }
+  
+    .aceptar-btn,
+    .rechazar-btn {
+      font-size: 10px; 
+    }
+  
+    .notificaciones-container p {
+      font-size: 12px; 
+    }
   }

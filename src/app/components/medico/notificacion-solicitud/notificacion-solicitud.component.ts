@@ -7,6 +7,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { forkJoin, map } from 'rxjs';
 
+interface SolicitudConTipo {
+  solicitud: SolicitudDto;
+  nombrePaciente: string;
+  tipo: 'nuevo-turno' | 'cambio-turno'; 
+}
+
 @Component({
   selector: 'app-notificacion-solicitud',
   standalone: true,
@@ -14,8 +20,10 @@ import { forkJoin, map } from 'rxjs';
   templateUrl: './notificacion-solicitud.component.html',
   styleUrl: './notificacion-solicitud.component.css'
 })
+
+
 export class NotificacionSolicitudComponent {
-  solicitudesPendientes: { solicitud: SolicitudDto; nombrePaciente: string }[] = [];
+  solicitudesPendientes: SolicitudConTipo[] = [];
   isDropdownOpen = false;
   medicoId: string | null = null;
 
@@ -29,65 +37,109 @@ export class NotificacionSolicitudComponent {
       if (userData?.id) {
         this.medicoId = userData.id;
 
+        this.cargarSolicitudesNuevosTurnos();
         this.cargarSolicitudesPendientes();
       }
     });
   }
 
-  cargarSolicitudesPendientes(): void {
+  cargarSolicitudesNuevosTurnos(): void {
     if (!this.medicoId) {
+      console.error('El médico no está definido');
       return;
     }
+  
+    this.pacienteService.obtenerSolicitudesNuevosTurnosPorMedico(this.medicoId).subscribe({
+      next: (solicitudes) => {
+        if (solicitudes.length > 0) {
+          const solicitudesConPacientes$ = solicitudes.map((solicitud) =>
+            this.pacienteService
+              .obtenerPaciente(solicitud.pacienteId)
+              .pipe(
+                map((paciente) => ({
+                  solicitud,
+                  nombrePaciente: paciente
+                    ? `${paciente.nombres} ${paciente.apellidos}`
+                    : 'Paciente desconocido',
+                  tipo: 'nuevo-turno' as const, 
+                }))
+              )
+          );
+  
+          forkJoin(solicitudesConPacientes$).subscribe((resultados: SolicitudConTipo[]) => {
+            this.solicitudesPendientes.push(...resultados);
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener las solicitudes de nuevos turnos:', error);
+      },
+    });
+  }
 
-    this.pacienteService
-      .obtenerSolicitudesPendientesPorMedico(this.medicoId)
-      .subscribe({
-        next: (solicitudes) => {
-          if (solicitudes.length > 0) {
-            const solicitudesConPacientes$ = solicitudes.map((solicitud) =>
-              this.pacienteService
-                .obtenerPaciente(solicitud.pacienteId)
-                .pipe(
-                  map((paciente) => ({
-                    solicitud,
-                    nombrePaciente: paciente
-                      ? `${paciente.nombres} ${paciente.apellidos}`
-                      : 'Desconocido',
-                  }))
-                )
-            );
-            forkJoin(solicitudesConPacientes$).subscribe((resultados) => {
-              this.solicitudesPendientes = resultados;
-            });
-          }
-        },
-        error: (error) => {
-          console.error('Error al obtener las solicitudes pendientes:', error);
-        },
-      });
+  cargarSolicitudesPendientes(): void {
+    if (!this.medicoId) {
+      console.error('El médico no está definido');
+      return;
+    }
+  
+    this.pacienteService.obtenerSolicitudesPendientesPorMedico(this.medicoId).subscribe({
+      next: (solicitudes) => {
+        if (solicitudes.length > 0) {
+          const solicitudesConPacientes$ = solicitudes.map((solicitud) =>
+            this.pacienteService
+              .obtenerPaciente(solicitud.pacienteId)
+              .pipe(
+                map((paciente) => ({
+                  solicitud,
+                  nombrePaciente: paciente
+                    ? `${paciente.nombres} ${paciente.apellidos}`
+                    : 'Paciente desconocido',
+                  tipo: 'cambio-turno' as const, 
+                }))
+              )
+          );
+  
+          forkJoin(solicitudesConPacientes$).subscribe((resultados: SolicitudConTipo[]) => {
+            this.solicitudesPendientes.push(...resultados);
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener las solicitudes pendientes:', error);
+      },
+    });
   }
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen; 
   }
 
-  verSolicitud(solicitud: SolicitudDto): void {
-    if (!solicitud.turnoId || !solicitud.pacienteId) {
-      console.error('La solicitud no tiene un turno asociado o el paciente no está definido');
-      return;
+  verSolicitud(solicitud: SolicitudConTipo): void {
+    if (solicitud.tipo === 'nuevo-turno') {
+      this.router.navigate(['/solicitudes/solicitud-nuevoturno']);
+      return; 
     }
-    this.pacienteService.obtenerTurnoPorId(solicitud.pacienteId, solicitud.turnoId).subscribe({
-      next: (turno) => {
-        if (!turno) {
-          console.error('No se encontró el turno asociado a la solicitud');
-          return;
-        }
-        this.pacienteService.seleccionarTurno(turno);
-        this.router.navigate(['/solicitudes/solicitudes-cambioturno']);
-      },
-      error: (error) => {
-        console.error('Error al obtener el turno:', error);
-      },
-    });
+    if (solicitud.tipo === 'cambio-turno') {
+      if (!solicitud.solicitud.turnoId || !solicitud.solicitud.pacienteId) {
+        console.error('La solicitud no tiene un turno asociado o el paciente no está definido');
+        return;
+      }
+      this.pacienteService.obtenerTurnoPorId(solicitud.solicitud.pacienteId, solicitud.solicitud.turnoId).subscribe({
+        next: (turno) => {
+          if (!turno) {
+            console.error('No se encontró el turno asociado a la solicitud');
+            return;
+          }
+          this.pacienteService.seleccionarTurno(turno);
+          this.router.navigate(['/solicitudes/solicitudes-cambioturno']);
+        },
+        error: (error) => {
+          console.error('Error al obtener el turno:', error);
+        },
+      });
+    }
   }
+
+  
 }
