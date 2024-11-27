@@ -91,7 +91,13 @@
       <input id="fechaPropuesta" type="date" formControlName="fechaPropuesta" class="nuevo-turno-input">
     
       <label for="horaPropuesta" class="nuevo-turno-label">Hora Propuesta (opcional):</label>
-      <input id="horaPropuesta" type="time" formControlName="horaPropuesta" class="nuevo-turno-input">
+      <select id="horaPropuesta" formControlName="horaPropuesta" class="nuevo-turno-select">
+        <option value="" disabled selected>Seleccionar hora</option>
+        <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
+      </select>
+      <div *ngIf="solicitudForm.get('horaPropuesta')?.invalid && solicitudForm.get('horaPropuesta')?.touched" class="nuevo-turno-error-message">
+        Seleccionar una hora.
+      </div>
     
       <div class="nuevo-turno-acciones">
         <button type="submit" class="nuevo-turno-enviar-btn">Enviar Solicitud</button>
@@ -120,7 +126,13 @@
       <input id="fechaPropuesta" type="date" formControlName="fechaPropuesta">
       
       <label for="horaPropuesta">Nueva Hora (opcional):</label>
-      <input id="horaPropuesta" type="time" formControlName="horaPropuesta">
+      <select id="horaPropuesta" formControlName="horaPropuesta" class="nuevo-turno-select">
+        <option value="" disabled selected>Seleccionar hora</option>
+        <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
+      </select>
+      <div *ngIf="solicitudForm.get('horaPropuesta')?.invalid && solicitudForm.get('horaPropuesta')?.touched" class="error-message">
+        Seleccionar una hora.
+      </div>
 
       <div class="botones-modal">
         <button type="submit" class="guardar-btn">Enviar Solicitud</button>
