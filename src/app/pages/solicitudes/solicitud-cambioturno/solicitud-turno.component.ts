@@ -99,37 +99,45 @@ export class SolicitudTurnoComponent implements OnInit {
     });
   }
 
-  cambiarFechaTurno(): void {
-    if (!this.solicitudSeleccionada || !this.solicitudSeleccionada.turno) {
-      //console.error('No hay solicitud o turno seleccionado');
-      return;
-    }
-  
-    const { paciente, turno, solicitud } = this.solicitudSeleccionada;
-  
-    if (!paciente || !turno) {
-      //console.error('Datos del paciente o turno incompletos.');
-      return;
-    }
-    if (!paciente.id) {
-      //console.error('El paciente no tiene un ID asociado.');
-      return;
-    }
-  
-    this.pacienteService
-      .actualizarFechaHoraTurno(paciente.id, turno.id, solicitud.fechaPropuesta!, solicitud.horaPropuesta!)
-      .subscribe({
-        next: () => {
-          //console.log('Fecha y hora del turno actualizadas exitosamente');
-          this.actualizarEstadoSolicitud(solicitud.id, 'aprobada');
-          this.solicitudSeleccionada = null;
-        },
-        error: (error) => {
-          console.error('Error al actualizar la fecha del turno:', error);
-          this.mostrarNotificacion('Error al actualizar el turno.', true);
-        },
-      });
+  abrirModalConfirmarCambioFecha(): void {
+    this.modal = {
+      show: true,
+      message: '¿Estás seguro de que deseas cambiar la fecha de este turno?',
+      isError: false,
+      isSuccess: false,
+      isConfirm: true,
+      close: () => this.cerrarModal(),
+      confirm: () => this.cambiarFechaTurnoConfirmado()
+    };
   }
+
+cambiarFechaTurnoConfirmado(): void {
+  if (!this.solicitudSeleccionada || !this.solicitudSeleccionada.turno) {
+    this.mostrarNotificacion('No hay solicitud o turno seleccionado.', true);
+    return;
+  }
+
+  const { paciente, turno, solicitud } = this.solicitudSeleccionada;
+
+  if (!paciente || !turno || !paciente.id) {
+    this.mostrarNotificacion('Datos incompletos para actualizar el turno.', true);
+    return;
+  }
+
+  this.pacienteService
+    .actualizarFechaHoraTurno(paciente.id, turno.id, solicitud.fechaPropuesta!, solicitud.horaPropuesta!)
+    .subscribe({
+      next: () => {
+        this.mostrarNotificacion('Fecha y hora del turno actualizadas exitosamente.', false);
+        this.actualizarEstadoSolicitud(solicitud.id, 'aprobada');
+        this.solicitudSeleccionada = null;
+      },
+      error: (error) => {
+        console.error('Error al actualizar la fecha del turno:', error);
+        this.mostrarNotificacion('Error al actualizar el turno.', true);
+      },
+    });
+}
   
   actualizarEstadoSolicitud(solicitudId: string, nuevoEstado: string): void {
     this.pacienteService.actualizarEstadoSolicitud(solicitudId, nuevoEstado).subscribe({
@@ -144,6 +152,23 @@ export class SolicitudTurnoComponent implements OnInit {
         this.mostrarNotificacion('Error al actualizar el estado de la solicitud.', true);
       },
     });
+  }
+
+  confirmarEliminacionSolicitud(solicitudId: string, tipo: 'pendiente' | 'aprobada'): void {
+    const mensaje =
+      tipo === 'aprobada'
+        ? '¿Estás seguro de que deseas eliminar esta solicitud aprobada?'
+        : '¿Estás seguro de que deseas eliminar esta solicitud pendiente?';
+  
+    this.modal = {
+      show: true,
+      message: mensaje,
+      isError: false,
+      isSuccess: false,
+      isConfirm: true,
+      close: () => this.cerrarModal(),
+      confirm: () => this.eliminarSolicitudTurno(solicitudId)
+    };
   }
 
   eliminarSolicitudTurno(solicitudId: string): void {
@@ -205,9 +230,20 @@ export class SolicitudTurnoComponent implements OnInit {
     });
   }
 
-  eliminarTurnoSeleccionado(): void {
+  abrirModalConfirmarEliminacionTurno(): void {
+    this.modal = {
+      show: true,
+      message: '¿Estás seguro de que deseas eliminar este turno?',
+      isError: false,
+      isSuccess: false,
+      isConfirm: true,
+      close: () => this.cerrarModal(),
+      confirm: () => this.eliminarTurnoSeleccionadoConfirmado()
+    };
+  }
+
+  eliminarTurnoSeleccionadoConfirmado(): void {
     if (!this.solicitudSeleccionada || !this.solicitudSeleccionada.turno || !this.solicitudSeleccionada.solicitud) {
-     //console.error('No hay turno o solicitud seleccionada para eliminar.');
       this.mostrarNotificacion('No hay turno o solicitud seleccionada.', true);
       return;
     }
@@ -215,23 +251,21 @@ export class SolicitudTurnoComponent implements OnInit {
     const { solicitud, turno, paciente } = this.solicitudSeleccionada;
   
     if (!paciente || !paciente.id || !turno.id || !solicitud.id) {
-     // console.error('Faltan datos para eliminar el turno y la solicitud.');
       this.mostrarNotificacion('Faltan datos para eliminar el turno y la solicitud.', true);
       return;
     }
   
     this.pacienteService.eliminarTurnoYSolicitud(paciente.id, turno.id, solicitud.id).subscribe({
       next: () => {
-       // console.log('Turno y solicitud eliminados correctamente.');
         this.mostrarNotificacion('Turno y solicitud eliminados correctamente.', false);
-        this.solicitudSeleccionada = null; 
+        this.solicitudSeleccionada = null;
   
         // Actualizar listas locales
         this.solicitudesDetalladas$?.subscribe((detalladas) => {
           detalladas.pendientes = detalladas.pendientes.filter(
             (s) => s.solicitud.id !== solicitud.id
           );
-          this.solicitudesDetalladas$ = of(detalladas); 
+          this.solicitudesDetalladas$ = of(detalladas);
         });
       },
       error: (error) => {
@@ -255,17 +289,7 @@ mostrarNotificacion(mensaje: string, esError: boolean): void {
   setTimeout(() => this.cerrarModal(), 2000);
 }
 
-confirmarEliminacionSolicitud(solicitudId: string): void {
-  this.modal = {
-    show: true,
-    message: '¿Estás seguro de que deseas eliminar esta solicitud aprobada?',
-    isError: false,
-    isSuccess: false,
-    isConfirm: true,
-    close: () => this.cerrarModal(),
-    confirm: () => this.eliminarSolicitudTurno(solicitudId)
-  };
-}
+
   
   cerrarModal(): void {
     this.modal = modalInitializer(); 

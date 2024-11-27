@@ -27,43 +27,42 @@ export class SolicitudesPendientesComponent {
     this.store.select(selectUserData).subscribe((userData) => {
       if (userData?.detalles && 'cedula' in userData.detalles) {
         const cedula = (userData.detalles as DetallesPaciente).cedula;
-
+  
         this.pacienteService.obtenerPacientePorCedula(cedula).subscribe((paciente) => {
           if (paciente?.id) {
             this.pacienteId = paciente.id;
-
-            this.pacienteService
-              .obtenerSolicitudesPorPaciente(this.pacienteId)
-              .pipe(
-                switchMap((solicitudes) =>
-                  forkJoin(
-                    solicitudes.map((solicitud) =>
-                      this.pacienteService
-                        .obtenerTurnoPorId(solicitud.pacienteId, solicitud.turnoId)
-                        .pipe(
-                          switchMap((turno) =>
-                            this.pacienteService.obtenerMedicoPorId(solicitud.medicoId).pipe(
-                              map((medico) => ({
-                                solicitud,
-                                turno,
-                                medico, 
-                              }))
-                            )
-                          )
+  
+            const solicitudes$ = this.pacienteService.obtenerSolicitudesPorPaciente(this.pacienteId);
+            const solicitudesTurnos$ = this.pacienteService.obtenerSolicitudesTurnosPorPaciente(this.pacienteId);
+  
+            forkJoin([solicitudes$, solicitudesTurnos$]).pipe(
+              switchMap(([solicitudes, solicitudesTurnos]) => {
+                const todasSolicitudes = [...solicitudes, ...solicitudesTurnos];
+                return forkJoin(
+                  todasSolicitudes.map((solicitud) =>
+                    this.pacienteService.obtenerTurnoPorId(solicitud.pacienteId, solicitud.turnoId).pipe(
+                      switchMap((turno) =>
+                        this.pacienteService.obtenerMedicoPorId(solicitud.medicoId).pipe(
+                          map((medico) => ({
+                            solicitud,
+                            turno,
+                            medico,
+                          }))
                         )
+                      )
                     )
                   )
-                )
-              )
-              .subscribe({
-                next: (solicitudesConTurnos) => {
-                  this.solicitudesPendientes = solicitudesConTurnos.filter(
-                    (detalle) => detalle.solicitud.estado === 'pendiente'
-                  );
-                  //console.log('Solicitudes pendientes del paciente:', this.solicitudesPendientes);
-                },
-                error: (error) => console.error('Error al obtener solicitudes:', error),
-              });
+                );
+              })
+            ).subscribe({
+              next: (solicitudesConTurnos) => {
+                this.solicitudesPendientes = solicitudesConTurnos.filter(
+                  (detalle) => detalle.solicitud.estado === 'pendiente'
+                );
+                //console.log('Solicitudes pendientes combinadas:', this.solicitudesPendientes);
+              },
+              error: (error) => console.error('Error al obtener solicitudes:', error),
+            });
           }
         });
       } else {
@@ -71,7 +70,7 @@ export class SolicitudesPendientesComponent {
       }
     });
   }
-
+  
   obtenerEspecialidad(medico: Partial<UserDto> | null): string {
     if (medico?.detalles && 'especialidad' in medico.detalles) {
       const detalles = medico.detalles as DetallesMedico;

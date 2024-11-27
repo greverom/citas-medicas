@@ -20,9 +20,16 @@
     </div>
   
     <div class="boton-agendar">
-      <button (click)="agendarTurno()" 
-            [disabled]="!fechaSeleccionada || !horaSeleccionada || !paciente || !medicoId">
-      Agendar Turno
-    </button>
+      <button (click)="agendarTurno()">Agendar Turno</button>
     </div>
   </div>
+
+<app-modal
+  [showModal]="modal.show"
+  [message]="modal.message"
+  [isError]="modal.isError"
+  [isSuccess]="modal.isSuccess"
+  [isConfirm]="modal.isConfirm"
+  (close)="cerrarModal()"
+  (confirm)="modal.confirm && modal.confirm()">
+</app-modal>

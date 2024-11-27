@@ -59,43 +59,46 @@
 
 <div class="solicitud-turno-intro">
   <p>
-    Si necesitas agendar un turno, puedes solicitarlo seleccionando el médico de tu preferencia, la fecha y la hora que deseas. Completa el formulario para enviar tu solicitud.
+    📅 Si necesitas agendar un turno, puedes <strong>solicitarlo seleccionando el médico de tu preferencia</strong>, la fecha y la hora que deseas. Completa el formulario para enviar tu solicitud y garantizar tu cita.
   </p>
-  <button class="solicitar-turno-btn" (click)="activarBloqueSolicitudTurno()">Solicitar Turno</button>
+  <button class="solicitar-turno-btn" (click)="abrirModalSolicitudTurno()">Solicitar Turno</button>
 </div>
 
-<div *ngIf="mostrarBloqueSolicitudTurno" class="bloque-solicitud-turno">
-  <h3>Solicitar un nuevo turno</h3>
-  <form [formGroup]="solicitudForm" (ngSubmit)="solicitarNuevoTurno()">
-
-    <label for="medicoId">Seleccione un médico:</label>
-    <select id="medicoId" formControlName="medicoId">
-      <option value="" disabled selected>Seleccionar médico</option>
-      <option *ngFor="let medico of medicosAsociados" [value]="medico.id">
-        {{ medico.name }} ({{ medico.detalles.especialidad || 'General' }})
-      </option>
-    </select>
-    <div *ngIf="solicitudForm.get('medicoId')?.invalid && solicitudForm.get('medicoId')?.touched" class="error-message">
-      Seleccionar un médico.
-    </div>
-
-    <label for="motivo">Motivo de la solicitud:</label>
-    <textarea id="motivo" formControlName="motivo" placeholder="Describe el motivo"></textarea>
-    <div *ngIf="solicitudForm.get('motivo')?.invalid && solicitudForm.get('motivo')?.touched" class="error-message">
-      El motivo es obligatorio.
-    </div>
-
-    <label for="fechaPropuesta">Fecha Propuesta (opcional):</label>
-    <input id="fechaPropuesta" type="date" formControlName="fechaPropuesta">
-
-    <label for="horaPropuesta">Hora Propuesta (opcional):</label>
-    <input id="horaPropuesta" type="time" formControlName="horaPropuesta">
-
-    <div class="acciones-solicitud">
-      <button type="submit" class="enviar-btn">Enviar Solicitud</button>
-      <button type="button" class="cancelar-btn" (click)="cancelarSolicitud()">Cancelar</button>
-    </div>
-  </form>
+<!-- Modal para Solicitar un Nuevo Turno -->
+<div class="modal-overlay" *ngIf="modalSolicitudTurnoAbierto">
+  <div class="modal-content">
+    <button class="cerrar-modal" (click)="cerrarModalSolicitudTurno()">X</button>
+    <h3>Solicitar un nuevo turno</h3>
+    <form [formGroup]="solicitudForm" (ngSubmit)="solicitarNuevoTurno()" class="nuevo-turno-form">
+      <label for="medicoId" class="nuevo-turno-label">Seleccione un médico:</label>
+      <select id="medicoId" formControlName="medicoId" class="nuevo-turno-select">
+        <option value="" disabled selected>Seleccionar médico</option>
+        <option *ngFor="let medico of medicosAsociados" [value]="medico.id">
+          {{ medico.name }} ({{ medico.detalles.especialidad || 'General' }})
+        </option>
+      </select>
+      <div *ngIf="solicitudForm.get('medicoId')?.invalid && solicitudForm.get('medicoId')?.touched" class="nuevo-turno-error-message">
+        Seleccionar un médico.
+      </div>
+    
+      <label for="motivo" class="nuevo-turno-label">Motivo de la solicitud:</label>
+      <textarea id="motivo" formControlName="motivo" placeholder="Describe el motivo" class="nuevo-turno-textarea"></textarea>
+      <div *ngIf="solicitudForm.get('motivo')?.invalid && solicitudForm.get('motivo')?.touched" class="nuevo-turno-error-message">
+        El motivo es obligatorio.
+      </div>
+    
+      <label for="fechaPropuesta" class="nuevo-turno-label">Fecha Propuesta (opcional):</label>
+      <input id="fechaPropuesta" type="date" formControlName="fechaPropuesta" class="nuevo-turno-input">
+    
+      <label for="horaPropuesta" class="nuevo-turno-label">Hora Propuesta (opcional):</label>
+      <input id="horaPropuesta" type="time" formControlName="horaPropuesta" class="nuevo-turno-input">
+    
+      <div class="nuevo-turno-acciones">
+        <button type="submit" class="nuevo-turno-enviar-btn">Enviar Solicitud</button>
+        <button type="button" class="nuevo-turno-cancelar-btn" (click)="cerrarModalSolicitudTurno()">Cancelar</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <div class="modal-overlay" *ngIf="modalAbierto">

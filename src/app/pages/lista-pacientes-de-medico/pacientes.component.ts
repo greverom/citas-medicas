@@ -285,6 +285,7 @@ export class PacientesComponent implements OnInit{
 
   cerrarPacienteSeleccionado() {
     this.pacienteService.seleccionarPaciente(null); 
+    this.pacienteActivoId = null;
   }
 
   abrirTurnoPaciente(paciente: PacienteDto) {
@@ -295,7 +296,7 @@ export class PacientesComponent implements OnInit{
       if (this.turnoComponent) {
         this.turnoComponent.filtrarHorasPorFecha();
       }
-    }, 500);
+    }, 2000);
     
   }
 
@@ -311,6 +312,8 @@ export class PacientesComponent implements OnInit{
           ? { ...paciente, turnos: this.pacienteSeleccionadoParaTurno!.turnos }
           : paciente
       );
+      this.mostrarModal('Turno agendado exitosamente.', false);
+      this.cerrarModalTurno();
     }
   }
 

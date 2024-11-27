@@ -6,13 +6,16 @@ import { DetallesMedico, PacienteDto } from '../../../models/user.dto';
 import { EstadoTurno, TurnoDto } from '../../../models/turno.dto';
 import { PacienteService } from '../../../services/pacientes.service';
 import { selectUserData } from '../../../store/user.selector';
+import { ModalComponent } from '../../modal/modal.component';
+import { ModalDto, modalInitializer } from '../../modal/modal.dto';
 
 @Component({
   selector: 'app-paciente-turno',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    ModalComponent
   ],
   templateUrl: './paciente-turno.component.html',
   styleUrl: './paciente-turno.component.css'
@@ -28,6 +31,7 @@ export class PacienteTurnoComponent implements OnInit {
   horasDisponibles: string[] = [];
   nombreMedico: string = '';
   instrucciones: string = '';
+  modal: ModalDto = modalInitializer();
 
   constructor(private pacienteService: PacienteService,
               private store: Store
@@ -102,22 +106,26 @@ export class PacienteTurnoComponent implements OnInit {
     });
   }
 
- agendarTurno() {
-  if (this.fechaSeleccionada && this.horaSeleccionada && this.paciente && this.medicoId) {
+  agendarTurno() {
+    if (!this.fechaSeleccionada || !this.horaSeleccionada || !this.paciente || !this.medicoId) {
+      this.mostrarNotificacion('Por favor selecciona fecha, hora antes de agendar turno.', true);
+      return;
+    }
+  
     this.pacienteService.obtenerMedicoPorId(this.medicoId).subscribe((medico) => {
       if (medico) {
         const turno: TurnoDto = {
-          id: '', 
+          id: '',
           pacienteId: this.paciente?.id!,
           medicoId: this.medicoId!,
           fecha: this.fechaSeleccionada,
           hora: this.horaSeleccionada,
-          estado: EstadoTurno.Programado, 
-          nombreMedico: medico.name, 
-          detallesMedico: medico.detalles as DetallesMedico, 
+          estado: EstadoTurno.Programado,
+          nombreMedico: medico.name,
+          detallesMedico: medico.detalles as DetallesMedico,
           instrucciones: this.instrucciones || ''
         };
-
+  
         if (this.paciente?.id) {
           this.pacienteService.agendarTurno(this.paciente.id, turno).subscribe({
             next: () => {
@@ -125,17 +133,35 @@ export class PacienteTurnoComponent implements OnInit {
             },
             error: (error) => {
               console.error('Error al agendar el turno:', error);
+              this.mostrarNotificacion('Error al agendar el turno. Intenta nuevamente.', true);
             }
           });
         } else {
           console.error('El ID del paciente no está disponible.');
+          this.mostrarNotificacion('Error: El ID del paciente no está disponible.', true);
         }
       } else {
         console.error('Error: No se encontraron datos del médico o paciente.');
+        this.mostrarNotificacion('Error: No se encontraron datos del médico o paciente.', true);
       }
     });
-  } else {
-    console.error('Error: Selecciona una fecha, una hora, y asegúrate de tener datos del paciente y médico.');
   }
+
+
+mostrarNotificacion(mensaje: string, esError: boolean): void {
+  this.modal = {
+    show: true,
+    message: mensaje,
+    isError: esError,
+    isSuccess: !esError,
+    isConfirm: false,
+    close: () => this.cerrarModal(),
+  };
+
+  setTimeout(() => this.cerrarModal(), 2000);
+}
+
+cerrarModal(): void {
+  this.modal = modalInitializer();
 }
 }

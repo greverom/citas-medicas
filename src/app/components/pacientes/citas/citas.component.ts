@@ -34,7 +34,7 @@ export class CitasComponent implements OnInit {
   solicitudPendiente: boolean = false;
   medicosAsociados: (UserDto & { detalles: DetallesMedico })[] = [];
   modal: ModalDto = modalInitializer();
-  mostrarBloqueSolicitudTurno: boolean = false;
+  modalSolicitudTurnoAbierto: boolean = false;
 
   constructor(
     private pacienteService: PacienteService,
@@ -101,7 +101,7 @@ export class CitasComponent implements OnInit {
     this.pacienteService.obtenerMedicosAsociadosAPaciente(cedula).subscribe({
       next: (medicos) => {
         this.medicosAsociados = medicos;
-        console.log('Médicos asociados:', this.medicosAsociados);
+        //console.log(this.medicosAsociados);
       },
       error: (error) => {
         console.error('Error al obtener médicos asociados al paciente:', error);
@@ -190,15 +190,16 @@ export class CitasComponent implements OnInit {
     });
   }
 
-
-  activarBloqueSolicitudTurno(): void {
-    this.mostrarBloqueSolicitudTurno = true;
+  abrirModalSolicitudTurno(): void {
+    this.modalSolicitudTurnoAbierto = true;
   }
 
-  cancelarSolicitud(): void {
-    this.mostrarBloqueSolicitudTurno = false;
-    this.solicitudForm.reset(); 
+  // Método para cerrar el modal
+  cerrarModalSolicitudTurno(): void {
+    this.modalSolicitudTurnoAbierto = false;
+    this.solicitudForm.reset(); // Opcional: Resetear el formulario al cerrar
   }
+
 
   solicitarNuevoTurno() {
     if (this.solicitudForm.invalid) {

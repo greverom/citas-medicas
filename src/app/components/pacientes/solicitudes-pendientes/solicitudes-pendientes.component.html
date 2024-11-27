@@ -12,12 +12,12 @@
             <p><strong>Especialidad:</strong> {{ obtenerEspecialidad(solicitudDetalle.medico) }}</p>
           </div>
           <div class="fila-bloques">
-            <div class="bloque fecha-prevista">
-              <p>
-                <strong>Fecha Prevista:</strong> {{ solicitudDetalle.turno?.fecha || 'No disponible' }}
+            <div class="bloque fecha-prevista" *ngIf="solicitudDetalle.turno?.fecha || solicitudDetalle.turno?.hora">
+              <p *ngIf="solicitudDetalle.turno?.fecha">
+                <strong>Fecha Prevista:</strong> {{ solicitudDetalle.turno?.fecha }}
               </p>
-              <p>
-                <strong>Hora Prevista:</strong> {{ solicitudDetalle.turno?.hora || 'No disponible' }}
+              <p *ngIf="solicitudDetalle.turno?.hora">
+                <strong>Hora Prevista:</strong> {{ solicitudDetalle.turno?.hora }}
               </p>
             </div>
             <div class="bloque fecha-nueva">
