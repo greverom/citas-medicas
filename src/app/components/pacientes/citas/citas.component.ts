@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SolicitudDto, TurnoDto } from '../../../models/turno.dto';
 import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { PacienteService } from '../../../services/pacientes.service';
@@ -11,6 +11,7 @@ import { DetallesMedico, PacienteDto, UserDto } from '../../../models/user.dto';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalComponent } from '../../modal/modal.component';
 import { ModalDto, modalInitializer } from '../../modal/modal.dto';
+import { HorasDisponiblesService } from '../../../services/horas-disponibles.service';
 
 @Component({
   selector: 'app-citas',
@@ -23,7 +24,7 @@ import { ModalDto, modalInitializer } from '../../modal/modal.dto';
   templateUrl: './citas.component.html',
   styleUrl: './citas.component.css'
 })
-export class CitasComponent implements OnInit {
+export class CitasComponent implements OnInit, OnDestroy {
   paciente: PacienteDto | null = null;
   turnos$: Observable<TurnoDto[]> = of([]);
   turnoSeleccionado: TurnoDto | null = null;
@@ -36,16 +37,14 @@ export class CitasComponent implements OnInit {
   modal: ModalDto = modalInitializer();
   modalSolicitudTurnoAbierto: boolean = false;
 
-  horasDisponibles: string[] = [
-    '09:00', '10:00', '11:00','12:00', '13:00', '14:00',
-    '15:00', '16:00', '17:00', '18:00'
-  ];
+  horasDisponibles: string[] = [];
 
   constructor(
     private pacienteService: PacienteService,
     private store: Store,
     private spinners: SpinnerService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private horasDisponiblesService: HorasDisponiblesService
   ) {
     this.solicitudForm = this.fb.group({
       medicoId: [''], 
@@ -100,6 +99,28 @@ export class CitasComponent implements OnInit {
         return result;
       })
     );
+
+    this.solicitudForm.get('medicoId')?.valueChanges.subscribe((medicoId: string) => {
+      const fechaPropuesta = this.solicitudForm.get('fechaPropuesta')?.value;
+      if (medicoId && fechaPropuesta) {
+        this.filtrarHorasPorMedicoYFecha(medicoId, fechaPropuesta);
+      }
+    });
+  
+    this.solicitudForm.get('fechaPropuesta')?.valueChanges.subscribe((fecha: string) => {
+      const medicoId = this.solicitudForm.get('medicoId')?.value;
+      if (medicoId && fecha) {
+        this.filtrarHorasPorMedicoYFecha(medicoId, fecha);
+      }
+    });
+  
+    this.horasDisponiblesService.horasDisponibles$.subscribe((horas) => {
+      this.horasDisponibles = horas; 
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.horasDisponiblesService.limpiarEstadoGlobal(); 
   }
 
   obtenerMedicosAsociados(cedula: string): void {
@@ -126,6 +147,38 @@ export class CitasComponent implements OnInit {
       }
     });
     this.pacienteService.seleccionarTurno(turno);
+  }
+
+  filtrarHorasPorMedicoYFecha(medicoId: string, fecha: string): void {
+    if (!medicoId || !fecha) {
+      console.error('MedicoId y Fecha son obligatorios para filtrar las horas.');
+      return;
+    }
+  
+    this.pacienteService.obtenerTurnosDePacientesPorMedico(medicoId).subscribe({
+      next: (turnos) => {
+        const horasOcupadas = turnos
+          .filter((turno) => turno.fecha === fecha)
+          .map((turno) => turno.hora);
+  
+        const horasDisponibles = this.generarHorasDisponibles().filter(
+          (hora) => !horasOcupadas.includes(hora)
+        );
+  
+        this.horasDisponiblesService.actualizarHorasDisponiblesPorMedico(medicoId, horasDisponibles);
+      },
+      error: (error) => {
+        console.error('Error al obtener turnos del médico:', error);
+      },
+    });
+  }
+
+  generarHorasDisponibles(): string[] {
+    const horas: string[] = [];
+    for (let i = 9; i <= 18; i++) {
+      horas.push(`${i}:00`);
+    }
+    return horas;
   }
 
   limpiarTurnosPasados(): void {
@@ -202,7 +255,10 @@ export class CitasComponent implements OnInit {
   // Método para cerrar el modal
   cerrarModalSolicitudTurno(): void {
     this.modalSolicitudTurnoAbierto = false;
-    this.solicitudForm.reset(); // Opcional: Resetear el formulario al cerrar
+    this.solicitudForm.reset(); 
+  
+    this.horasDisponibles = [];
+    this.horasDisponiblesService.actualizarHorasDisponiblesPorMedico('', []); 
   }
 
 
@@ -247,18 +303,31 @@ export class CitasComponent implements OnInit {
   }
 
   abrirModalSolicitarCambio(turno: TurnoDto): void {
-    //console.log('Datos del turno seleccionado:', turno);
-    this.turnoSeleccionado = turno; 
-    this.modalAbierto = true; 
+    this.turnoSeleccionado = turno;
+    this.modalAbierto = true;
+  
+    this.solicitudForm.patchValue({
+      medicoId: turno.medicoId,
+      fechaPropuesta: turno.fecha,
+      horaPropuesta: turno.hora,
+      motivo: '', 
+    });
+  
+    if (turno.medicoId && turno.fecha) {
+      this.filtrarHorasPorMedicoYFecha(turno.medicoId, turno.fecha);
+    }
   }
 
   cerrarModal() {
     this.modalAbierto = false;
-    this.turnoSeleccionado = null;
-
+    this.turnoSeleccionado = null; 
+  
     if (this.solicitudForm) {
-      this.solicitudForm.reset();
+      this.solicitudForm.reset(); 
+      this.solicitudForm.patchValue({ medicoId: '', fechaPropuesta: '', horaPropuesta: '' }); 
     }
+  
+    this.horasDisponiblesService.limpiarEstadoGlobal();
   }
 
   mostrarModal(isError: boolean, message: string, isSuccess: boolean) {

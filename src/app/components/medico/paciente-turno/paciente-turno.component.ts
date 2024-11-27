@@ -8,6 +8,7 @@ import { PacienteService } from '../../../services/pacientes.service';
 import { selectUserData } from '../../../store/user.selector';
 import { ModalComponent } from '../../modal/modal.component';
 import { ModalDto, modalInitializer } from '../../modal/modal.dto';
+import { HorasDisponiblesService } from '../../../services/horas-disponibles.service';
 
 @Component({
   selector: 'app-paciente-turno',
@@ -34,6 +35,7 @@ export class PacienteTurnoComponent implements OnInit {
   modal: ModalDto = modalInitializer();
 
   constructor(private pacienteService: PacienteService,
+              private horasDisponiblesService: HorasDisponiblesService,
               private store: Store
   ) {
     this.horasDisponibles = this.generarHorasDisponibles();
@@ -99,6 +101,7 @@ export class PacienteTurnoComponent implements OnInit {
         this.horasDisponibles = this.generarHorasDisponibles().filter(
           hora => !horasOcupadas.includes(hora)
         );
+
       },
       error: (error) => {
         console.error('Error al obtener turnos para la fecha seleccionada:', error);
