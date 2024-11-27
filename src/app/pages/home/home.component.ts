@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnDestroy, PLATFORM_ID } from '@angul
 import { HeroComponent } from '../../components/home-c/hero/hero.component';
 import { ProductsComponent } from '../../components/home-c/products/products.component';
 import { LoginComponent } from "../login/login.component";
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectIsLoggedIn, selectUserData } from '../../store/user.selector';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -57,33 +57,32 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Carga de notificaciones pendientes
     this.store.select(selectUserData).subscribe((userData) => {
       const medicoId = userData?.id;
       const userRole = userData?.role;
   
       if (userRole === UserRole.Medico && medicoId) {
-        this.pacienteService.obtenerSolicitudesPendientesPorMedico(medicoId).subscribe({
-          next: (solicitudes) => {
-            this.solicitudesPendientes = solicitudes;
-          },
-          error: (error) => {
-            console.error('Error al cargar solicitudes pendientes:', error);
-          },
-        });
-      } else {
-        //console.log('El usuario no es médico o no tiene un ID válido.');
-      }
+        this.cargarTodasLasSolicitudes(medicoId);
+      } 
     });
   }
 
-  cargarSolicitudesPendientes(medicoId: string): void {
-    this.pacienteService.obtenerSolicitudesPendientesPorMedico(medicoId).subscribe({
-      next: (solicitudes) => {
-        this.solicitudesPendientes = solicitudes;
+  cargarTodasLasSolicitudes(medicoId: string): void {
+    const solicitudesCambioTurnos$ = this.pacienteService
+      .obtenerSolicitudesPendientesPorMedico(medicoId)
+      .pipe(map((solicitudes) => solicitudes || []));
+  
+    const solicitudesNuevosTurnos$ = this.pacienteService
+      .obtenerSolicitudesNuevosTurnosPorMedico(medicoId)
+      .pipe(map((solicitudes) => solicitudes || []));
+  
+    forkJoin([solicitudesCambioTurnos$, solicitudesNuevosTurnos$]).subscribe({
+      next: ([cambioTurnos, nuevosTurnos]) => {
+        this.solicitudesPendientes = [...cambioTurnos, ...nuevosTurnos];
+        //console.log(this.solicitudesPendientes);
       },
-      error: (err) => {
-        console.error('Error al cargar solicitudes pendientes:', err);
+      error: (error) => {
+        console.error('Error al cargar solicitudes combinadas:', error);
       },
     });
   }

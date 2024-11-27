@@ -19,7 +19,7 @@
           </div>
           <div class="solicitud-acciones">
             <button class="aceptar-btn">Aceptar</button>
-            <button class="rechazar-btn">Rechazar</button>
+            <button class="rechazar-btn" (click)="abrirModalRechazarSolicitud(item.solicitud.id)">Rechazar</button>
           </div>
         </div>
       </li>
@@ -29,3 +29,13 @@
       <p>No hay solicitudes pendientes de nuevos turnos.</p>
     </ng-template>
   </div>
+
+  <app-modal
+  [showModal]="modal.show"
+  [message]="modal.message"
+  [isError]="modal.isError"
+  [isSuccess]="modal.isSuccess"
+  [isConfirm]="modal.isConfirm"
+  (close)="cerrarModal()"
+  (confirm)="modal.confirm && modal.confirm()">
+</app-modal>

@@ -284,6 +284,16 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
     );
   }
 
+  eliminarSolicitudTurno(solicitudId: string): Observable<void> {
+    const solicitudRef = ref(this.db, `solicitud-turnos/${solicitudId}`);
+    return from(remove(solicitudRef)).pipe(
+      catchError((error) => {
+        console.error('Error al eliminar la solicitud de turno:', error);
+        throw error;
+      })
+    );
+  }
+
   obtenerSolicitudesNuevosTurnosPorMedico(medicoId: string): Observable<SolicitudDto[]> {
     const solicitudTurnosRef = ref(this.db, 'solicitud-turnos'); 
   
