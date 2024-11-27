@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { SolicitudDto } from '../../../models/turno.dto';
+import { EstadoTurno, SolicitudDto, TurnoDto } from '../../../models/turno.dto';
 import { forkJoin, map } from 'rxjs';
 import { PacienteService } from '../../../services/pacientes.service';
 import { Store } from '@ngrx/store';
 import { selectUserData } from '../../../store/user.selector';
 import { CommonModule } from '@angular/common';
-import { PacienteDto } from '../../../models/user.dto';
+import { DetallesMedico, PacienteDto } from '../../../models/user.dto';
 import { Router } from '@angular/router';
 import { ModalDto, modalInitializer } from '../../../components/modal/modal.dto';
 import { ModalComponent } from '../../../components/modal/modal.component';
@@ -22,6 +22,8 @@ import { ModalComponent } from '../../../components/modal/modal.component';
 
 export class SolicitudesTurnosComponent implements OnInit {
   medicoId: string | null = null; 
+  nombreMedico: string = '';
+  medicoDetalles: DetallesMedico | undefined;
   solicitudesTurnos: { solicitud: SolicitudDto; paciente: PacienteDto | null }[] = [];
   modal: ModalDto = modalInitializer();
 
@@ -30,6 +32,8 @@ export class SolicitudesTurnosComponent implements OnInit {
   ngOnInit(): void {
     this.store.select(selectUserData).subscribe((userData) => {
       this.medicoId = userData?.id ?? null; 
+      this.nombreMedico = userData?.name ?? '';
+      this.medicoDetalles = userData?.detalles as DetallesMedico;
 
       this.cargarSolicitudesTurnos();
     });
@@ -62,6 +66,37 @@ export class SolicitudesTurnosComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al obtener las solicitudes de turnos:', error);
+      },
+    });
+  }
+
+  aceptarSolicitud(solicitud: SolicitudDto, paciente: PacienteDto | null): void {
+    if (!paciente || !paciente.id || !this.medicoId) {
+      console.error('No se encontró el paciente o el médico.');
+      this.mostrarNotificacion('Error: No se encontró el paciente o el médico.', true);
+      return;
+    }
+  
+    const nuevoTurno: TurnoDto = {
+      id: '', 
+      pacienteId: paciente.id,
+      medicoId: this.medicoId,
+      fecha: solicitud.fechaPropuesta ?? '', 
+      hora: solicitud.horaPropuesta ?? '',  
+      estado: EstadoTurno.Programado,
+      nombreMedico: this.nombreMedico,
+      detallesMedico: this.medicoDetalles || undefined, 
+      instrucciones: '', 
+    };
+  
+    this.pacienteService.agendarTurno(paciente.id, nuevoTurno).subscribe({
+      next: () => {
+        this.rechazarSolicitud(solicitud.id); 
+        this.mostrarNotificacion('Turno agendado correctamente.', false);
+      },
+      error: (error) => {
+        console.error('Error al agendar el turno:', error);
+        this.mostrarNotificacion('Error al agendar el turno.', true);
       },
     });
   }

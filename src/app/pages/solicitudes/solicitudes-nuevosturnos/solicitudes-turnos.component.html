@@ -18,7 +18,7 @@
             </p>
           </div>
           <div class="solicitud-acciones">
-            <button class="aceptar-btn">Aceptar</button>
+            <button class="aceptar-btn" (click)="aceptarSolicitud(item.solicitud, item.paciente)">Aceptar</button>
             <button class="rechazar-btn" (click)="abrirModalRechazarSolicitud(item.solicitud.id)">Rechazar</button>
           </div>
         </div>

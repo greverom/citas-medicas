@@ -252,13 +252,12 @@ export class CitasComponent implements OnInit, OnDestroy {
     this.modalSolicitudTurnoAbierto = true;
   }
 
-  // Método para cerrar el modal
   cerrarModalSolicitudTurno(): void {
     this.modalSolicitudTurnoAbierto = false;
     this.solicitudForm.reset(); 
   
     this.horasDisponibles = [];
-    this.horasDisponiblesService.actualizarHorasDisponiblesPorMedico('', []); 
+    this.horasDisponiblesService.limpiarEstadoGlobal();
   }
 
 
@@ -293,7 +292,7 @@ export class CitasComponent implements OnInit, OnDestroy {
     this.pacienteService.crearSolicitudTurno(nuevaSolicitud).subscribe({
       next: () => {
         this.mostrarModal(false, 'Solicitud de turno enviada exitosamente.', true);
-        this.cerrarModal(); 
+        this.cerrarModalSolicitudTurno(); 
       },
       error: (error) => {
         console.error('Error al enviar la solicitud de turno:', error);
