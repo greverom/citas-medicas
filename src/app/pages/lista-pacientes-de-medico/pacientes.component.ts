@@ -56,13 +56,14 @@ export class PacientesComponent implements OnInit{
       cedula: ['', [Validators.required, Validators.pattern(/^\d+$/), cedulaEcuatorianaValidator()]], 
       correo: ['', [Validators.required, Validators.email]],
       direccion: [''],
-      telefono: ['', [Validators.required, Validators.pattern(/^\d+$/)]] 
+      telefono: ['', [Validators.required, Validators.pattern(/^0\d{9}$/)]]
     });
 
     this.editarPacienteForm = this.fb.group({
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
-      direccion: ['']
+      direccion: [''],
+      telefono: ['', [Validators.required, Validators.pattern(/^0\d{9}$/)]],
     });
   }
 
@@ -99,6 +100,24 @@ export class PacientesComponent implements OnInit{
   get direccion() { return this.pacienteForm.get('direccion'); }
   get telefono() { return this.pacienteForm.get('telefono'); }
 
+  // Normaliza teléfonos EC a 09XXXXXXXX
+  private normalizeEcMobile(raw: any): string {
+    const digits = String(raw ?? '').replace(/\D/g, '');
+    const m = digits.match(/^(?:\+?593)?0?(\d{9})$/);
+    return m ? ('0' + m[1]) : String(raw ?? '');
+  }
+
+  // Deja el campo formateado cuando el usuario sale del input
+  onTelefonoBlur() {
+    const ctrl = this.pacienteForm.get('telefono');
+    if (ctrl) ctrl.setValue(this.normalizeEcMobile(ctrl.value), { emitEvent: false });
+  }
+
+  onTelefonoEditarBlur() {
+    const ctrl = this.editarPacienteForm.get('telefono');
+    if (ctrl) ctrl.setValue(this.normalizeEcMobile(ctrl.value), { emitEvent: false });
+  }
+
   private marcarCamposComoTocados(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(key => {
         const control = formGroup.get(key);
@@ -122,7 +141,8 @@ export class PacientesComponent implements OnInit{
     this.editarPacienteForm.patchValue({
       nombres: paciente.nombres,
       apellidos: paciente.apellidos,
-      direccion: paciente.direccion
+      direccion: paciente.direccion,
+      telefono: this.normalizeEcMobile(paciente.telefono || ''),
     });
   }
 
@@ -156,9 +176,13 @@ export class PacientesComponent implements OnInit{
       this.mostrarModal('Por favor completa todos los campos obligatorios.', true);
       return;
     }
+
     if (this.medicoData) {
-      const { cedula, correo, telefono } = this.pacienteForm.value;
-      const campoDuplicado = this.esPacienteDuplicado(cedula, correo, telefono);
+      const telefonoNormalizado = this.normalizeEcMobile(this.pacienteForm.value.telefono);
+      const cedula = String(this.pacienteForm.value.cedula ?? '');
+      const correo = String(this.pacienteForm.value.correo ?? '');
+
+      const campoDuplicado = this.esPacienteDuplicado(cedula, correo, telefonoNormalizado);
       if (campoDuplicado) {
         const mensaje = campoDuplicado === 'cedula' ? 'La cédula ingresada ya está registrada.'
                       : campoDuplicado === 'correo' ? 'El correo ingresado ya está registrado.'
@@ -166,14 +190,16 @@ export class PacientesComponent implements OnInit{
         this.marcarCampoDuplicado(campoDuplicado, mensaje);
         return;
       }
+
       const nuevoPaciente: PacienteDto = {
         ...this.pacienteForm.value,
-        medicoId: this.medicoData.id,
-        medicoNombre: this.medicoData.name,
-        turnos: [], 
-        diagnosticos: [] 
+        telefono: telefonoNormalizado, 
+        medicoId: this.medicoData.id!,
+        medicoNombre: this.medicoData.name!,
+        turnos: [],
+        diagnosticos: []
       };
-  
+
       this.pacienteService.crearPaciente(nuevoPaciente).subscribe({
         next: () => {
           this.pacientes.push(nuevoPaciente);
@@ -201,16 +227,18 @@ export class PacientesComponent implements OnInit{
 
   editarPaciente(id: string) {
     if (this.editarPacienteForm.valid && this.pacienteAEditar) {
-      const pacienteActualizado = {
+      const telefonoNormalizado = this.normalizeEcMobile(this.editarPacienteForm.value.telefono);
+
+      const pacienteActualizado: PacienteDto = {
         ...this.pacienteAEditar,
-        ...this.editarPacienteForm.value
+        ...this.editarPacienteForm.value,
+        telefono: telefonoNormalizado, // 👈 fuerza 09XXXXXXXX
       };
-  
+
       this.pacienteService.actualizarPaciente(id, pacienteActualizado).subscribe({
         next: () => {
-          //console.log('Paciente actualizado');
           this.mostrarModal('Paciente actualizado exitosamente.', false);
-          this.obtenerPacientes(); 
+          this.obtenerPacientes();
           this.cerrarModalEditar();
         },
         error: (error) => {

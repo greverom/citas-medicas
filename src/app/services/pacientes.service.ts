@@ -25,10 +25,17 @@ export class PacienteService {
 
   constructor(private db: Database) {}
 
+   private normalizeEcMobile(raw: any): string {
+    const digits = String(raw ?? '').replace(/\D/g, '');
+    const m = digits.match(/^(?:\+?593)?0?(\d{9})$/);
+    return m ? ('0' + m[1]) : String(raw ?? '');
+  }
+
   // Crear un nuevo paciente
   crearPaciente(paciente: PacienteDto): Observable<void> {
     const newPacienteRef = push(this.dbRef);
     paciente.id = newPacienteRef.key ?? '';
+    paciente.telefono = this.normalizeEcMobile(paciente.telefono);
 
     return from(set(newPacienteRef, paciente)).pipe(
       catchError(error => {
@@ -203,6 +210,7 @@ actualizarFechaHoraTurno(pacienteId: string, turnoId: string, nuevaFecha: string
       throw new Error('El paciente debe tener un ID para ser actualizado.');
     }
     const pacienteRef = child(this.dbRef, id);
+    paciente.telefono = this.normalizeEcMobile(paciente.telefono);
     return from(update(pacienteRef, paciente)).pipe(
       catchError(error => {
         console.error('Error al actualizar paciente:', error);

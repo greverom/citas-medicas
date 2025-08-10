@@ -92,27 +92,44 @@
   </div>
 </div>
 
-<!-- Modal para enviar notificación -->
-<div class="modal-overlay" *ngIf="isModalOpen">
-  <div class="modal-content">
-    <h2>Enviar Notificación</h2>
+  <!-- Modal para enviar notificación -->
+  <div class="modal-overlay" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <h2>Enviar Notificación</h2>
 
-    <div class="modal-column">
-      <div><strong>Nombre:</strong> {{ selectedPaciente?.nombres | titlecase }} {{ selectedPaciente?.apellidos | titlecase }}</div>
-      <div *ngIf="notificacionTipo === 'whatsapp'"><strong>Teléfono:</strong> {{ selectedPaciente?.telefono }}</div>
-      <div *ngIf="notificacionTipo === 'email'"><strong>Correo:</strong> {{ selectedPaciente?.correo }}</div>
-    </div>
+      <div class="modal-column">
+        <div><strong>Nombre:</strong> {{ selectedPaciente?.nombres | titlecase }} {{ selectedPaciente?.apellidos | titlecase }}</div>
+        <div *ngIf="notificacionTipo === 'whatsapp'"><strong>Teléfono:</strong> {{ selectedPaciente?.telefono }}</div>
+        <div *ngIf="notificacionTipo === 'email'"><strong>Correo:</strong> {{ selectedPaciente?.correo }}</div>
+      </div>
 
-    <div class="modal-message-box">
-      <p>
-        Esto es un aviso de su cita, programada para el día 
-        <strong>{{ selectedTurno?.fecha }}</strong> a las 
-        <strong>{{ selectedTurno?.hora }}</strong>.
-      </p>
-    </div>
+      <div class="modal-message-box">
+        <p>
+          Esto es un aviso de su cita, programada para el día 
+          <strong>{{ selectedTurno?.fecha }}</strong> a las 
+          <strong>{{ selectedTurno?.hora }}</strong>.
+        </p>
+      </div>
 
-    <div class="modal-buttons">
-      <button (click)="closeModal()">Cerrar</button>
+      <div *ngIf="sending" class="sending-status">Enviando...</div>
+      <div *ngIf="sendOk" class="success-status">{{ sendOk }}</div>
+      <div *ngIf="sendError" class="error-status">{{ sendError }}</div>
+
+      <div class="modal-buttons">
+        <button 
+          type="button" 
+          class="modal-btn btn-terciario"
+          (click)="closeModal()">
+          Cerrar
+        </button>
+
+        <button 
+          type="button" 
+          class="modal-btn btn-enviar"
+          (click)="sendWhatsappNotification()"
+          [disabled]="sending">
+          {{ sending ? 'Enviando...' : 'Enviar' }}
+        </button>
+      </div>
     </div>
   </div>
-</div>

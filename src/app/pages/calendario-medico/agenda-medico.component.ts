@@ -5,6 +5,7 @@ import { PacienteService } from '../../services/pacientes.service';
 import { Store } from '@ngrx/store';
 import { PacienteDto, UserDto } from '../../models/user.dto';
 import { selectUserData } from '../../store/user.selector';
+import { WhatsappService } from '../../services/whatsapp.service';
 
 @Component({
   selector: 'app-agenda-medico',
@@ -36,7 +37,12 @@ export class AgendaMedicoComponent implements OnInit {
   selectedPaciente: PacienteDto | null = null;
   notificacionTipo: 'whatsapp' | 'email' | null = null;
 
+  sending = false;
+  sendOk: string | null = null;
+  sendError: string | null = null;
+
   constructor(private pacienteService: PacienteService,
+              private whatsapp: WhatsappService,
               private store: Store,
   ) {}
 
@@ -163,9 +169,47 @@ seleccionarDia(day: number | string): void {
     });
   }
 
+  sendWhatsappNotification(): void {
+    if (this.notificacionTipo !== 'whatsapp') return;
+    if (!this.selectedPaciente?.telefono || !this.selectedTurno) return;
+
+    const phoneRaw = this.selectedPaciente.telefono; // 09XXXXXXXX guardado en DB
+    const message =
+      `Hola ${this.selectedPaciente.nombres} ${this.selectedPaciente.apellidos}. ` +
+      `Este es un recordatorio de su cita programada para el ${this.selectedTurno.fecha} a las ${this.selectedTurno.hora}.`;
+
+    // Solo para preview/depuración en el componente
+    const phoneIntlPreview = this.whatsapp.toWhatsAppIntl(phoneRaw);
+
+    // 🔎 Logs de depuración en el componente
+    console.log('[WA] payload original (componente):', { phone: phoneRaw, message });
+    console.log('[WA] phone normalizado (preview en componente):', phoneIntlPreview);
+
+    this.sending = true;
+    this.sendOk = null;
+    this.sendError = null;
+
+    this.whatsapp.sendMessage({ phone: phoneRaw, message }).subscribe({
+      next: (res) => {
+        this.sending = false;
+        console.log('[WA] respuesta backend:', res);
+        this.sendOk = `Mensaje enviado a ${phoneIntlPreview} ✅`;
+      },
+      error: (err) => {
+        this.sending = false;
+        console.error('[WA] error:', err);
+        this.sendError = `No se pudo enviar a ${phoneIntlPreview} ❌`;
+      }
+    });
+  }
+
   closeModal(): void {
     this.isModalOpen = false;
     this.selectedTurno = null;
     this.selectedPaciente = null;
+    this.notificacionTipo = null;
+    this.sending = false;
+    this.sendOk = null;
+    this.sendError = null;
   }
 }

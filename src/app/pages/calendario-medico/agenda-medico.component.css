@@ -272,21 +272,35 @@
 
 .modal-buttons {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: flex-end;
+  gap: 10px; 
+  margin-top: 1rem;
 }
 
-.modal-buttons button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
+.modal-btn {
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
 }
 
-.modal-buttons button:hover {
-  background-color: #0056b3;
+.btn-terciario {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.btn-terciario:hover {
+  background-color: #d5d5d5;
+}
+
+.btn-enviar {
+  background-color: #25D366; 
+  color: white;
+}
+
+.btn-enviar:hover {
+  background-color: #1ebe5b;
 }
 
 @media (max-width: 768px) {

@@ -60,6 +60,12 @@ export class UsuarioPerfilComponent implements OnInit {
     });
   }
 
+  private normalizeEcMobile(raw: any): string {
+    const digits = String(raw ?? '').replace(/\D/g, '');
+    const m = digits.match(/^(?:\+?593)?0?(\d{9})$/);
+    return m ? ('0' + m[1]) : String(raw ?? '');
+  }
+
   isPacienteDetalles(detalles: any): detalles is DetallesPaciente {
     return detalles && 'fechaNacimiento' in detalles && 'direccion' in detalles && 'telefono' in detalles;
   }
@@ -77,7 +83,7 @@ export class UsuarioPerfilComponent implements OnInit {
         cedula: [data.detalles.cedula || '', [Validators.required, cedulaEcuatorianaValidator()]],
         fechaNacimiento: [data.detalles.fechaNacimiento || ''],
         direccion: [data.detalles.direccion || ''],
-        telefono: [data.detalles.telefono || '']
+        telefono: [this.normalizeEcMobile(data.detalles.telefono || ''), [Validators.required, Validators.pattern(/^0\d{9}$/)]],
       });
     } else if (this.isMedicoDetalles(data.detalles)) {
       this.usuarioForm = this.fb.group({
@@ -106,42 +112,52 @@ export class UsuarioPerfilComponent implements OnInit {
   }
 
   guardarCambios() {
-    if (this.usuarioForm.valid) {
-      const userId = this.userData?.id;
-      const updatedData: Partial<UserDto> = {
-        ...this.userData,
-        name: this.usuarioForm.value.name,
-        detalles: this.userData?.role === 'paciente'
-          ? {
-              cedula: this.usuarioForm.value.cedula || null,
-              direccion: this.usuarioForm.value.direccion || null,
-              fechaNacimiento: this.usuarioForm.value.fechaNacimiento || null,
-              telefono: this.usuarioForm.value.telefono || null,
-            }
-          : this.userData?.role === 'medico'
-          ? {
-              cedula: this.usuarioForm.value.cedula || null,
-              numeroLicencia: this.usuarioForm.value.numeroLicencia || null,
-              especialidad: this.usuarioForm.value.especialidad || null,
-              direccionConsultorio: this.usuarioForm.value.direccionConsultorio || null,
-            }
-          : undefined, 
-      };
-      const cleanData = JSON.parse(JSON.stringify(updatedData));
-  
-      if (userId) {
-        this.userDataService.updateUserInDatabase(userId, cleanData).subscribe({
-          next: () => {
-            this.store.dispatch(setUserData({ data: { ...this.userData, ...updatedData } as UserDto }));
-            this.cerrarModal();
-            this.showModal(this.createModalParams(false, 'Datos actualizados exitosamente.'));
-          },
-          error: (error) => {
-            console.error('Error al actualizar los datos del usuario:', error);
-            this.showModal(this.createModalParams(true, 'Error al actualizar los datos.'));
+    if (!this.usuarioForm.valid) return;
+
+    const userId = this.userData?.id;
+
+    // Solo si es paciente, normalizamos teléfono y armamos DetallesPaciente (todo string)
+    const detallesPaciente =
+      this.userData?.role === 'paciente'
+        ? {
+            ...(this.userData?.detalles as DetallesPaciente), // preserva medicoIds, turnos, diagnosticos si existen
+            cedula: String(this.usuarioForm.value.cedula || ''),
+            direccion: String(this.usuarioForm.value.direccion || ''),
+            fechaNacimiento: String(this.usuarioForm.value.fechaNacimiento || ''),
+            telefono: this.normalizeEcMobile(this.usuarioForm.value.telefono || ''), // <— SIEMPRE string
+          } satisfies DetallesPaciente
+        : undefined;
+
+    const detallesMedico =
+      this.userData?.role === 'medico'
+        ? {
+            cedula: String(this.usuarioForm.value.cedula || ''),
+            numeroLicencia: String(this.usuarioForm.value.numeroLicencia || ''),
+            especialidad: String(this.usuarioForm.value.especialidad || ''),
+            direccionConsultorio: String(this.usuarioForm.value.direccionConsultorio || ''),
           }
-        });
-      }
+        : undefined;
+
+    const updatedData: Partial<UserDto> = {
+      ...this.userData,
+      name: String(this.usuarioForm.value.name || ''),
+      detalles: this.userData?.role === 'paciente' ? detallesPaciente : detallesMedico,
+    };
+
+    const cleanData = JSON.parse(JSON.stringify(updatedData));
+
+    if (userId) {
+      this.userDataService.updateUserInDatabase(userId, cleanData).subscribe({
+        next: () => {
+          this.store.dispatch(setUserData({ data: { ...this.userData, ...updatedData } as UserDto }));
+          this.cerrarModal();
+          this.showModal(this.createModalParams(false, 'Datos actualizados exitosamente.'));
+        },
+        error: (error) => {
+          console.error('Error al actualizar los datos del usuario:', error);
+          this.showModal(this.createModalParams(true, 'Error al actualizar los datos.'));
+        }
+      });
     }
   }
 
