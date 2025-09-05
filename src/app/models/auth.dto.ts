@@ -14,4 +14,5 @@ export interface RegisterDto {
   role?: UserRole;
   especialidad?: string; 
   numeroLicencia?: string; 
+  
 }
